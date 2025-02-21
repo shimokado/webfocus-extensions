@@ -45,9 +45,7 @@
 
 		const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-		const container = d3.select('#' + containerId);
-
-		const svg = container
+		const svg = d3.select('#' + containerId)
 			.append('svg')
 			.attr('class', 'pie-chart')
 			.attr('width', width)
@@ -89,27 +87,6 @@
 					.duration(500)
 					.style('opacity', 0);
 			});
-
-		// 凡例の追加
-		const legend = container
-			.append('div')
-			.attr('class', 'pie-legend');
-
-		data.forEach((d, i) => {
-			const legendItem = legend
-				.append('div')
-				.attr('class', 'legend-item');
-
-			legendItem
-				.append('div')
-				.attr('class', 'legend-color')
-				.style('background-color', color(i));
-
-			legendItem
-				.append('span')
-				.attr('class', 'legend-label')
-				.text(d.labels + ': ' + chart.formatNumber(d.value, numberFormat));
-		});
 	}
 
 	/**

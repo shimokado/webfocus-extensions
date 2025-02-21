@@ -90,32 +90,6 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* パイチャートの凡例スタイル */
-.pie-legend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    font-size: 0.85rem;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-}
-
-.legend-label {
-    color: #333;
-}
-
 /* トップ値カード特別設定 */
 .top-values-card {
     grid-column: span 2;
