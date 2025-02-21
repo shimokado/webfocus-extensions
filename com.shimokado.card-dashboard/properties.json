@@ -11,6 +11,8 @@
     },
 
     "properties": {
+		"chartHeadroom": 50,
+		"external_library": "lib/d3.min.js",
         "tableStyle": {
             "fontSize": "20px",
             "color": "#663300"
@@ -18,6 +20,8 @@
     },
 
     "propertyAnnotations": {
+		"chartHeadroom": "number",
+		"external_library": "str",
         "tableStyle": {
             "fontSize": "str",
             "color": "str"

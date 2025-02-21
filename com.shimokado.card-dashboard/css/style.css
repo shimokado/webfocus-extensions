@@ -58,3 +58,110 @@
 .data-card:hover .card-value {
     transform: scale(1.1);
 }
+
+/* パイチャートカード特別設定 */
+.pie-card {
+    min-height: 300px;
+    grid-column: span 2;
+}
+
+.pie-container {
+    width: 100%;
+    height: 200px;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pie-chart {
+    max-width: 100%;
+    height: auto;
+}
+
+/* パイチャートのツールチップ */
+.pie-tooltip {
+    position: absolute;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(220, 20, 60, 0.2);
+    border-radius: 4px;
+    pointer-events: none;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* トップ値カード特別設定 */
+.top-values-card {
+    grid-column: span 2;
+}
+
+.top-values-list {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.top-value-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.top-value-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateX(5px);
+}
+
+.top-value-rank {
+    font-weight: bold;
+    color: #dc143c;
+    margin-right: 1rem;
+}
+
+.top-value-label {
+    flex-grow: 1;
+    color: #333;
+}
+
+.top-value-number {
+    font-weight: bold;
+    background: linear-gradient(45deg, #dc143c, #ff4d6d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* 棒グラフカード特別設定 */
+.bar-chart-card {
+    grid-column: span 2;
+    min-height: 300px;
+}
+
+.bar-container {
+    width: 100%;
+    height: 200px;
+    margin-top: 1rem;
+}
+
+.bar-chart rect {
+    fill: #dc143c;
+    transition: all 0.3s ease;
+}
+
+.bar-chart rect:hover {
+    fill: #ff4d6d;
+}
+
+.bar-chart text {
+    font-size: 12px;
+    fill: #333;
+}
+
+.bar-axis path,
+.bar-axis line {
+    stroke: #999;
+}
