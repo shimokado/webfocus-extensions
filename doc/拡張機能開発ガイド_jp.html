@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>拡張機能開発ガイド_jp.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="ibi%E2%84%A2-%E3%83%81%E3%83%A3%E3%83%BC%E3%83%88%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E4%BD%9C%E6%88%90web%E3%83%87%E3%83%99%E3%83%AD%E3%83%83%E3%83%91%E3%83%BC%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%83%90%E3%82%A4%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%82%AC%E3%82%A4%E3%83%89">ibi™ チャート拡張機能の作成：Webデベロッパーのためのステップバイステップガイド</h1>
+<p>このガイドは、D3などのJavaScriptベースのビジュアライゼーション（<strong>JS Viz</strong>）をWebFOCUS<sup>®</sup>（<strong>WF</strong>）拡張機能APIを使用して統合する方法を順を追って説明します。</p>
+<p><strong>JS Viz</strong>を<strong>WF</strong>拡張機能APIでラッピングすることで、このビジュアライゼーションはInfoAssistやDesignerなどの<strong>WF</strong>オーサリングツールで利用できるようになります。</p>
+<p>このチュートリアルでは、D3を使用した簡単な棒グラフのラッピングを説明します：</p>
+<p>https://bl.ocks.org/d3noob/183abfcee0670fa49998afc695a8f5ad</p>
+<p>注意：このチュートリアルではWF拡張機能API v2.0（WebFOCUS<sup>®</sup> v8204以降）を使用しています。多くの概念はAPI v1.0にも適用されますが、言及されているヘルパー関数やオブジェクトの一部は利用できない場合があります。</p>
+<h2 id="%E5%AF%BE%E8%B1%A1%E8%80%85">対象者</h2>
+<p>このチュートリアルは、JavaScriptおよびVisual Code、Chrome Dev Tools、gitなどの各種Web開発ツールに精通している方を対象としています。</p>
+<p>拡張機能の各側面とUIがどのように関連しているかをよりよく理解するために、WebFOCUS<sup>®</sup>のInfoAssistまたはDesignerで他の拡張機能を使用してみることを強くお勧めします。</p>
+<h2 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%971%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97">ステップ1：開発環境のセットアップ</h2>
+<p>開発プロセスを効率化するために、WebFOCUS<sup>®</sup>環境内で開発するのではなく、<strong>JS Viz</strong>のラッピングを開始するためのスタンドアロンの開発環境を作成することをお勧めします。</p>
+<p>このgitリポジトリで提供されているプロジェクトテンプレートを出発点としてダウンロードしてください。</p>
+<p>プロジェクトのファイル構造は以下のような類似性があります：</p>
+<p>具体的には、</p>
+<ul>
+<li><strong>JS Viz</strong>のスタイリングに必要なCSSファイルはsrc/cssフォルダに配置します</li>
+<li><strong>JS Viz</strong>のレンダリングに必要な静的JSファイルはsrc/libフォルダに配置します</li>
+</ul>
+<p><strong>注意：D3チャートを含む</strong>JS Viz<strong>をラッピングする場合、他のWebFOCUS<sup>®</sup>チャート拡張機能との互換性の問題を避けるため、以下のファイルを含めることを強く推奨します。これらはテンプレートプロジェクトのsrc/libフォルダに追加されています。</strong></p>
+<ul>
+<li>d3 v5.16以上</li>
+<li>d3-selection-multi module v1.0.1</li>
+<li>d3-time module v1.1</li>
+<li>d3-time-format module v2.2.3</li>
+<li>d3-transition module v1.3.2</li>
+</ul>
+<p>テンプレートプロジェクトには以下も含まれています：</p>
+<ul>
+<li>
+<p>src/properties.json - 作成する拡張機能とともにパッケージ化する必要があるファイルです。このプロパティファイルの詳細については以下のリンクを参照してください：
+https://github.com/ibi/wf-extensions-chart/wiki/Extension-Configuration-with-properties.json</p>
+</li>
+<li>
+<p>wf_api.js - 開発目的でのみ使用し、最終的な拡張機能パッケージには追加しないファイルです。このファイルには、カスタム拡張機能がWebFOCUS<sup>®</sup>に完全に統合されデプロイされた場合にWebFOCUS<sup>®</sup> APIが利用可能にする各種オブジェクトのスタブが含まれています。</p>
+</li>
+<li>
+<p>draw_chart.html - CSVファイルを反復処理する代わりにJSONアレイを使用して<strong>JS Viz</strong>をレンダリングするスタンドアロンの例</p>
+</li>
+<li>
+<p>src/com.ibi.d3_bar_chart.js - <strong>JS Viz</strong>をラップアップして最終的な拡張機能パッケージにバンドルするために使用するコアファイル</p>
+</li>
+</ul>
+<p>最終的な拡張機能にバンドルする必要があるファイルとパッケージの構造の詳細については、以下のリンクを参照してください：https://github.com/ibi/wf-extensions-chart/wiki/Creating-a-WebFocus-Extension</p>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%9711%E5%BF%85%E8%A6%81%E3%81%AA%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0%E3%81%AE%E8%A9%95%E4%BE%A1">ステップ1.1：必要なデータ構造の評価</h3>
+<p><strong>JS Viz</strong>に供給されるデータ構造を評価する必要があります。これはラッパーのデータ定義を決定するためです。WF拡張機能データインターフェースの詳細については、こちらのリンクを参照してください[https://github.com/ibi/wf-extensions-chart/wiki/Extension-Data-Interface]。</p>
+<p>要約すると、WebFOCUS<sup>®</sup>からのデータはフラットなJSON形式で提供されます。JSONデータ構造はproperties.jsonファイルのdataBucketsオブジェクトで定義されます。</p>
+<p>棒グラフの例を見ると、データは以下のような形式のオブジェクトの配列である必要があります：</p>
+<pre><code>var data_records = [{
+    &quot;salesperson&quot;: &quot;A&quot;,
+    &quot;sales&quot;: 100
+},
+...
+{
+    &quot;salesperson&quot;: &quot;Z&quot;,
+    &quot;sales&quot;: 500
+}]
+</code></pre>
+<p>より一般的な形式では：</p>
+<pre><code>var data_records = [{
+    &quot;xAxis&quot;: &quot;string&quot;
+    ,&quot;yAxis&quot;: int
+},
+...
+</code></pre>
+<p>この構造は、xAxisプロパティがディメンション、yAxisプロパティがメジャーであることを示しています。</p>
+<p><strong>注意：ほとんどの場合、文字列値はディメンション、数値はメジャーです。数値がディメンションとなる例として、製品ID番号があります。ディメンションは、データをグループ化したいフィールドと考えてください。</strong></p>
+<p>上記の<strong>JS Viz</strong>が必要とするデータ構造に基づいて、properties.jsonファイルのdataBucketsオブジェクトは以下のように定義する必要があります：</p>
+<pre><code>...
+&quot;dataBuckets&quot;:  {
+	&quot;buckets&quot;: [
+		{
+			&quot;id&quot;: &quot;xAxis&quot;,
+			&quot;type&quot;: &quot;dimension&quot;,
+			&quot;count&quot;: {
+				&quot;min&quot;: 1,
+				&quot;max&quot;: 1
+			}
+		},
+		{
+			&quot;id&quot;: &quot;yAxis&quot;,
+			&quot;type&quot;: &quot;measure&quot;,
+			&quot;count&quot;: {
+				&quot;min&quot;: 1,
+				&quot;max&quot;: 1
+			}
+		}
+	]
+},
+...
+</code></pre>
+<p>この定義でInfoAssistがどのように表示されるかのスクリーンショットです。
+<img src="https://github.com/ibi/wf-extension-tutorial/raw/main/screenshots/01-InfoAssist-Buckets.png" alt="Buckets in InfoAssist"></p>
+<p>この定義でDesignerがどのように表示されるかのスクリーンショットです。
+<img src="https://github.com/ibi/wf-extension-tutorial/raw/main/screenshots/01-Designer-Buckets.png" alt="Buckets in Designer"></p>
+<p>minプロパティは、WebFOCUS<sup>®</sup>が<strong>JS Viz</strong>に実際のデータを送信してレンダリングを試みる前に、バケットにドロップする必要があるフィールドの数を定義します。例えば、min = 0の場合、WFがデータを送信するために必要なフィールドはありません。min = 1の場合、WFが実際のデータを送信する前に、ユーザーは少なくとも1つのフィールドをバケットに入れる必要があります。</p>
+<p>必要なすべてのデータバケットにフィールドが入っていない場合、noDataRenderCallback関数が実行されます。このコールバックでは、どのバケットにフィールドが不足しているかを示すメッセージを表示するか、ダミーデータを設定します。noDataRenderCallbackの実装例はcom.ibi.d3_bar_chart.jsで確認できます。</p>
+<p>maxプロパティは、データバケットが受け入れ可能な最大フィールド数を定義します。</p>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%9712%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0%E3%82%92%E6%8C%81%E3%81%A4%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89%E3%82%A2%E3%83%AD%E3%83%B3%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E4%BD%9C%E6%88%90">ステップ1.2：データ構造を持つスタンドアロンバージョンの作成</h3>
+<p><strong>JS Viz</strong>をWF拡張機能に変換する前に、ステップ1.1で定義したデータ構造で例を実行できるスタンドアロンページを作成します。この特定のチュートリアルでは、オンラインの例からCSVデータファイルの依存関係を削除しました。</p>
+<p>テンプレートプロジェクトにはdraw_chart.htmlが付属しており、これはCSVファイルの代わりにJSONデータ配列を使用するスタンドアロンの例です。</p>
+<p>このファイルをsrc/libディレクトリとともにWebサーバー（tomcat、nodejsなど）にデプロイして、動作することを確認してください。以下のように表示されるはずです：</p>
+<p><img src="https://github.com/ibi/wf-extension-tutorial/raw/main/screenshots/02-stand-alone-chart.png" alt="D3 Bar Chart"></p>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%9713%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%B8%E3%81%AEdatabuckets%E5%AE%9A%E7%BE%A9%E3%81%AE%E9%81%A9%E7%94%A8">ステップ1.3：テンプレートへのdataBuckets定義の適用</h3>
+<p>ステップ1.1では、dataBucketsオブジェクトの定義方法を確認しました。WF APIはこの定義を受け取り、実行時に以下のようなオブジェクトを生成します：</p>
+<pre><code>//これはdataBucketsオブジェクトの部分的な定義です
+//WebFOCUS(R)内で実行する場合に利用可能な便利なgetBuckets関数は
+//ここでは定義されていません
+renderConfig.dataBuckets = {
+    buckets: [{
+        id: &quot;xAxis&quot;
+        ,fields: [
+            {
+                title: &quot;My Field Title&quot;
+                ,fieldName: &quot;SYN.SEG.FIELDNAME1&quot;
+            }
+        ]
+    },
+    {
+        id: &quot;yAxis&quot;
+        ,fields: [
+            {
+                title: &quot;My Field Title&quot;
+                ,fieldName: &quot;SYN.SEG.FIELDNAME2&quot;
+            }
+        ]
+    }],
+    getBucket: function(bucketID)
+    {
+        //WebFOCUS(R)でのみ利用可能
+    }
+}
+</code></pre>
+<p>dataBucketsオブジェクトには&quot;buckets&quot;という配列オブジェクトがあり、これにはデータ構造のすべてのメタデータが含まれています。注目すべき点：</p>
+<ul>
+<li>buckets[0].idプロパティは、properties.jsonで定義されたidです</li>
+<li>buckets[0].fields[0].titleは、WebFOCUS<sup>®</sup>シノニムのメタデータで定義されたタイトルです。これは軸のラベル付けなどに便利で、ハードコーディングを避けることができます。</li>
+<li>buckets[0].fields[0].fieldNameは、WebFOCUS<sup>®</sup>シノニムのメタデータにある完全修飾フィールド名です。フィールドの一意なIDが必要な場合やデータセットでデータ変換が必要な場合に便利です。</li>
+</ul>
+<p><strong>注意：WebFOCUS<sup>®</sup>のシノニムとメタデータについて理解を深めることをお勧めします。これによりdataBucketsをより良く理解できるようになります。WebFOCUS<sup>®</sup>メタデータの詳細はこちらで確認できます：https://webfocusinfocenter.informationbuilders.com/wfappent/TL2s/TL_apps/source/metadata24.htm</strong></p>
+<p>以下は、WebFOCUS<sup>®</sup>のInfoAssistを使用してCARシノニムからCOUNTRYとSEATSフィールドを追加した場合のdataBucketsオブジェクトです（WebFOCUS<sup>®</sup> 8204+を使用している場合）。これはテンプレートプロジェクトがwf_api.jsで使用しているものです：</p>
+<pre><code>renderConfig.dataBuckets = {
+    buckets: [{
+        id: &quot;xAxis&quot;
+        ,fields: [
+            {
+                title: &quot;COUNTRY&quot;
+                ,fieldName: &quot;CAR.ORIGIN.COUNTRY&quot;
+            }
+        ]
+    },
+    {
+        id: &quot;yAxis&quot;
+        ,fields: [
+            {
+                title: &quot;SEATS&quot;
+                ,fieldName: &quot;CAR.BODY.SEATS&quot;
+            }
+        ]
+    }],
+    getBucket: function(bucketID)
+    {
+        //WebFOCUS(R)でのみ利用可能
+    }
+}
+</code></pre>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%9714webfocussup%C2%AEsup%E3%81%8C%E5%AE%9F%E8%A1%8C%E6%99%82%E3%81%AB%E6%8F%90%E4%BE%9B%E3%81%99%E3%82%8B%E3%82%88%E3%81%86%E3%81%AA%E3%83%87%E3%83%BC%E3%82%BF%E3%82%BB%E3%83%83%E3%83%88%E3%81%AE%E8%BF%BD%E5%8A%A0">ステップ1.4：WebFOCUS<sup>®</sup>が実行時に提供するようなデータセットの追加</h3>
+<p>バケットが定義されたので、この情報を使用してサンプルデータセットを作成できます。上記のバケット定義とWebFOCUS<sup>®</sup> CARシノニムのCOUNTRYとSEATSフィールドを選択した場合、WebFOCUS<sup>®</sup>が提供するデータセット構造は以下のようになります：</p>
+<pre><code>renderConfig.data = [
+    { &quot;xAxis&quot;: &quot;ENGLAND&quot;, &quot;yAxis&quot;: 13, &quot;_s&quot;: 0, &quot;_g&quot;: 0 },
+    { &quot;xAxis&quot;: &quot;FRANCE&quot;, &quot;yAxis&quot;: 5, &quot;_s&quot;: 0, &quot;_g&quot;: 1 },
+    { &quot;xAxis&quot;: &quot;ITALY&quot;, &quot;yAxis&quot;: 10, &quot;_s&quot;: 0, &quot;_g&quot;: 2 },
+    { &quot;xAxis&quot;: &quot;JAPAN&quot;, &quot;yAxis&quot;: 8, &quot;_s&quot;: 0, &quot;_g&quot;: 3 }
+];
+</code></pre>
+<p>xAxisとyAxisがプロパティとして表示されていることに注目してください。</p>
+<p>また、_sと_gプロパティについても注目する必要があります：</p>
+<ul>
+<li>_s = シリーズID</li>
+<li>_g = グループID</li>
+</ul>
+<p>これらのプロパティの使用については後で説明しますが、簡単に言えば、棒などのチャート要素にWebFOCUS<sup>®</sup>のツールチップを追加する際に便利です。</p>
+<p>renderConfig.dataはwf_api.jsファイルで定義されています。準備が整ったら、これを<strong>JS Viz</strong>に供給して拡張機能作成プロセスを簡素化するために使用する必要があります。</p>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%9715%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9Fjs-viz%E3%81%AE%E5%AE%9F%E8%A3%85">ステップ1.5：テンプレートを使用したJS Vizの実装</h3>
+<p>dataBuckets、data、およびrenderConfigのプロパティの側面が定義されたので、WebFOCUS<sup>®</sup> APIオブジェクトを使用するスタンドアロンJS Vizを作成する準備が整いました。</p>
+<p>このセクションでは、テンプレートプロジェクトのルートフォルダにあるext_wrapper.htmlのコード行を直接参照します。以下が重要なポイントです：</p>
+<ol>
+<li>
+<p>draw_chart.htmlで必要だったすべてのJS参照がext_wrapper.htmlに追加されています。</p>
+</li>
+<li>
+<p>11行目では、renderConfig.widthを使用してチャートの描画領域を計算します</p>
+</li>
+<li>
+<p>12行目では、renderConfig.heightを使用してチャートの描画領域を計算します</p>
+</li>
+<li>
+<p>20行目では、定義されたWebFOCUS<sup>®</sup>拡張機能APIオブジェクトを含むchart_ext.jsファイルへの参照があります。</p>
+</li>
+<li>
+<p>27行目では、render_chart(renderConfig)関数が定義されています。この関数にはチャートをレンダリングするために必要なコードが含まれています。</p>
+</li>
+<li>
+<p>29行目では、ローカルデータ変数がレンダリングに使用するrenderConfigデータセットに設定されています</p>
+</li>
+<li>
+<p>45行目では、renderConfig.container.idを使用して<strong>JS Viz</strong>がレンダリングされる要素を選択します</p>
+</li>
+<li>
+<p>74行目では、renderConfig.properties.barColorを使用して棒の色を設定します</p>
+</li>
+<li>
+<p>93行目では、renderConfig.properties.xAxis.showTitleのチェックを行います。trueの場合、xAxis label（軸ラベル）を追加します</p>
+</li>
+<li>
+<p>102行目では、renderConfig.properties.xAxis.titleプロパティを使用してX軸のラベルを設定します</p>
+</li>
+<li>
+<p>108行目では、renderConfig.properties.yAxis.showTitleのチェックを行います。trueの場合、yAxis label（軸ラベル）を追加します</p>
+</li>
+<li>
+<p>112行目では、yAxisに関連付けられたメタデータを取得して、そのタイトルを使用できるようにします。</p>
+</li>
+<li>
+<p>121行目では、renderConfig.properties.yAxis.titleプロパティを使用してY軸のラベルを設定しますが、コメントアウトされています</p>
+</li>
+<li>
+<p>122行目では、yAxis.fields[0].titleからラベルを追加します</p>
+</li>
+</ol>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%9716%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E7%94%A8%E3%81%AEweb%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%B8%E3%81%AE%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4">ステップ1.6：デバッグ用のWebサーバーへのデプロイ</h3>
+<p>動作確認のため、必要なファイルをWebサーバーにデプロイします。以下のファイルをtomcatのルートディレクトリに追加しました：</p>
+<ul>
+<li>src/libフォルダ内のすべてのファイル</li>
+<li>ext_wrapper.html</li>
+<li>wf_api.js</li>
+</ul>
+<p>これにより、以下のように表示されるはずです：</p>
+<p>[ここにレンダリングされたチャートのスクリーンショットを挿入！]</p>
+<p>作成したWebFOCUS<sup>®</sup> APIオブジェクトのスタブでスタンドアロン<strong>JS Viz</strong>がレンダリングされることを確認できたら、セクション2に進む準備が整いました。セクション2では、WebFOCUS<sup>®</sup>拡張機能の作成とWebFOCUS<sup>®</sup>環境へのデプロイ方法に焦点を当てます。</p>
+<h2 id="2-webfocussup%C2%AEsup%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E4%BD%9C%E6%88%90">2: WebFOCUS<sup>®</sup>拡張機能の作成</h2>
+<p>拡張機能のGitHubリポジトリには、WebFOCUS<sup>®</sup>拡張機能の作成方法について、すでに良い説明があります：
+https://github.com/ibi/wf-extensions-chart/wiki/Creating-a-WebFocus-Extension</p>
+<p>このセクションでは、スタンドアロンページext_wrapper.htmlに基づいて拡張機能を作成するためのベストプラクティスについて説明します。</p>
+<p>テンプレートプロジェクトには、WebFOCUS<sup>®</sup>拡張機能を「ビルド」するためのリソースが含まれています。具体的にはsrcディレクトリに以下があります：</p>
+<ul>
+<li>
+<p>iconsフォルダ - 拡張機能マネージャーや、InfoAssistおよびDesignerでの選択時の視覚的な手がかりとして、WebFOCUS<sup>®</sup>の様々な場面でレンダリングされる画像を格納します。</p>
+</li>
+<li>
+<p>libフォルダ - 必要な外部JSライブラリがすべて含まれています - これは通常、ext_wrapper.htmlで行われたJS参照と一致します</p>
+</li>
+<li>
+<p>cssフォルダ - 必要な外部CSSファイルが含まれています</p>
+</li>
+</ul>
+<p><strong>注意：URLを参照することもできるため、必ずしもlibフォルダやcssフォルダが必要というわけではありません。</strong></p>
+<ul>
+<li>
+<p>com.ibi.d3_bar_chart.js - WebFOCUS<sup>®</sup>拡張機能のエントリーポイントです。ほとんど、またはすべてのカスタムコードをここに配置します</p>
+</li>
+<li>
+<p>properties.json - WebFOCUS<sup>®</sup>ツールでコンテンツ作成者が編集できるプロパティやバケット定義など、拡張機能の様々な側面を定義します</p>
+</li>
+</ul>
+<p>さらに、プロジェクトには「win_build_d3_bar_chart」という単純なWindowsバッチプログラムが含まれており、必要なファイルをすべてビルドフォルダにコピーして拡張機能を「ビルド」します。<strong>これは環境が異なる可能性があるため、参考程度にしか使用しないでください</strong></p>
+<h3 id="21---extwrapperhtml%E3%81%8B%E3%82%89comibid3barchartjs%E3%81%B8%E3%81%AE%E7%A7%BB%E8%A1%8C">2.1 - ext_wrapper.htmlからcom.ibi.d3_bar_chart.jsへの移行</h3>
+<p>ext_wrapper.htmlでは、render_chart関数がスタブ化されたオブジェクトrenderConfigを使用して実装されています。これは、大部分の再利用がcom.ibi.d3_bar_chart.jsへの単純なカット＆ペーストであることを意味します。</p>
+<p>com.ibi.d3_bar_chart.jsの3行目には、render_chart関数をラップアップするcom_ibi_d3_bar_chartというオブジェクトが定義されています。この方法で実装することで、同じ名前の関数との衝突を避けることができます。</p>
+<p><strong>注意：<em>JS Viz</em>が多くのコードを必要とする場合は、d3_bar_chart.jsのような外部JSファイルを作成し、そこにcom_ibi_d3_bar_chartオブジェクトを配置することをお勧めします。この方法を選択する場合は、必ずlibフォルダに追加してください。</strong></p>
+<ul>
+<li>
+<p>com.ibi.d3_bar_chart.jsの127行目では、WebFOCUS<sup>®</sup> API renderConfigオブジェクトを渡して関数を呼び出します。</p>
+</li>
+<li>
+<p>108行目では、noDataRenderCallback関数が、コンテンツ作成者がInfoAssist/Designerで使用するフィールドを選択していない場合にWebFOCUS<sup>®</sup>が使用するダミーデータのセットを作成します。また、「バケットにさらにフィールドを追加してください」というようなメッセージを、renderConfig.container.idを持つ要素にHTMLマークアップを挿入して表示することもできます。</p>
+</li>
+</ul>
+<p>前述のように、プロパティの詳細については https://github.com/ibi/wf-extensions-chart/wiki/Creating-a-WebFocus-Extension を参照してください。</p>
+<h3 id="22---%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0">2.2 - 拡張機能のパッケージング</h3>
+<p>テンプレートプロジェクトには、WebFOCUS<sup>®</sup>にデプロイするために必要なすべてのファイルをパッケージ化する方法の簡単な例が含まれています。</p>
+<p>バッチファイル「win_build_d3_bar_chart.bat」は、ビルドフォルダを削除して作成し、必要なすべてのファイルをbuild\com.ibi.d3_bar_chartフォルダにコピーします。</p>
+<p>OSやフォルダ構造が異なる可能性があるため、このバッチファイルは参考程度にしてください。</p>
+<h3 id="23---%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4">2.3 - 拡張機能のデプロイ</h3>
+<p>GitHubの「WebFOCUS<sup>®</sup>拡張機能のインストール」リンクを参照してください：https://github.com/ibi/wf-extensions-chart/wiki/Installing-a-WebFocus-Extension</p>
+<p>そこに記載されているステップに加えて、以下の考慮事項とトラブルシューティングのヒントがあります。</p>
+<h4 id="%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AE%E8%80%83%E6%85%AE%E4%BA%8B%E9%A0%85">デプロイメントの考慮事項</h4>
+<ul>
+<li>
+<p>ビジュアライゼーションは技術的に「ベータモード」にあるため、多くのバグ修正と再デプロイが必要になります。そのため、開発環境のWebFOCUS<sup>®</sup>クライアントフォルダへの管理者アクセス権を取得することが理想的です。そうでない場合、開発サイクルが非常に遅くなります。</p>
+</li>
+<li>
+<p>キャッシュの問題に遭遇する可能性が高いため、WebFOCUS<sup>®</sup>のキャッシュをクリアできるよう、管理者アクセス権が必要です。</p>
+</li>
+<li>
+<p>WebFOCUS<sup>®</sup>アカウントには、InfoAssist/Designerを使用するための権限が必要です。</p>
+</li>
+</ul>
+<h4 id="%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0faq">トラブルシューティングFAQ</h4>
+<ul>
+<li>
+<p>拡張機能をデプロイ/インストールした後、InfoAssist/Designerで選択可能な拡張機能として表示されない場合があります。これには2つの理由が考えられます：</p>
+<ul>
+<li>WebFOCUS<sup>®</sup>クライアントのキャッシュをクリアする必要があります。WebFOCUS<sup>®</sup>管理コンソール-&gt;右上のキャッシュクリアボタンで行えます。</li>
+<li>ブラウザのキャッシュをクリアする必要があります。開発サイクルでは、WebFOCUS<sup>®</sup>をプライベートウィンドウモードで開くか、Chromeを使用している場合は開発者ツール-&gt;設定（歯車アイコン）-&gt;ネットワークの「開発者ツールが開いている間キャッシュを無効にする」をオンにすることをお勧めします。</li>
+</ul>
+</li>
+<li>
+<p>拡張機能がまだ表示されない場合、properties.jsonファイルに問題がある可能性が高いです。経験上、通常はpropertiesオブジェクトがpropertyAnnotationsオブジェクトと一致していません。つまり、各プロパティには、同じ名前の対応するpropertyAnnotationが定義されている必要があります。properties.jsonで注意すべきその他の点：</p>
+<ul>
+<li>propertyAnnotationタイプのスペル。有効な4つのタイプは&quot;str&quot;、&quot;number&quot;、&quot;bool&quot;、&quot;color&quot;、&quot;array&quot;です</li>
+<li>translationオブジェクトの命名規則が完全に守られていることを確認してください</li>
+</ul>
+</li>
+<li>
+<p>InfoAssist/Designerで拡張機能を選択したときに「com.ibi.your_ext_nameが見つかりません」というようなエラーメッセージが表示される場合、これは通常キャッシュの問題です。上記のキャッシュクリアの手順に従ってください。</p>
+</li>
+<li>
+<p>InfoAssist/Designerのキャンバスにビジュアライゼーションではなくテキストエラーメッセージが表示される場合。エラーメッセージを展開してスタックトレースを確認できるはずです。</p>
+</li>
+</ul>
+<p>これは、com.ibi.d3_bar_chartで拡張機能を実装した方法に起因している可能性が高いです。ChromeのDeveloper Toolまたは同等のツールを使用してデバッグする必要があります。</p>
+<p>以下は、Chromeでデバッグをセットアップする一般的な手順です：</p>
+<ol>
+<li>InfoAssist/Designerを開く</li>
+<li>データソースを選択</li>
+<li>拡張機能を選択</li>
+<li>コンテンツを保存（例：「test_com_ibi_d3_bar_chart」として保存）</li>
+<li>InfoAssist/Designerを閉じる</li>
+<li>保存したファイルを編集</li>
+<li>これにより、作成に使用したツールが開きます</li>
+<li>Developer Toolsを開く</li>
+<li>ページを更新してInfoAssist/Designerを再度開く</li>
+<li>Developer Tool-&gt;ソースタブを確認</li>
+<li>拡張機能の参照を探す
+<ul>
+<li>Designerでは、通常ibi_apps-&gt;tdg/jschart/distribution/some_session_id内にあります</li>
+<li>InfoAssistでは、通常ibi_apps-&gt;webconsole-&gt;some_session_id-&gt;ar_common-&gt;extensions/your_extension_id内にあります</li>
+<li>上記はWebFOCUS<sup>®</sup>のバージョンによって異なりますが、他のバージョンでも参考になるはずです</li>
+</ul>
+</li>
+<li>renderCallback関数の先頭にブレークポイントを設定します</li>
+</ol>
+<p>ここからデバッグを開始できるはずです。ここまで到達しない場合は、拡張機能ファイルのconfig変数での拡張機能の構成を確認してください。</p>
+<h2 id="3-%E9%AB%98%E5%BA%A6%E3%81%AA%E6%A9%9F%E8%83%BD%E3%81%AE%E5%AE%9F%E8%A3%85">3: 高度な機能の実装</h2>
+<h3 id="31-%E3%83%84%E3%83%BC%E3%83%AB%E3%83%81%E3%83%83%E3%83%97">3.1: ツールチップ</h3>
+<p>ビジュアライゼーションに追加する一般的な機能がツールチップです。</p>
+<p>ツールチップを追加するには2つの方法があります。CSSクラスを使用する方法と、WebFOCUS<sup>®</sup>拡張機能APIのヘルパーツールを使用してカスタムツールチップを作成する方法です。</p>
+<p><strong>JS Viz</strong>の要素のレンダリングを完全にコントロールできる場合、CSSクラスを使用する方法が推奨されます。これにより、必要なコーディング量を最小限に抑えることができます。</p>
+<p>ただし、サードパーティのライブラリを使用している場合、適切な要素にCSSクラスを簡単に注入できない可能性があります。</p>
+<h4 id="311-css%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E3%83%84%E3%83%BC%E3%83%AB%E3%83%81%E3%83%83%E3%83%97%E3%81%AE%E8%BF%BD%E5%8A%A0">3.1.1: CSSクラスを使用したツールチップの追加</h4>
+<p><strong>概要</strong>
+このセクションでは、標準のWebFOCUS<sup>®</sup>ツールチップを追加する方法を説明するために、com.ibi.d3_bar_chart_311.jsファイルを参照します。</p>
+<p>WebFOCUS<sup>®</sup>生成のツールチップを使用するには、データにバインドされた要素にクラスを追加できる必要があります。d3_simple_barチャートの場合、棒グラフはデータセットに基づいて生成されたため、ユーザーがマウスオーバーしたときにデータ駆動型のツールチップが表示されるはずです。</p>
+<p>ツールチップを持つと便利なその他のチャート要素の例：</p>
+<ul>
+<li>円グラフのスライス</li>
+<li>折れ線グラフのマーカー</li>
+<li>バブルグラフのバブル</li>
+</ul>
+<p>com.ibi.d3_bar_chart_311.jsの重要なポイント：</p>
+<ul>
+<li>48-51行目：renderConfig.moonbeamInstance.buildClassNameユーティリティ関数を使用して、描画された各rectにクラスが割り当てられます - この関数は、ユーザーが棒にマウスオーバーしたときにWebFOCUS<sup>®</sup>が表示するツールチップを決定するのに役立つ適切なCSSクラスを生成します</li>
+<li>60-63行目：renderConfig.modules.tooltip.addDefaultToolTipContent関数がツールチップコンテンツを生成します。WebFOCUS<sup>®</sup>拡張機能APIが要素を適切なツールチップに関連付けるには、描画されたすべての要素を反復処理する必要があります。</li>
+<li>129行目：WebFOCUS<sup>®</sup>のツールチップを有効にするために、<strong>JS Viz</strong>の描画が完了したときにrenderConfig.renderComplete関数を呼び出す必要があります</li>
+<li>159-161行目：WebFOCUS<sup>®</sup>拡張機能ツールチップを有効にする拡張機能設定</li>
+</ul>
+<p><strong>WebFOCUS<sup>®</sup>ツールチップのスタイリング</strong>
+WebFOCUS<sup>®</sup>ツールチップのスタイルを変更する最も簡単な方法は、CSSを使用することです。</p>
+<ul>
+<li>d3_bar_chart.cssがsrc/cssフォルダに追加されました - CSSファイルがスタイリングしている要素とその方法を確認してください。WebFOCUS<sup>®</sup>ツールチップによって生成される利用可能な要素とクラスの詳細については、この拡張機能を使用してWebFOCUS<sup>®</sup>でチャートを実行し、Chromeの開発者ツールを開いて棒の1つにマウスを置いてください。Developer Toolを使用してDOMを探索すると、WebFOCUS<sup>®</sup>がツールチップのマークアップを注入していることがわかります。</li>
+<li>com.ibi.d3_bar_chart_311.jsの152行目で、実行時にWebFOCUS<sup>®</sup>が読み込むCSSファイルが参照されています。</li>
+</ul>
+<p><em>注意：トラブルシューティングFAQセクションで説明したキャッシュクリアの手順を実行する必要があります。</em></p>
+<p>代替案として、拡張機能のhead要素にCSSを動的に注入することもできますが、これはこのチュートリアルの範囲外です。</p>
+<p><strong>com.ibi.d3_bar_chart_311のデプロイ</strong></p>
+<p>プロジェクトのルートディレクトリにwin_build_d3_bar_chart_311.batが含まれています。これはwin_build_d3_bar_chart.batファイルと似ていますが、以下の違いがあります：</p>
+<ul>
+<li>ビルドの一部としてcssフォルダを追加</li>
+<li>src/com.ibi.d3_bar_chart_311.jsを src/com.ibi.d3_bar_chart.jsの代わりに含め、ビルドフォルダでcom.ibi.d3_bar_chart.jsに名前を変更</li>
+</ul>
+<p>このバッチを実行すると、CSSを使用したWebFOCUS<sup>®</sup>ツールチップ機能を追加したd3_bar_chart拡張機能がビルドされます。</p>
+<p>build/com.ibi.d3_bar_chartフォルダをWebFOCUS<sup>®</sup>サーバーにデプロイしてください。変更を確認するには、通常のキャッシュクリアの手順を実行してください。</p>
+<h4 id="312-javascript%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E3%83%84%E3%83%BC%E3%83%AB%E3%83%81%E3%83%83%E3%83%97%E3%81%AE%E8%BF%BD%E5%8A%A0">3.1.2: JavaScriptを使用したツールチップの追加</h4>
+<p><strong>概要</strong>
+この方法は、ツールチップのコンテンツを完全に制御する必要がある場合や、要素にクラスを注入できないサードパーティライブラリを使用している場合にのみ使用する必要があります。</p>
+<p>WebFOCUS<sup>®</sup> APIには、セクション3.1.2で説明した手法を使用した場合と同様のツールチップマークアップを生成するユーティリティ関数が付属しています。</p>
+<p>このプロジェクトには、この手法を実装したcom.ibi.d3_bar_chart_312.jsが含まれています。</p>
+<p>高レベルでは、実装には以下が必要です：</p>
+<ul>
+<li>拡張機能の初期ロード時に、ツールチップのマークアップを含むdivをチャートコンテナ内に注入</li>
+<li>ユーザーが棒にマウスオーバーしたときにdivを表示</li>
+<li>ユーザーが棒からマウスアウトしたときにdivを非表示</li>
+</ul>
+<p><strong>com.ibi.d3_bar_chart_312.jsの実装に関する注意点</strong>
+主な実装領域は以下の通りです：</p>
+<ul>
+<li>2行目 - WebFOCUS<sup>®</sup> APIによって作成されたツールチップオブジェクトを格納するtooltip変数</li>
+<li>3行目 - 要素IDを格納するtooltipID変数。必要に応じてツールチップのDOM要素を選択するために使用できます</li>
+<li>61-70行目 - 各棒のmousoverイベントを処理。この棒に関連付けられたツールチップコンテンツを生成して表示するために、com_ibi_d3_bar_chart.show_tooltipが呼び出されます</li>
+<li>117-128行目 - showTooltip関数 - 受け取るパラメータとその機能についてはコードのコメントを参照。この例の棒のようなデータバインドされた要素とユーザーが対話するときに呼び出す必要があります</li>
+<li>129-155行目 - initTooltip関数 - WebFOCUS<sup>®</sup>ツールチップオブジェクトを初期化</li>
+<li>183行目 - ツールチップを初期化するためにinitTooltipを呼び出し</li>
+</ul>
+<p><em>注意：ツールチップのユーザー体験は様々です。com.ibi.d3_bar_chart_312.jsの例では、ツールチップはマウスオーバー時に表示され、ユーザーがクリックして離れたときに非表示になります。通常、ツールチップはユーザーがマウスアウトしたときに消えます。ただし、ツールチップにはWebFOCUS<sup>®</sup>のドリルダウン（次のセクションで説明）が含まれる可能性があるため、ユーザーが棒からマウスアウトしてもメニューを開いたままにする必要があります。要するに、この例の目的はWebFOCUS<sup>®</sup>がツールチップマークアップを生成する方法を示すことでしたが、ユーザー体験の観点から適切だと感じる方法で実装してください。</em></p>
+<p><strong>com.ibi.d3_bar_chart_311のデプロイ</strong></p>
+<p>プロジェクトのルートディレクトリにwin_build_d3_bar_chart_312.batが含まれています。これはwin_build_d3_bar_chart.batファイルと似ていますが、以下の違いがあります：</p>
+<ul>
+<li>ビルドの一部としてcssフォルダを追加</li>
+<li>src/com.ibi.d3_bar_chart_312.jsを src/com.ibi.d3_bar_chart.jsの代わりに含め、ビルドフォルダでcom.ibi.d3_bar_chart.jsに名前を変更</li>
+</ul>
+<p>このバッチを実行すると、WebFOCUS<sup>®</sup>ツールチップ機能を追加したd3_bar_chart拡張機能がビルドされます。</p>
+<p>build/com.ibi.d3_bar_chartフォルダをWebFOCUS<sup>®</sup>サーバーにデプロイしてください。変更を確認するには、通常のキャッシュクリアの手順を実行してください。</p>
+<h3 id="32-%E3%83%89%E3%83%AA%E3%83%AB%E3%83%80%E3%82%A6%E3%83%B3">3.2: ドリルダウン</h3>
+<p><strong>概要</strong>
+ドリルダウンは、ビジュアル要素をクリックして、新しいウィンドウや同じウィンドウなど、標準のブラウザターゲットで新しいコンテンツを開く機能です。ビジュアル要素に関連付けられた関連データをドリルダウンコンテンツに適用するために渡すのが一般的です。</p>
+<p>例えば、各棒が国（イギリス、日本など）を表し、棒の高さが売上を表すとします。ユーザーは「イギリス」の棒をクリックして、詳細な売上レポートにドリルダウンできます。この操作では、値「イギリス」がレポートに渡され、レポートは「イギリス」に関連するデータのみを表示します。</p>
+<p>ドリルダウンの設定の詳細については、以下のリンクを参照してください：</p>
+<ul>
+<li>InfoAssist: https://webfocusinfocenter.informationbuilders.com/wfappent/TL3s/TL_ia/source/Nav_Rpt_Chart70.htm</li>
+<li>Designer: https://kb.informationbuilders.com/topic/adding-drill-down-links-content-8207</li>
+</ul>
+<p>ドリルダウンを実装する最も簡単な方法は、セクション3.1.2で説明した手法を使用することです - この方法を使用することで、ドリルダウン機能が無料で提供されます。</p>
+<p>com.ibi.d3_bar_chart_312ビルドを使用して、InfoAssistでチャートを作成してください。ドリルダウンの設定に必要な一般的な手順に従うと、メニューにドリルダウンが表示されます。</p>
+<p><strong>単一のドリルダウンの処理</strong>
+コンテンツ作成者が単一のドリルダウンを設定する特別なケースがあります。このシナリオでは、標準の既製のチャートでは、ユーザーはドリルダウンを実行するためにビジュアル要素をクリックする必要があります。つまり、WebFOCUS<sup>®</sup>のツールチップはここでは機能しないため、このシナリオを処理する必要があります。</p>
+<p>com.ibi.d3_bar_chart_32.jsでは、このシナリオを処理するコードが追加されています。</p>
+<ul>
+<li>
+<p>136-148行目：InfoAssist/Designerで複数のドリルダウンが設定されているか、自動ドリルが有効になっているシナリオを処理します</p>
+</li>
+<li>
+<p>149-199行目：WebFOCUS<sup>®</sup>ツールチップを生成し、メニュー項目を動的に追加することで、単一のドリルダウンのシナリオを処理します</p>
+</li>
+</ul>
+<p><strong>com.ibi.d3_bar_chart_32のデプロイ</strong></p>
+<p>プロジェクトのルートディレクトリにwin_build_d3_bar_chart_32.batが含まれています。これはwin_build_d3_bar_chart.batファイルと似ていますが、以下の違いがあります：</p>
+<ul>
+<li>ビルドの一部としてcssフォルダを追加</li>
+<li>src/com.ibi.d3_bar_chart_32.jsを src/com.ibi.d3_bar_chart.jsの代わりに含め、ビルドフォルダでcom.ibi.d3_bar_chart.jsに名前を変更</li>
+</ul>
+<p>このバッチを実行すると、WebFOCUS<sup>®</sup>単一ドリルサポートツールチップ機能を追加したd3_bar_chart拡張機能がビルドされます。</p>
+<p>build/com.ibi.d3_bar_chartフォルダをWebFOCUS<sup>®</sup>サーバーにデプロイしてください。変更を確認するには、通常のキャッシュクリアの手順を実行してください。</p>
+
+</body>
+</html>

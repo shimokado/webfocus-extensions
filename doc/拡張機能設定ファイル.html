@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>拡張機能設定ファイル.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="extension-configuration-with-propertiesjson">Extension Configuration with properties.json</h1>
+<p>各拡張機能には、WebFOCUS<sup>®</sup>がユーザーインターフェースを描画する際に必要な情報を定義する<code>properties.json</code>ファイルが必要です。このファイルは人間が読める JSON 形式で、非常に分かりやすい構造になっています。</p>
+<p>以下は、<a href="https://github.com/ibi/wf-extensions-chart/tree/master/simple_bar%20example">Simple Bar</a>デモ拡張機能の完全な<code>properties.json</code>です。各ブロックの詳細は以下の通りです：</p>
+<pre><code>{
+	// 一般的な拡張機能の設定オプションを定義
+	&quot;info&quot;: {
+		&quot;version&quot;: &quot;1.0&quot;,  // 拡張機能のバージョン番号
+		&quot;implements_api_version&quot;: &quot;1.0&quot;,  // 拡張機能が使用するWebFocus(R) APIのバージョン番号
+		&quot;author&quot;: &quot;Information Builders&quot;,
+		&quot;copyright&quot;: &quot;Information Builders Inc.&quot;,
+		&quot;url&quot;: &quot;https://github.com/ibi/wf-extensions-chart/tree/master/simple_bar%20example&quot;,
+		&quot;icons&quot;: {
+			&quot;medium&quot;: &quot;icons/medium.png&quot;  // WFチャートピッカーで使用される拡張機能内の画像への参照
+		}
+	},
+	
+	// エンドユーザーが変更したい可能性のある拡張機能のプロパティを定義
+	&quot;properties&quot;: {
+		&quot;exampleProperty&quot;: 50
+	},
+	
+	// 'properties'の各プロパティで取り得る値を定義
+	&quot;propertyAnnotations&quot;: {
+		&quot;exampleProperty&quot;: &quot;number&quot;
+	},
+
+	// WFの'Query'データバケットツリーに表示される利用可能なデータバケットを定義
+	&quot;dataBuckets&quot;:  {
+	
+		// 既存のWFデータバケットを再利用するかどうかを選択。すべてオプション
+		&quot;tooltip&quot;: false,
+		&quot;series_break&quot;: true,
+
+		// 独自のカスタムデータバケットを定義。オプション
+		&quot;buckets&quot;: [
+			{
+				&quot;id&quot;: &quot;value&quot;,
+				&quot;type&quot;: &quot;measure&quot;,
+				&quot;count&quot;: {&quot;min&quot;: 1, &quot;max&quot;: 5}
+			},
+			{
+				&quot;id&quot;: &quot;labels&quot;,
+				&quot;type&quot;: &quot;dimension&quot;,
+				&quot;count&quot;: {&quot;min&quot;: 1, &quot;max&quot;: 5}
+			}
+		]
+	},
+
+	// Define the set of labels used in the WF interface for buckets and chart type picker.
+	&quot;translations&quot;: {
+		&quot;en&quot;: {
+			&quot;name&quot;: &quot;My Simple Bar Chart&quot;,
+			&quot;description&quot;: &quot;This chart is just a simple bar chart, nothing to see here.&quot;,
+			&quot;icon_tooltip&quot;: &quot;This extension does ...&quot;, 
+			&quot;value_name&quot;: &quot;Value Bucket&quot;, 
+			&quot;value_tooltip&quot;: &quot;Drop a measusre here&quot;, 
+			&quot;labels_name&quot;: &quot;Label Bucket&quot;, 
+			&quot;labels_tooltip&quot;: &quot;Drop a dimension here&quot;
+		},
+		
+		&quot;fr&quot;: {
+			&quot;name&quot;: &quot;Un Bar Chart tres simple&quot;,
+			&quot;description&quot;: &quot;C'est un Bar Chart vraiment simple&quot;,
+			&quot;icon_tooltip&quot;: &quot;This extension does ...&quot;, 
+			&quot;value_name&quot;: &quot;Value Bucket&quot;, 
+			&quot;value_tooltip&quot;: &quot;Drop a measusre here&quot;, 
+			&quot;labels_name&quot;: &quot;Label Bucket&quot;, 
+			&quot;labels_tooltip&quot;: &quot;Drop a dimension here&quot;
+		}
+	}
+}
+</code></pre>
+<h5 id="info">info</h5>
+<p><code>info</code>ブロックはいくつかの一般的な設定オプションを定義します。必須のプロパティは<code>implements_api_version</code>のみで、これは拡張機能が使用するWebFOCUS<sup>®</sup>拡張機能APIのバージョンと一致する必要があります。現時点での最新APIバージョンは&quot;1.0&quot;です。</p>
+<h5 id="properties-%E3%81%A8-propertyannotations">properties と propertyAnnotations</h5>
+<p><code>properties</code>と<code>propertyAnnotations</code>ブロックは、エンドユーザーが変更したい可能性のある拡張機能のプロパティを定義するために使用されます。これらのプロパティは、FEXの<code>GRAPH_JS</code>ブロックを通じてエンドユーザーに公開されます。例えば、<code>com.ibi.simple_bar</code>拡張機能の<code>exampleProperty</code>プロパティを設定するには、ユーザーはFEXに以下を含める必要があります：</p>
+<pre><code>*GRAPH_JS_FINAL
+	&quot;extensions&quot;: {
+		&quot;com.ibi.simple_bar&quot;: {
+			&quot;exampleProperty&quot;: &quot;HELLO!&quot;
+		}
+	}
+*END
+</code></pre>
+<p><code>propertyAnnotations</code>は<code>properties</code>の内容を検証するために内部的に使用されます。<code>properties</code>のすべての項目は<code>propertyAnnotations</code>に出現する必要があります。<code>properties</code>のオブジェクトではないプロパティ（リーフプロパティ）の可能な型は、以下のいずれかとして注記する必要があります：</p>
+<ul>
+<li><code>&quot;str&quot;</code></li>
+<li><code>&quot;bool&quot;</code></li>
+<li><code>&quot;color&quot;</code></li>
+<li><code>&quot;number&quot;</code></li>
+</ul>
+<p>より多くの注記オプションが利用可能ですが、このページの範囲を超えています。</p>
+<p><code>&quot;propertyAnnotations&quot;</code>ブロックの各プロパティの値は、WebFOCUS<sup>®</sup> Designerの拡張機能プロパティパネルに表示されるコントロールのタイプを決定します。これはプロパティ値として直接設定することも、その中に<code>&quot;typeAnnotation&quot;</code>プロパティを設定することもでき、コントロールの追加プロパティを指定できます。デフォルトでは、<code>&quot;str&quot;</code>の値はテキストボックス、<code>&quot;bool&quot;</code>はチェックボックス、<code>&quot;color&quot;</code>はカラーピッカー、<code>&quot;number&quot;</code>はスピナーを作成します。</p>
+<p><code>&quot;typeAnnotation&quot;</code>が<code>&quot;str&quot;</code>の場合、<code>&quot;stringValues&quot;</code>プロパティに値の配列を提供することで、それらの値を持つドロップダウンリストを作成できます。<code>&quot;typeAnnotation&quot;</code>が<code>&quot;number&quot;</code>の場合、デフォルトのスピナーステップは1で、最大値や最小値はありません。<code>&quot;numericRange&quot;</code>プロパティを使用して最小値と最大値を配列として設定し（例：<code>[0,100]</code>）、<code>&quot;numericStep&quot;</code>プロパティを使用して各値の間隔を設定します。これらのプロパティの両方が設定されている場合、デフォルトのコントロールはスライダーになります。代わりにスピナーを使用するように指定するには、プロパティ設定<code>&quot;uiType&quot;: &quot;spinner&quot;</code>を使用します。例えば、<code>&quot;propertyAnnotations&quot;</code>ブロックの以下のプロパティセットは、0.05刻みのスピナーを使用して0から1の範囲でパディングを設定するコントロールを作成します。</p>
+<pre><code>&quot;padding&quot;: {
+	&quot;typeAnnotation&quot;: &quot;number&quot;,
+	&quot;numericRange&quot;: [0,1],
+	&quot;numericStep&quot;: 0.05,
+	&quot;uiType&quot;: &quot;spinner&quot;
+},
+</code></pre>
+<p>他の2つの設定により、WebFOCUS<sup>®</sup> Designerに表示されるチャート拡張機能プロパティの順序と可視性を決定できます。プロパティ設定<code>&quot;private&quot;: true</code>を使用すると、WebFOCUS<sup>®</sup> Designerの拡張機能プロパティウィンドウからユーザーに見せたくない、または変更させたくないプロパティを非表示にできます。以下の構文例では、WebFOCUS<sup>®</sup> Designerの拡張機能プロパティウィンドウから<code>&quot;language&quot;</code>プロパティを非表示にします。</p>
+<pre><code>&quot;propertyAnnotations&quot;: {
+	&quot;language&quot;: {
+		&quot;typeAnnotation&quot;: &quot;str&quot;,
+		&quot;private&quot;: true
+		},     
+</code></pre>
+<p>チャート拡張機能のプロパティの表示順序も設定できます。<code>&quot;displayOrder&quot;</code>プロパティの値として整数を使用して、WebFOCUS<sup>®</sup> Designerの拡張機能プロパティウィンドウのプロパティリストでの表示位置を設定します。<code>&quot;displayOrder&quot;</code>の値が小さいほど、リストの上位に表示されます。例えば、<code>&quot;displayOrder&quot;</code>が0のプロパティは、<code>&quot;displayOrder&quot;</code>が1のプロパティの上に表示されます。以下の構文例は、properties.jsonファイルの4つのプロパティの注記を示しています。それぞれの<code>&quot;displayOrder&quot;</code>値により、<code>&quot;circleColor&quot;</code>プロパティは最も低い<code>&quot;displayOrder&quot;</code>を持つため拡張機能プロパティウィンドウで最初に表示され、続いて<code>&quot;circleThickness&quot;</code>プロパティと<code>&quot;waveCount&quot;</code>プロパティが表示されます。<code>&quot;circleFillGap&quot;</code>プロパティはプライベートに設定されているため非表示になっています。</p>
+<pre><code>&quot;propertyAnnotations&quot;: {
+	&quot;circleThickness&quot;: {
+		&quot;typeAnnotation&quot;: &quot;number&quot;,
+		&quot;displayOrder&quot;: 1	
+			},
+	&quot;circleFillGap&quot;: {
+		&quot;typeAnnotation&quot;: &quot;number&quot;,
+		&quot;displayOrder&quot;: 3,
+		&quot;private&quot;: true
+			},
+	&quot;circleColor&quot;: {
+		&quot;typeAnnotation&quot;: &quot;str&quot;,
+		&quot;displayOrder&quot;: 0
+			},
+	&quot;waveCount&quot;: {
+		&quot;typeAnnotation&quot;: &quot;number&quot;,
+		&quot;displayOrder&quot;: 2
+			}
+		}
+</code></pre>
+<p>WebFOCUS<sup>®</sup> Designerでリキッドゲージのプロパティを編集する際、プロパティは<code>&quot;displayOrder&quot;</code>と<code>&quot;private&quot;</code>設定に基づいて順序付けられ、表示または非表示になります。</p>
+<p><img src="https://webfocusinfocenter.informationbuilders.com/wfdesigner/images/liquid_gauge_props.jpg" alt="プライベートに設定されているため、circleFillGapプロパティは非表示になっているリキッドゲージプロパティの順序付け。"></p>
+<h5 id="databuckets">dataBuckets</h5>
+<p><code>dataBuckets</code>は、WFの'Query'バケットペインに表示されるデータバケットのセットを定義します。拡張機能が有用であるためには、少なくとも1つのバケットを定義する必要があります。</p>
+<p>データバケットには2つのタイプがあります：<code>built-in</code>と<code>custom</code>です。組み込みバケットは、WFの既存のデータバケットロジックを簡単に再利用する方法を提供します。現在、2つの組み込みバケットがあります：<code>tooltip</code>と<code>series_break</code>です。関連する<code>dataBuckets</code>プロパティを<code>true</code>に設定することで、これらのバケットのいずれかを使用できます。</p>
+<p><code>buckets</code>の各エントリは1つの<code>custom</code>データバケットを定義します。各カスタムバケットには以下が必要です：</p>
+<ul>
+<li>
+<p><code>id</code>：チャートのレンダリング関数が受け取るdataArrayMapとdataプロパティに正確に対応します。</p>
+</li>
+<li>
+<p><code>type</code>：このバケットが受け入れるデータフィールドのタイプを定義します。<code>&quot;measure&quot;</code>、<code>&quot;dimension&quot;</code>、<code>&quot;both&quot;</code>のいずれかです。</p>
+</li>
+<li>
+<p><code>count</code>：count.minとcount.maxは、このバケットが受け入れることができるフィールドの最小数と最大数を定義します。最小値が<code>0</code>の場合、このバケットはオプションです。</p>
+</li>
+</ul>
+<p>これらのバケットの使用と拡張機能に渡されるデータセットへの影響の詳細については、<a href="https://github.com/ibi/wf-extensions-chart/wiki/Extension-Data-Interface/_edit">拡張機能データインターフェース</a>ページを参照してください。</p>
+<h5 id="translations">translations</h5>
+<p>WFインターフェースに描画されるすべてのラベルには、様々な言語での翻訳を含める必要があります。<code>translations</code>は、拡張機能がこれらのラベルを定義する場所です。<code>translation</code>オブジェクトには、拡張機能がサポートする各言語に対して1つのプロパティがあり、ISO-639の2文字のロケール文字列でキー付けされています。</p>
+
+</body>
+</html>
