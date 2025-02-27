@@ -1,5 +1,14 @@
+@REM プログラム内容を表示しない
+@ECHO OFF
+
+ECHO Deploying extension module to WebFOCUS...
+
 @REM 拡張機能フォルダをWebFOCUSにデプロイする
 @REM デプロイ先フォルダ C:\ibi\WebFOCUS93\config\web_resource\extensions
+
+@REM カレントディレクトリをスクリプトのディレクトリに変更
+cd /d %~dp0
+cd ..
 
 @REM デプロイ先のフォルダにコピー
 
@@ -17,7 +26,7 @@ SET FULL_EXTENSION_ID=com.shimokado.%EXTENSION_ID%
 SET EXTENSION_FOLDER=%FULL_EXTENSION_ID%
 
 @REM 拡張機能のフォルダが存在しなければエラー
-IF NOT EXIST %EXTENSION_FOLDER% GOTO ERROR
+IF NOT EXIST %EXTENSION_FOLDER% GOTO ERROR1
 
 @REM デプロイ先のフォルダ
 SET DEPLOY_FOLDER=C:\ibi\WebFOCUS93\config\web_resource\extensions
@@ -26,15 +35,15 @@ SET DEPLOY_FOLDER=C:\ibi\WebFOCUS93\config\web_resource\extensions
 IF NOT EXIST %DEPLOY_FOLDER%\%FULL_EXTENSION_ID% MKDIR %DEPLOY_FOLDER%\%FULL_EXTENSION_ID%
 
 @REM 拡張機能のフォルダをデプロイ先にコピー
-XCOPY /E /Y /I %EXTENSION_FOLDER% %DEPLOY_FOLDER%\%FULL_EXTENSION_ID%
+XCOPY /E /Y /I %EXTENSION_FOLDER% %DEPLOY_FOLDER%\%FULL_EXTENSION_ID% > NUL
 
 @REM Tomcat9WFを再起動するか確認
-SET /P RESTART=Do you want to restart Tomcat9WF? (y/n)
+SET /P RESTART=Do you want to restart Tomcat? [y/n]
 
 @REM Tomcat9WFを再起動
 IF /I "%RESTART%"=="y" (
-    net stop Tomcat9WF
-    net start Tomcat9WF
+    @REM 管理者権限で別プロンプトを開いてTomcatサービスを再起動
+    powershell -Command "Start-Process cmd -Verb RunAs -ArgumentList '/k net stop Tomcat9WF & net start Tomcat9WF & exit'"
 )
 
 @REM 正常終了
@@ -42,10 +51,17 @@ GOTO END
 
 @REM エラー処理
 :ERROR
-ECHO デプロイする拡張機能IDを指定してください
+ECHO Please specify the extension ID to deploy.
+ECHO Usage: deploy_extension_module.bat [extension ID]
+GOTO END
+
+@REM エラー処理
+:ERROR1
+ECHO Extension folder does not exist. %EXTENSION_FOLDER%
 GOTO END
 
 @REM 終了処理
 :END
+
 
 

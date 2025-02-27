@@ -38,11 +38,6 @@
 	}
 
 	function renderCallback(renderConfig) {
-		// グラフが描画済みの場合は再描画しない
-		if (renderConfig.container && d3.select(renderConfig.container).select("svg").size() > 0) {
-			renderConfig.renderComplete();
-			return;
-		}
 
 		// Basic validation
 		if (!renderConfig || !renderConfig.moonbeamInstance || !renderConfig.container) {

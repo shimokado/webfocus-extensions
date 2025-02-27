@@ -103,14 +103,6 @@
                     "min": 0,
                     "max": 5
                 }
-            },
-            {
-                "id": "文字",
-                "type": "str",
-                "count": {
-                    "min": 0,
-                    "max": 5
-                }
             }
         ]
     },
@@ -135,7 +127,7 @@
             "labels_name": "ラベル",
             "labels_tooltip": "ここにディメンションをドロップ",
             "detail_name": "詳細",
-            "detail_tooltip": "ここにディメンションまたはメジャーをドロップ"
+            "detail_tooltip": "ここに任意の項目をドロップ"
         }
     }
 }
