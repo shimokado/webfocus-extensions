@@ -29,7 +29,7 @@
     },
 
     "dataBuckets": {
-        "tooltip": true,
+        "tooltip": false,
         "matrix": false,
         "data_page": false,
         "series_break": false,
@@ -45,7 +45,7 @@
             },
             {
                 "id": "labels",
-                "type": "dimension",
+                "type": "both",
                 "count": {
                     "min": 2,
                     "max": 5
@@ -70,8 +70,8 @@
             "icon_tooltip": "ドリルダウン可能なサンバースト",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
-            "labels_name": "ラベル",
-            "labels_tooltip": "ここにディメンションをドロップ"
+            "labels_name": "ラベル（２～５個）",
+            "labels_tooltip": "ここにラベルをドロップ"
         }
     }
 }

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "tool\\test_extension_module.bat",
-    "deploy": "tool\\deploy_extension_module.bat"
+    "deploy": "tool\\deploy_extension_module.bat",
+    "create-extension": "tool\\create_extension_module.bat"
   },
   "author": "Shimokado Masataka",
   "license": "ISC"

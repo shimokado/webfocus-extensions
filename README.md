@@ -42,17 +42,9 @@ WebFOCUSを起動しているApatch Tomcatを再起動すると拡張機能を�
 
 ### 機能の複製
 
-1. `com.shimokado.card-simple`フォルダを複製します。
-  -フォルダ名を**com.会社名.拡張機能ID**とします。
-1. `com.shimokado.card-simple.js`ファイルの名前を**com.会社名.拡張機能ID.js**"**に変更します。
-1. **com.会社名.拡張機能ID.js**のconfig.idの値を**com.会社名.拡張機能ID**に変更します。
+1. `npm run create-extension`コマンドを実行します。
 1. 必要に応じてアイコン画像と`properties.json`を変更します。
 
-config.idの変更箇所
-```javascript
-	var config = {
-		id: 'com.shimokado.table-simple',	// エクステンションID
-```
 
 ### レンダリングの変更
 
@@ -73,4 +65,3 @@ function renderCallback(renderConfig) {
 必要な場合は、**config.resource**でCSSやJSを読み込みます。
 
 その他、変更する場合はサンプルのコメントをよく読んで必要な修正を行います。
-
