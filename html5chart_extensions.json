@@ -1,4 +1,8 @@
 {
-  "com.shimokado.card-simple": { "enabled": true },
-  "com.shimokado.table-simple": { "enabled": true }
+  "com.shimokado.card_dashboard": { "enabled": true },
+  "com.shimokado.card_simple": { "enabled": true },
+  "com.shimokado.params": { "enabled": true },
+  "com.shimokado.simple_bar": { "enabled": true },
+  "com.shimokado.table_simple": { "enabled": true },
+  "com.shimokado.zoomable_sunburst": { "enabled": true }
 }
