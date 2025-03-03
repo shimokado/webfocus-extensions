@@ -91,7 +91,7 @@
 	}
 
 	var config = {
-		id: 'com.shimokado.card-simple',	// エクステンションID
+		id: 'com.shimokado.card_simple',	// エクステンションID
 		containerType: 'html',	// コンテナタイプ(html/svg)
 		initCallback: initCallback,	// 拡張機能の初期化直前に呼び出される関数への参照。必要に応じてMonbeamインスタンスを設定するために使用
 		preRenderCallback: preRenderCallback,  // 拡張機能のレンダリング直前に呼び出される関数への参照。preRenderConfigオブジェクトが渡されます

@@ -273,7 +273,7 @@
 	}
 
 	var config = {
-		id: 'com.shimokado.card-dashboard',	// エクステンションID
+		id: 'com.shimokado.card_dashboard',	// エクステンションID
 		containerType: 'html',	// コンテナタイプ(html/svg)
 		initCallback: initCallback,	// 拡張機能の初期化直前に呼び出される関数への参照。必要に応じてMonbeamインスタンスを設定するために使用
 		preRenderCallback: preRenderCallback,  // 拡張機能のレンダリング直前に呼び出される関数への参照。preRenderConfigオブジェクトが渡されます

@@ -230,7 +230,7 @@
 	}
 
 	var config = {
-		id: 'com.shimokado.zoomable-sunburst',
+		id: 'com.shimokado.zoomable_sunburst',
 		containerType: 'html',
 		initCallback: initCallback,
 		preRenderCallback: preRenderCallback,
@@ -238,7 +238,14 @@
 		noDataPreRenderCallback: noDataPreRenderCallback,
 		noDataRenderCallback: noDataRenderCallback,
 		resources: {
-			script: ['lib/d3.min.js'],
+			script: [
+				// コールバック関数を使用して動的に読み込む外部ライブラリを定義する例
+				// callbackArgは'properties'を含む標準のコールバック引数オブジェクトです
+				// これはライブラリ読み込み時に呼び出されるため、チャートインスタンスはまだ利用できません
+				function(callbackArg) {
+					return callbackArg.properties.external_library;
+				}
+			],
 			css: ['css/style.css']
 		},
 		modules: {
