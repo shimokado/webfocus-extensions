@@ -5,5 +5,7 @@
   "com.shimokado.simple_bar": { "enabled": true },
   "com.shimokado.table_simple": { "enabled": true },
   "com.shimokado.zoomable_sunburst": { "enabled": true },
-  "com.shimokado.base_chart": { "enabled": true }
+  "com.shimokado.base_chart": { "enabled": true },
+  "com.shimokado.chartjs_sample": { "enabled": true }
+
 }

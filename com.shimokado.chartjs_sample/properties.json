@@ -1,0 +1,121 @@
+{
+    "info": {
+        "version": "1.0.0",
+        "implements_api_version": 1.0,
+        "author": "Shimokado Masataka",
+        "copyright": "Shimokado Masataka",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.params",
+        "icons": {
+            "medium": "icons/params.png"
+        }
+    },
+    "properties": {
+        "chartHeadroom": 50,
+        "external_library": "lib/chart.js",
+        "tableStyle": {
+            "fontSize": "20px",
+            "color": "#663300"
+        },
+		"valueLabel": {
+			"fontFamily": "sans-serif",
+			"fontSize": "auto",
+			"color": "#333333",
+			"fontWeight": "bold",
+			"format": "auto"
+		},
+		"label": {
+			"text": {
+				"color": "#333333",
+				"font": "Verdana",
+				"weight": "bold",
+				"size": "14px"
+			},
+			"marker": {
+				"type": "circle"
+			}
+		},
+		"tooltip": {
+			"enabled": true
+		},
+
+		"showCenteredText":{
+			"enabled": true
+		}
+    },
+    "propertyAnnotations": {
+        "chartHeadroom": "number",
+        "external_library": "str",
+        "tableStyle": {
+            "fontSize": "str",
+            "color": "str"
+        },
+        "valueLabel": {
+            "fontFamily": "str",
+            "fontSize": "str",
+            "fontWeight": "str",
+            "color": "color",
+            "format": "str"
+        },
+        "label": {
+            "text": {
+                "color": "color",
+                "font": "str",
+                "weight": "str",
+                "size": "str"
+            },
+            "marker": {
+                "type": "str"
+            }
+        },
+        "tooltip": {
+            "enabled": "bool"
+        },
+        "showCenteredText": {
+            "enabled": "bool"
+        }
+    },
+    "dataBuckets": {
+        "tooltip": true,
+        "matrix": true,
+        "data_page": true,
+        "series_break": true,
+        "buckets": [
+            {
+                "id": "value",
+                "type": "measure",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            },
+            {
+                "id": "labels",
+                "type": "dimension",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "translations": {
+        "en": {
+            "name": "Simple Bar Chart with Chart.js",
+            "description": "A simple bar chart written with Chart.js",
+            "icon_tooltip": "Simple Bar Chart with Chart.js",
+            "value_name": "Value",
+            "value_tooltip": "Drop a measure here",
+            "labels_name": "Labels",
+            "labels_tooltip": "Drop a dimension here"
+        },
+        "ja": {
+            "name": "Chart.jsで書いた簡単な棒グラフ",
+            "description": "Chart.jsで書いてみただけのグラフ",
+            "icon_tooltip": "chart.jsで書いた簡単な棒グラフ",
+            "value_name": "値",
+            "value_tooltip": "ここにメジャーをドロップ",
+            "labels_name": "ラベル",
+            "labels_tooltip": "ここにディメンションをドロップ"
+        }
+    }
+}
