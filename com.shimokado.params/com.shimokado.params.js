@@ -4,13 +4,13 @@
 
 	// 全ての拡張機能のコールバック関数は標準の'renderConfig'引数を受け取ります:
 	//
-	// 常に利用可能なプロパティ:
+	// 常に利用可能なプロパティ(preRenderConfig、renderConfig):
 	//   moonbeamInstance: 現在レンダリング中のチャートインスタンス
 	//   data: レンダリング中のデータセット
 	//   properties: ユーザーによって設定された拡張機能のプロパティブロック
 	//   modules: 拡張機能の設定からの'modules'オブジェクトと追加のAPIメソッド
 	//
-	// レンダリングコールバック時に利用可能なプロパティ:
+	// レンダリングコールバック時に利用可能なプロパティ(renderConfig):
 	//   width: 拡張機能がレンダリングされるコンテナの幅（px）
 	//   height: 拡張機能がレンダリングされるコンテナの高さ（px）
 	//   containerIDPrefix: 拡張機能がレンダリングされるDOMコンテナのID。拡張機能が生成する全てのIDの前にこれを付加し、1ページ上で拡張機能の複数のコピーが動作することを保証します。
@@ -24,6 +24,9 @@
 	 */
 	function initCallback(successCallback, initConfig) {
 		successCallback(true);
+		// 初回のみ実行する処理を記述
+		// 例: プロパティを取得
+		// const properties = initConfig.properties;
 	}
 
 	/**
@@ -31,6 +34,8 @@
 	 * @param {Object} preRenderConfig - 標準のコールバック引数オブジェクト（moonbeamInstance, data, properties, など）
 	 */
 	function noDataPreRenderCallback(preRenderConfig) {
+		console.log('noDataPreRenderCallback:', preRenderConfig);
+		// 実行前に実行する処理を記述
 	}
 	
 	/**
@@ -38,6 +43,7 @@
 	 * @param {Object} renderConfig - 標準のコールバック引数オブジェクト（moonbeamInstance, data, properties, など）
 	 */
 	function noDataRenderCallback(renderConfig) {
+		console.log('noDataRenderCallback:', renderConfig);
 		// サンプルデータとバケットを使用してrenderCallbackを呼び出す
 		// renderConfig.data= [
 		// 	[
@@ -61,11 +67,8 @@
 		// };
 		// renderCallback(renderConfig);
 		//　または、データが無い場合のメッセージを表示する
-		var container = d3.select(renderConfig.container);
-		container.append('div')
-			.attr('class', 'no-data-container')
-			.text('No data available.');
-		renderConfig.renderComplete();
+		
+		const container = renderConfig.container;
 	}
 
 	/**
@@ -73,6 +76,8 @@
 	 * @param {Object} preRenderConfig - 標準のコールバック引数オブジェクト
 	 */
 	function preRenderCallback(preRenderConfig) {
+		console.log('preRenderCallback:', preRenderConfig);
+		// 実行前に実行する処理を記述
 	}
 
 	/**
@@ -89,21 +94,24 @@
 	 * @param {function} renderConfig.renderComplete - レンダリング完了時に呼び出すコールバック関数
 	 */
 	function renderCallback(renderConfig) {
+		// データをコンソールに表示
+		console.log('renderCallback:', renderConfig);
 
-		var props = renderConfig.properties;
-		var container = renderConfig.container;
-		var data = renderConfig.data;
-		var dataBuckets = renderConfig.dataBuckets.buckets;
-		var height = renderConfig.height;
-		var width = renderConfig.width;
-		var dataContainer = document.createElement('div');
+		const props = renderConfig.properties; // 実行プログラムでセットされているプロパティ
+		const container = renderConfig.container; // 出力先のコンテナ
+		const data = renderConfig.data; // WebFOCUSが出力したデータ
+		const dataBuckets = renderConfig.dataBuckets; // データバケット
+		const buckets = dataBuckets.buckets; // バケットの配列
+		const height = renderConfig.height; // 領域の高さ
+		const width = renderConfig.width; // 領域の幅
+		const dataContainer = document.createElement('div');
 
 		// データコンテナの高さと幅を設定
 		dataContainer.style.height = height + 'px';
 		dataContainer.style.width = width + 'px';
 
 		// データコンテナをスクロール可能にする
-		dataContainer.style.overflow = 'auto';
+		dataContainer.style.overflow = 'scroll';
 
 		// データコンテナのクラス名を設定
 		dataContainer.className = 'data-container';
@@ -112,142 +120,151 @@
 		dataContainer.innerHTML = '<h1>com.shimokado.params</h1>';
 		dataContainer.innerHTML += '<h2>renderConfigオブジェクトをコンソールに表示しています</h2>';
 
-
-		// データをコンソールに表示
-		console.log('renderConfig:', renderConfig);		
-
 		// データをコンソールに表示していることを示すメッセージを表示
 		dataContainer.innerHTML = '<h2>ConsoleにrenderConfigオブジェクトを表示しています</h2>';
 
 		// データを表示		
-		// 安全に表示できるデータのみを表示
+		// データコンテナにプロパティ、データバケット、データを表示
 		dataContainer.innerHTML += '<h3>renderConfig.properties:</h3>';
 		var propsTextArea = document.createElement('pre');
 		propsTextArea.textContent = JSON.stringify(props, null, 2);
 		dataContainer.appendChild(propsTextArea);
 		
-		dataContainer.innerHTML += '<h3>renderConfig.data:</h3>';
-		var dataTextArea = document.createElement('pre');
-		dataTextArea.textContent = JSON.stringify(data, null, 2);
-		dataContainer.appendChild(dataTextArea);
-				
 		dataContainer.innerHTML += '<h3>renderConfig.dataBuckets.buckets:</h3>';
 		var dataBucketsTextArea = document.createElement('pre');
 		dataBucketsTextArea.textContent = JSON.stringify(dataBuckets, null, 2);
 		dataContainer.appendChild(dataBucketsTextArea);
-
-		// データを<table>要素に表示、thにdataBuckets.labels.titleとdataBuckets.values.titleを表示
+		
 		dataContainer.innerHTML += '<h3>renderConfig.data:</h3>';
-		var table = document.createElement('table');
-		var thead = document.createElement('thead');
-		var tbody = document.createElement('tbody');
-		var tr = document.createElement('tr');
+		var dataTextArea = document.createElement('pre');
+		dataTextArea.textContent = JSON.stringify(data, null, 2);
+		dataContainer.appendChild(dataTextArea);
 
-		// create table header
+		// bucketsは、データの有無や個数によって扱いにくいため配列に統一する
 
-		// dataBuckets.labelsが存在する場合
-		if(dataBuckets.labels) {
-			// dataBuckets.labels.titleが配列の場合
-			if(Array.isArray(dataBuckets.labels.title)) {
-				dataBuckets.labels.title.forEach(function(title) {
-					var th = document.createElement('th');
-					th.textContent = title;
-					tr.appendChild(th);
-				});
-			} else {
-				var th = document.createElement('th');
-				th.textContent = dataBuckets.labels.title;
-				tr.appendChild(th);
-			}
-		}
-		// dataBuckets.valueが存在する場合
-		if(dataBuckets.value) {
-			// dataBuckets.value.titleが配列の場合
-			if(Array.isArray(dataBuckets.value.title)) {
-				dataBuckets.value.title.forEach(function(title) {
-					var th = document.createElement('th');
-					th.textContent = title;
-					tr.appendChild(th);
-				});
-			} else {
-				var th = document.createElement('th');
-				th.textContent = dataBuckets.value.title;
-				tr.appendChild(th);
-			}
-		}
-		// dataBuckets.detailが存在する場合
-		if(dataBuckets.detail) {
-			// dataBuckets.detail.titleが配列の場合
-			if(Array.isArray(dataBuckets.detail.title)) {
-				dataBuckets.detail.title.forEach(function(title) {
-					var th = document.createElement('th');
-					th.textContent = title;
-					tr.appendChild(th);
-				});
-			} else {
-				var th = document.createElement('th');
-				th.textContent = dataBuckets.detail.title;
-				tr.appendChild(th);
-			}
-		}
+		dataContainer.innerHTML += '<h2>bucketsのオブジェクトは常に配列にした方が使いやすい</h2>';
 
-		thead.appendChild(tr);
-		table.appendChild(thead);
-	
-		// create table body
-		data.forEach(function(d) {
-			var tr = document.createElement('tr');
-			// labelsが存在する場合
-			if(d.labels) {
-				// labelsが配列の場合
-				if(Array.isArray(d.labels)) {
-					d.labels.forEach(function(label) {
-						var td = document.createElement('td');
-						td.textContent = label;
-						tr.appendChild(td);
-					});
-				} else {
-					var td = document.createElement('td');
-					td.textContent = d.labels;
-					tr.appendChild(td);
-				}
-			}
-			// valueが存在する場合
-			if(d.value) {
-				// valueが配列の場合
-				if(Array.isArray(d.value)) {
-					d.value.forEach(function(value) {
-						var td = document.createElement('td');
-						td.textContent = value;
-						tr.appendChild(td);
-					});
-				} else {
-					var td = document.createElement('td');
-					td.textContent = d.value;
-					tr.appendChild(td);
-				}
-			}
-			// detailが存在する場合
-			if(d.detail) {
-				// detailが配列の場合
-				if(Array.isArray(d.detail)) {
-					d.detail.forEach(function(detail) {
-						var td = document.createElement('td');
-						td.textContent = detail;
-						tr.appendChild(td);
-					});
-				} else {
-					var td = document.createElement('td');
-					td.textContent = d.detail;
-					tr.appendChild(td);
-				}
-			}
+		// バケットが存在しない場合は空の配列を返し、存在する場合は常に配列を返す
+		const labelsTitles = buckets.labels ? (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) : [];
+		const labelsFieldNames = buckets.labels ? (Array.isArray(buckets.labels.fieldName) ? buckets.labels.fieldName : [buckets.labels.fieldName]) : [];
+		const valueTitles = buckets.value ? (Array.isArray(buckets.value.title) ? buckets.value.title : [buckets.value.title]) : [];
+		const valueFieldNames = buckets.value ? (Array.isArray(buckets.value.fieldName) ? buckets.value.fieldName : [buckets.value.fieldName]) : [];
+		const valueNumberFormats = buckets.value ? (Array.isArray(buckets.value.numberFormat) ? buckets.value.numberFormat : [buckets.value.numberFormat]) : [];
+		const detailTitles = buckets.detail ? (Array.isArray(buckets.detail.title) ? buckets.detail.title : [buckets.detail.title]) : [];
 
-			tbody.appendChild(tr);
+		// dataの配列内でもlabels, value, detailが存在しない場合と配列でない場合があるため、それを配列に変換する
+		const datas = data.map(function(d) {
+			return {
+				labels: d.labels !== undefined ? (Array.isArray(d.labels) ? d.labels : [d.labels]) : [],
+				value: d.value !== undefined ? (Array.isArray(d.value) ? d.value : [d.value]) : [],
+				detail: d.detail !== undefined ? (Array.isArray(d.detail) ? d.detail : [d.detail]) : []
+			};
 		});
 
+		// labelsTitlesを表示
+		dataContainer.innerHTML += '<h3>labelsTitles:</h3>';
+		var labelsTitlesTextArea = document.createElement('pre');
+		labelsTitlesTextArea.textContent = JSON.stringify(labelsTitles, null, 2);
+		dataContainer.appendChild(labelsTitlesTextArea);
+
+		// labelsFieldNamesを表示
+		dataContainer.innerHTML += '<h3>labelsFieldNames:</h3>';
+		var labelsFieldNamesTextArea = document.createElement('pre');
+		labelsFieldNamesTextArea.textContent = JSON.stringify(labelsFieldNames, null, 2);
+		dataContainer.appendChild(labelsFieldNamesTextArea);
+
+		// valueTitlesを表示
+		dataContainer.innerHTML += '<h3>valueTitles:</h3>';
+		var valueTitlesTextArea = document.createElement('pre');
+		valueTitlesTextArea.textContent = JSON.stringify(valueTitles, null, 2);
+		dataContainer.appendChild(valueTitlesTextArea);
+
+		// valueeFieldNamesを表示
+		dataContainer.innerHTML += '<h3>valueFieldNames:</h3>';
+		var valueFieldNamesTextArea = document.createElement('pre');
+		valueFieldNamesTextArea.textContent = JSON.stringify(valueFieldNames, null, 2);
+		dataContainer.appendChild(valueFieldNamesTextArea);
+
+		// valueNumberFormatsを表示
+		dataContainer.innerHTML += '<h3>valueNumberFormats:</h3>';
+		var valueNumberFormatsTextArea = document.createElement('pre');
+		valueNumberFormatsTextArea.textContent = JSON.stringify(valueNumberFormats, null, 2);
+		dataContainer.appendChild(valueNumberFormatsTextArea);
+
+		// detailTitlesを表示
+		dataContainer.innerHTML += '<h3>detailTitles:</h3>';
+		var detailTitlesTextArea = document.createElement('pre');
+		detailTitlesTextArea.textContent = JSON.stringify(detailTitles, null, 2);
+		dataContainer.appendChild(detailTitlesTextArea);
+
+		// datasを表示
+		dataContainer.innerHTML += '<h3>datas(配列化したdata):</h3>';
+		var datasTextArea = document.createElement('pre');
+		datasTextArea.textContent = JSON.stringify(datas, null, 2);
+		dataContainer.appendChild(datasTextArea);
+
+
+		// table要素を作成
+		const table = document.createElement('table');
+		table.className = 'data-table';
+		// thead要素を作成
+		const thead = document.createElement('thead');
+		// tr要素を作成
+		const tr = document.createElement('tr');
+		// th要素を作成(labesTitles, valueTitles, detailTitlesの数だけ作成)
+		labelsTitles.forEach(function(title) {
+			const th = document.createElement('th');
+			th.textContent = title;
+			tr.appendChild(th);
+		});
+		valueTitles.forEach(function(title) {
+			const th = document.createElement('th');
+			th.textContent = title;
+			tr.appendChild(th);
+		});
+		detailTitles.forEach(function(title) {
+			const th = document.createElement('th');
+			th.textContent = title;
+			tr.appendChild(th);
+		});
+		thead.appendChild(tr);
+		table.appendChild(thead);
+
+		// tbody要素を作成
+		const tbody = document.createElement('tbody');
+		// datasを元にtr要素を作成（labels, value, detailの数だけ作成）
+		datas.forEach(function(d) {
+			const tr = document.createElement('tr');
+			// labelsを元にtd要素を作成
+			d.labels.forEach(function(label) {
+				const td = document.createElement('td');
+				td.textContent = label;
+				tr.appendChild(td);
+			});
+			// valueを元にtd要素を作成
+			d.value.forEach(function(value, i) {
+				const td = document.createElement('td');
+				td.textContent = value ?? ' ';
+				if (valueNumberFormats[i]) {
+					td.style.textAlign = 'right';
+					td.style.paddingRight = '10px';
+					// 数値フォーマットを適用(moonbeamInstanceには、このように便利な関数が用意されている)
+					td.textContent = renderConfig.moonbeamInstance.formatNumber(value, valueNumberFormats[i]);
+				}
+				tr.appendChild(td);
+			});
+			// detailを元にtd要素を作成
+			d.detail.forEach(function(detail) {
+				const td = document.createElement('td');
+				td.textContent = detail;
+				tr.appendChild(td);
+			});
+			tbody.appendChild(tr);
+		});
 		table.appendChild(tbody);
 		dataContainer.appendChild(table);
+
+		// データを表示
 		container.appendChild(dataContainer);
 
 		renderConfig.renderComplete(); // 必須: レンダリングが完了したことをチャートエンジンに通知します

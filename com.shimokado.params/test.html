@@ -7,94 +7,264 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Card Dashboard Test</title>
     <link rel="stylesheet" href="css/style.css">
+    <script defer src="com.shimokado.params.js"></script>
+    <script defer src="lib/script.js"></script>
+    <!-- <script src="lib/d3.min.js"></script> -->
+    <style>
+        #pfjTableChart_left {
+            background-color: #f0f0f0;
+            border: 1px solid #ccf;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        #pfjTableChart_right {
+            background-color: #666;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        #chartContainer {
+            background-color: #fff;
+            border: 1px solid #f00;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+const tdgchart = {
+    extensionManager: {
+        register: function (config) {
+            console.log(config)
+            const successCallback = function(){
+                console.log("initCallback is called");
+            };
+            config.initCallback(successCallback, config);
+            window.chartConfig = config;
+        }
+    }
+};
+
+function render(dataFlg = true){
+    const renderConfig = {
+        container: document.getElementById("chartContainer"),
+        properties: JSON.parse(document.getElementById("renderConfig_properties").value),
+        dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
+        data: JSON.parse(document.getElementById("renderConfig_data").value),
+        renderComplete: function(){
+            console.log("renderComplete is called");
+        }
+    };
+    // chartWidth, chartHeightが入力されている場合は設定する
+    const chartWidth = document.getElementById("chartWidth").value;
+    if(chartWidth){
+        renderConfig.properties.width = chartWidth;
+    }
+    const chartHeight = document.getElementById("chartHeight").value;
+    if(chartHeight){
+        renderConfig.properties.height = chartHeight;
+    }
+    // containerの高さと幅を設定する
+    renderConfig.container.style.width = renderConfig.properties.width + "px";
+    renderConfig.container.style.height = renderConfig.properties.height + "px";
+    
+    if(dataFlg){
+        chartConfig.preRenderCallback(renderConfig);
+        chartConfig.renderCallback(renderConfig);
+    }else{
+        chartConfig.noDataPreRenderCallback(renderConfig);
+        chartConfig.noDataRenderCallback(renderConfig);
+    }
+}
+</script>
 </head>
 
 <body>
-    <div class="chart" id="jschart_HOLD_0" style="vertical-align:text-bottom; overflow:hidden"></div>
-    <script type="text/javascript">
-        // グローバルオブジェクトの定義
-        window.tdgchart = {
-            extensionManager: {
-                register: function (config) {
-                    window.cardDashboardConfig = config;
-                }
-            }
-        };
-    </script>
-    <script type="text/javascript" src="com.shimokado.params.js"></script>
-    <script type="text/javascript">
-        // テストデータ
-        const testData = [
-            ['100 LS 2 DOOR AUTO', 5063],
-            ['2000 4 DOOR BERLINA', 4915],
-            ['2000 GT VELOCE', 5660],
-            ['2000 SPIDER VELOCE', 5660],
-            ['2002 2 DOOR', 5800],
-            ['2002 2 DOOR AUTO', 6000],
-            ['3.0 SI 4 DOOR', 10000],
-            ['3.0 SI 4 DOOR AUTO', 11000],
-            ['XJ12L AUTO', 11194]
-        ];
-
-        // データを整形
-        const formattedData = testData.map(row => ({
-            labels: row[0],
-            value: row[1]
-        }));
-
-        // レンダリング設定
-        const renderConfig = {
-            moonbeamInstance: {
-                formatNumber: (value, format) => value.toLocaleString()
-            },
-            properties: {
-                tableStyle: {
-                    fontSize: "20px",
-                    color: "#663300"
-                }
-            },
-            container: document.getElementById('jschart_HOLD_0'),
-            data: formattedData,
-            series: [
-                {
-                    series: 0
-                    , label: ' '
-                    , tooltip: [
-                        { type: 'nameValue', name: 'MODEL', value: '{{extension_bucket("labels",0)}}' }
-                        , { type: 'nameValue', name: 'DEALER_COST', value: '{{extension_bucket("value",0)|#("#,###")}}' }
-                    ]
-                }
+    <!--左右のグリッドに分ける-->
+    <div style="display: grid; grid-template-columns: 400px auto;">
+        <div id="pfjTableChart_left" style="padding: 10px;">
+            <button id="pfjTableChart_button" onClick="render()">描画</button>
+            <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button><p></p>
+            <hr>
+            <label for="chartWidth">renderConfig.width</label>
+            <input id="chartWidth" type="number" value="400" placeholder="幅を入力してください">
+            <label for="chartHeight">renderConfig.height</label>
+            <input id="chartHeight" type="number" value="400" placeholder="高さを入力してください">
+            <label for="renderConfig_properties">renderConfig.properties</label>
+            <textarea id="renderConfig_properties">
+{
+    "chartHeadroom": 50,
+    "external_library": "lib/script.js",
+    "tableStyle": {
+        "fontSize": "20px",
+        "color": "#663300"
+    },
+    "valueLabel": {
+        "fontFamily": "sans-serif",
+        "fontSize": "auto",
+        "color": "#333333",
+        "fontWeight": "bold",
+        "format": "auto"
+    },
+    "label": {
+        "text": {
+            "color": "#333333",
+            "font": "Verdana",
+            "weight": "bold",
+            "size": "14px"
+        },
+        "marker": {
+            "type": "circle"
+        }
+    },
+    "tooltip": {
+        "enabled": true
+    },
+    "showCenteredText": {
+        "enabled": true
+    }
+}
+            </textarea>
+            <label for="renderConfig_dataBuckets">renderConfig.dataBuckets</label>
+            <textarea id="renderConfig_dataBuckets">
+{
+    "internal_api_version": 1,
+    "buckets": {
+        "labels": {
+            "title": [
+                "COUNTRY",
+                "CAR"
             ],
-            dataArrayMap: [
-                'labels'
-                , 'value'
+            "fieldName": [
+                "CAR.ORIGIN.COUNTRY",
+                "CAR.COMP.CAR"
             ],
-            dataBuckets: {
-                buckets: {
-                    labels: {
-                        title: 'MODEL',
-                        fieldName: 'CAR.CARREC.MODEL'
-                    },
-                    value: {
-                        title: 'DEALER_COST',
-                        fieldName: 'CAR.BODY.DEALER_COST',
-                        numberFormat: '#,###'
-                    }
-                }
-            },
-            renderComplete: () => console.log('Rendering complete')
-        };
-
-        // 拡張機能の初期化とレンダリング
-        window.cardDashboardConfig.initCallback(() => {
-            window.cardDashboardConfig.renderCallback(renderConfig);
-        }, {});
-        var divId = 'jschart_HOLD_';
-        var defaultWidth = 760;
-        var defaultHeight = 400;
-        var fitWidthOnly = false;
-        var minHeight = 0;
-    </script>
+            "count": 2
+        },
+        "value": {
+            "title": "SALES",
+            "fieldName": "CAR.BODY.SALES",
+            "numberFormat": "#",
+            "count": 1
+        }
+    },
+    "depth": 1
+}
+            </textarea>
+            <label for="renderConfig_data">renderConfig.data</label>
+            <textarea id="renderConfig_data">
+[
+    {
+        "labels": [
+            "ENGLAND",
+            "JAGUAR"
+        ],
+        "value": 12000,
+        "_s": 0,
+        "_g": 0
+    },
+    {
+        "labels": [
+            "ENGLAND",
+            "JENSEN"
+        ],
+        "value": 0,
+        "_s": 0,
+        "_g": 1
+    },
+    {
+        "labels": [
+            "ENGLAND",
+            "TRIUMPH"
+        ],
+        "value": 0,
+        "_s": 0,
+        "_g": 2
+    },
+    {
+        "labels": [
+            "FRANCE",
+            "PEUGEOT"
+        ],
+        "value": 0,
+        "_s": 0,
+        "_g": 3
+    },
+    {
+        "labels": [
+            "ITALY",
+            "ALFA ROMEO"
+        ],
+        "value": 30200,
+        "_s": 0,
+        "_g": 4
+    },
+    {
+        "labels": [
+            "ITALY",
+            "MASERATI"
+        ],
+        "value": 0,
+        "_s": 0,
+        "_g": 5
+    },
+    {
+        "labels": [
+            "JAPAN",
+            "DATSUN"
+        ],
+        "value": 43000,
+        "_s": 0,
+        "_g": 6
+    },
+    {
+        "labels": [
+            "JAPAN",
+            "TOYOTA"
+        ],
+        "value": 35030,
+        "_s": 0,
+        "_g": 7
+    },
+    {
+        "labels": [
+            "W GERMANY",
+            "AUDI"
+        ],
+        "value": 7800,
+        "_s": 0,
+        "_g": 8
+    },
+    {
+        "labels": [
+            "W GERMANY",
+            "BMW"
+        ],
+        "value": 80390,
+        "_s": 0,
+        "_g": 9
+    }
+]
+            </textarea>
+        </div>
+        <div id="pfjTableChart_right">
+            <div id="chartContainer">ここに結果が出力される。</div>
+        </div>
+    </div>
+    
 </body>
 
 </html>

@@ -23,7 +23,7 @@
 			"fontWeight": "bold",
 			"format": "auto"
 		},
-		"labels": {
+		"label": {
 			"text": {
 				"color": "#333333",
 				"font": "Verdana",
@@ -56,7 +56,7 @@
             "color": "color",
             "format": "str"
         },
-        "labels": {
+        "label": {
             "text": {
                 "color": "color",
                 "font": "str",
@@ -76,8 +76,8 @@
     },
     "dataBuckets": {
         "tooltip": true,
-        "matrix": false,
-        "data_page": false,
+        "matrix": true,
+        "data_page": true,
         "series_break": true,
         "buckets": [
             {
@@ -108,20 +108,20 @@
     },
     "translations": {
         "en": {
-            "name": "Card Dashboard",
-            "description": "Display a responsive card dashboard.",
-            "icon_tooltip": "Card Dashboard",
+            "name": "Property Viewer (for development)",
+            "description": "Visualize the parameters passed to WebFOCUS when rendering an extended chart",
+            "icon_tooltip": "Property Viewer (for development)",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
-            "labels_name": "Labels",
+            "labels_name": "Label",
             "labels_tooltip": "Drop a dimension here",
             "detail_name": "Detail",
             "detail_tooltip": "Drop a dimension or measure here"
         },
         "ja": {
-            "name": "カード型ダッシュボード",
-            "description": "レスポンシブルなカード型ダッシュボードを表示します。",
-            "icon_tooltip": "カード型ダッシュボード",
+            "name": "プロパティ表示（開発用）",
+            "description": "WebFOCUSが拡張グラフをレンダリングする際に受け渡すパラメータを可視化する",
+            "icon_tooltip": "プロパティ表示（開発用）",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",
