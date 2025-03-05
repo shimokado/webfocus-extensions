@@ -4,81 +4,22 @@
         "implements_api_version": 1.0,
         "author": "Shimokado Masataka",
         "copyright": "Shimokado Masataka",
-        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.params",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.chartjs_sample",
         "icons": {
-            "medium": "icons/params.png"
+            "medium": "icons/icon.png"
         }
     },
     "properties": {
-        "chartHeadroom": 50,
-        "external_library": "lib/chart.js",
-        "tableStyle": {
-            "fontSize": "20px",
-            "color": "#663300"
-        },
-		"valueLabel": {
-			"fontFamily": "sans-serif",
-			"fontSize": "auto",
-			"color": "#333333",
-			"fontWeight": "bold",
-			"format": "auto"
-		},
-		"label": {
-			"text": {
-				"color": "#333333",
-				"font": "Verdana",
-				"weight": "bold",
-				"size": "14px"
-			},
-			"marker": {
-				"type": "circle"
-			}
-		},
-		"tooltip": {
-			"enabled": true
-		},
-
-		"showCenteredText":{
-			"enabled": true
-		}
+        "external_library": "lib/chart.js"
     },
     "propertyAnnotations": {
-        "chartHeadroom": "number",
-        "external_library": "str",
-        "tableStyle": {
-            "fontSize": "str",
-            "color": "str"
-        },
-        "valueLabel": {
-            "fontFamily": "str",
-            "fontSize": "str",
-            "fontWeight": "str",
-            "color": "color",
-            "format": "str"
-        },
-        "label": {
-            "text": {
-                "color": "color",
-                "font": "str",
-                "weight": "str",
-                "size": "str"
-            },
-            "marker": {
-                "type": "str"
-            }
-        },
-        "tooltip": {
-            "enabled": "bool"
-        },
-        "showCenteredText": {
-            "enabled": "bool"
-        }
+        "external_library": "str"
     },
     "dataBuckets": {
-        "tooltip": true,
-        "matrix": true,
-        "data_page": true,
-        "series_break": true,
+        "tooltip": false,
+        "matrix": false,
+        "data_page": false,
+        "series_break": false,
         "buckets": [
             {
                 "id": "value",

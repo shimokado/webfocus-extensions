@@ -1,32 +1,8 @@
 /* Copyright (C) 2025. Shimokado Masataka. All rights reserved. */
 
 (function() {
-
-	// 全ての拡張機能のコールバック関数は標準の'renderConfig'引数を受け取ります:
-	//
-	// 常に利用可能なプロパティ(preRenderConfig、renderConfig):
-	//   moonbeamInstance: 現在レンダリング中のチャートインスタンス
-	//   data: レンダリング中のデータセット
-	//   properties: ユーザーによって設定された拡張機能のプロパティブロック
-	//   modules: 拡張機能の設定からの'modules'オブジェクトと追加のAPIメソッド
-	//
-	// レンダリングコールバック時に利用可能なプロパティ(renderConfig):
-	//   width: 拡張機能がレンダリングされるコンテナの幅（px）
-	//   height: 拡張機能がレンダリングされるコンテナの高さ（px）
-	//   containerIDPrefix: 拡張機能がレンダリングされるDOMコンテナのID。拡張機能が生成する全てのIDの前にこれを付加し、1ページ上で拡張機能の複数のコピーが動作することを保証します。
-	//   container: 拡張機能がレンダリングされるDOMノード
-	//   rootContainer: レンダリング中の特定のチャートエンジンインスタンスを含むDOMノード
-
-	/**
-	 * チャートエンジンの初期化時に1回だけ呼び出されます（オプション）
-	 * @param {Function} successCallback - 拡張機能が完全に初期化された時に呼び出す必要のある関数。初期化が成功した場合はtrue、そうでない場合はfalseを渡します。
-	 * @param {Object} initConfig - 標準のコールバック引数オブジェクト（moonbeamInstance, data, properties, など）
-	 */
 	function initCallback(successCallback, initConfig) {
 		successCallback(true);
-		// 初回のみ実行する処理を記述
-		// 例: プロパティを取得
-		// const properties = initConfig.properties;
 	}
 
 	/**
