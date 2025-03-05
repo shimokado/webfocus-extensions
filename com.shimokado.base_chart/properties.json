@@ -1,0 +1,72 @@
+{
+	"info": {
+        "version": "1.0.0",  
+        "implements_api_version": 1.0,
+        "author": "Shimokado Masataka",
+        "copyright": "Shimokado Masataka",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.pannbale_chart",
+        "icons": {
+            "medium": "icons/icon.png"
+        }
+	},
+
+	"properties": {
+		"chartHeadroom": 50,
+		"external_library": "lib/d3.min.js"
+	},
+
+	"propertyAnnotations": {
+		"chartHeadroom": "number",
+		"external_library": "str"
+	},
+
+	"dataBuckets":  {
+
+		"tooltip": false,
+		"matrix": false,
+		"data_page": false,
+		"series_break": false,
+
+		"buckets": [
+			{
+				"id": "value",
+				"type": "measure",
+				"count": {
+					"min": 1,
+					"max": 1
+				}
+			},
+			{
+				"id": "labels",
+				"type": "dimension",
+				"count": {
+					"min": 1,
+					"max": 1
+				}
+			}
+		]
+	},
+
+	"translations": {
+		"en": {
+			"name": "Simple Bar Chart",
+			"description": "This chart is a simple bar chart which demonstrates many chart extension features",
+			"icon_tooltip": "This extension does ...",
+			"value_name": "Value Bucket",
+			"value_tooltip": "Drop a measure here",
+			"labels_name": "Label Bucket",
+			"labels_tooltip": "Drop a dimension here"
+		},
+
+		"ja": {
+			"name": "もっとも基本的な棒グラフ",
+			"description": "このグラフは、多くのチャート拡張機能を示すもっとも基本的な棒グラフです",
+			"icon_tooltip": "もっとも基本的な棒グラフです", 
+			"value_name": "値バケット", 
+			"value_tooltip": "ここにメジャーをドロップ", 
+			"labels_name": "ラベルバケット", 
+			"labels_tooltip": "ここにディメンションをドロップ"
+		}
+		
+	}
+}

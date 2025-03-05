@@ -1351,8 +1351,6 @@ WebFOCUSの拡張グラフ開発を支援してください。
             </div>
         </div>
 
-
-
         <div class="topic"><a name="WSFE6C906C-8928-46ce-AD9A-BDFE2B02E4AE" /><a
                 name="_OPENTOPIC_TOC_PROCESSING_d0e31128"><span style="display:none">x</span></a>
             <div class="topic_topic_topic_title">

@@ -60,7 +60,7 @@ async function createExtension() {
 
         const newFolderName = `com.shimokado.${extensionId}`;
         const templateFolder = containerType === 'svg' 
-            ? 'com.shimokado.simple_bar'
+            ? 'com.shimokado.base_bar'
             : 'com.shimokado.params';
 
         // Copy template folder
@@ -75,7 +75,7 @@ async function createExtension() {
         copyFolderRecursiveSync(sourceDir, targetDir);
 
         // Rename JS file
-        const oldJsFile = path.join(targetDir, containerType === 'svg' ? 'com.shimokado.simple_bar.js' : 'com.shimokado.params.js');
+        const oldJsFile = path.join(targetDir, containerType === 'svg' ? 'com.shimokado.base_bar.js' : 'com.shimokado.params.js');
         const newJsFile = path.join(targetDir, `${newFolderName}.js`);
 
         if (fs.existsSync(oldJsFile)) {
