@@ -258,7 +258,8 @@
 				function (callbackArg) {
 					return callbackArg.properties.external_library;
 				}
-			]
+			],
+			css: ["style.css"]
 		},
 		modules: {
 			dataSelection: {

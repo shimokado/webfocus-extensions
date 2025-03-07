@@ -21,3 +21,27 @@
 
 - チャートの上部余白: 50px
 - 外部ライブラリ: D3.js
+
+## ファイルの説明
+
+### com.shimokado.base_chart.js
+グラフモジュールの本体
+
+### properties.json
+設定ファイル
+
+### icons/icon.png
+グラフ選択で表示されるアイコン
+
+### lib/d3.min.js
+d3ライブラリ
+
+### lib/d3.min.js
+d3ライブラリ
+
+
+### test.html（テスト用ファイル、デプロイ不要）
+ローカルでモジュールをテストするためのHTMLファイル。WebFOCUSにデプロイする必要はない。
+
+### tdgchart-min-for-test.js（テスト用ファイル、デプロイ不要）
+ローカルでモジュールをテストするためにtdgchart-min.jsを加工したjsファイル。WebFOCUSにデプロイする必要はない。

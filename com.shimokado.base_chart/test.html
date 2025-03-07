@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Card Dashboard Test</title>
+    <title>com.shimokado.base_chart Test</title>
+    <script src="tdgchart-min-for-test.js"></script>
     <script src="lib/d3.min.js"></script>
     <style>
         #pfjTableChart_left {
@@ -42,8 +43,15 @@
         }
     </style>
     <script>
-const tdgchart = {
-    extensionManager: {
+var script = '';
+
+var chart = new tdgchart({backend:'js', allowBackendFallback:true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b'});
+if (tdgchart.WF_charts == undefined)
+  tdgchart.WF_charts = {};
+tdgchart.WF_charts['jschart_HOLD_0'] = chart;
+
+// テスト用のextensionManagerのregister関数を定義
+tdgchart.extensionManager= {
         register: function (config) {
             console.log(config)
             const successCallback = function(){
@@ -52,15 +60,24 @@ const tdgchart = {
             config.initCallback(successCallback, config);
             window.chartConfig = config;
         }
-    }
-};
+    };
 
+
+chart.data = [];
+chart.title.text = '';
+chart.parsePFJString(script);
+chart.set({
+	"injectedRevision" : "$Revision: 1.2 $",
+	"dataSetLimits": {"enabled": true},
+	"catchErrors" : true
+});
 function render(dataFlg = true){
     const renderConfig = {
         container: document.getElementById("chartContainer"),
         properties: JSON.parse(document.getElementById("renderConfig_properties").value),
         dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
         data: JSON.parse(document.getElementById("renderConfig_data").value),
+        moonbeamInstance: chart,
         renderComplete: function(){
             console.log("renderComplete is called");
         }
@@ -87,8 +104,7 @@ function render(dataFlg = true){
     }
 }
 </script>
-<script src="com.shimokado.base_chart.js"></script>
-
+<script defer src="com.shimokado.base_chart.js"></script>
 </head>
 
 <body>
@@ -99,14 +115,14 @@ function render(dataFlg = true){
             <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button><p></p>
             <hr>
             <label for="chartWidth">renderConfig.width</label>
-            <input id="chartWidth" type="number" value="800" placeholder="幅を入力してください">
+            <input id="chartWidth" type="number" value="400" placeholder="幅を入力してください">
             <label for="chartHeight">renderConfig.height</label>
-            <input id="chartHeight" type="number" value="600" placeholder="高さを入力してください">
+            <input id="chartHeight" type="number" value="400" placeholder="高さを入力してください">
             <label for="renderConfig_properties">renderConfig.properties</label>
             <textarea id="renderConfig_properties">
 {
     "chartHeadroom": 50,
-    "external_library": "lib/d3.min.js",
+    "external_library": "lib/script.js",
     "tableStyle": {
         "fontSize": "20px",
         "color": "#663300"
@@ -148,9 +164,9 @@ function render(dataFlg = true){
             "count": 1
         },
         "value": {
-            "title": "SALES",
-            "fieldName": "CAR.BODY.SALES",
-            "numberFormat": "#",
+            "title": "HEIGHT",
+            "fieldName": "CAR.SPECS.HEIGHT",
+            "numberFormat": "#,###",
             "count": 1
         }
     },
@@ -162,113 +178,113 @@ function render(dataFlg = true){
 [
     {
         "labels": "100 LS 2 DOOR AUTO",
-        "value": 7800,
+        "value": 54.6,
         "_s": 0,
         "_g": 0
     },
     {
         "labels": "2000 4 DOOR BERLINA",
-        "value": 4800,
+        "value": 56.3,
         "_s": 0,
         "_g": 1
     },
     {
         "labels": "2000 GT VELOCE",
-        "value": 12400,
+        "value": 51.8,
         "_s": 0,
         "_g": 2
     },
     {
         "labels": "2000 SPIDER VELOCE",
-        "value": 13000,
+        "value": 50.8,
         "_s": 0,
         "_g": 3
     },
     {
         "labels": "2002 2 DOOR",
-        "value": 8950,
+        "value": 55.5,
         "_s": 0,
         "_g": 4
     },
     {
         "labels": "2002 2 DOOR AUTO",
-        "value": 8900,
+        "value": 55.5,
         "_s": 0,
         "_g": 5
     },
     {
         "labels": "3.0 SI 4 DOOR",
-        "value": 14000,
+        "value": 57.1,
         "_s": 0,
         "_g": 6
     },
     {
         "labels": "3.0 SI 4 DOOR AUTO",
-        "value": 18940,
+        "value": 57.1,
         "_s": 0,
         "_g": 7
     },
     {
         "labels": "504 4 DOOR",
-        "value": 0,
+        "value": 57,
         "_s": 0,
         "_g": 8
     },
     {
         "labels": "530I 4 DOOR",
-        "value": 14000,
+        "value": 55.9,
         "_s": 0,
         "_g": 9
     },
     {
         "labels": "530I 4 DOOR AUTO",
-        "value": 15600,
+        "value": 55.9,
         "_s": 0,
         "_g": 10
     },
     {
         "labels": "B210 2 DOOR AUTO",
-        "value": 43000,
+        "value": 53.5,
         "_s": 0,
         "_g": 11
     },
     {
         "labels": "COROLLA 4 DOOR DIX AUTO",
-        "value": 35030,
+        "value": 54.5,
         "_s": 0,
         "_g": 12
     },
     {
         "labels": "DORA 2 DOOR",
-        "value": 0,
+        "value": 44.6,
         "_s": 0,
         "_g": 13
     },
     {
         "labels": "INTERCEPTOR III",
-        "value": 0,
+        "value": 53,
         "_s": 0,
         "_g": 14
     },
     {
         "labels": "TR7",
-        "value": 0,
+        "value": 49.9,
         "_s": 0,
         "_g": 15
     },
     {
         "labels": "V12XKE AUTO",
-        "value": 0,
+        "value": 48,
         "_s": 0,
         "_g": 16
     },
     {
         "labels": "XJ12L AUTO",
-        "value": 12000,
+        "value": 54.1,
         "_s": 0,
         "_g": 17
     }
-]                
+]
             </textarea>
         </div>
         <div id="pfjTableChart_right">
