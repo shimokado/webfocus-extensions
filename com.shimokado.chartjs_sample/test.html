@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Card Dashboard Test</title>
+    <script src="tdgchart-min-for-test.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <script defer src="lib/chart.js"></script>
     <!-- <script src="lib/d3.min.js"></script> -->
@@ -44,8 +45,15 @@
         }
     </style>
     <script>
-const tdgchart = {
-    extensionManager: {
+var script = '';
+
+var chart = new tdgchart({backend:'js', allowBackendFallback:true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b'});
+if (tdgchart.WF_charts == undefined)
+  tdgchart.WF_charts = {};
+tdgchart.WF_charts['jschart_HOLD_0'] = chart;
+
+// テスト用のextensionManagerのregister関数を定義
+tdgchart.extensionManager= {
         register: function (config) {
             console.log(config)
             const successCallback = function(){
@@ -54,15 +62,24 @@ const tdgchart = {
             config.initCallback(successCallback, config);
             window.chartConfig = config;
         }
-    }
-};
+    };
 
+
+chart.data = [];
+chart.title.text = '';
+chart.parsePFJString(script);
+chart.set({
+	"injectedRevision" : "$Revision: 1.2 $",
+	"dataSetLimits": {"enabled": true},
+	"catchErrors" : true
+});
 function render(dataFlg = true){
     const renderConfig = {
         container: document.getElementById("chartContainer"),
         properties: JSON.parse(document.getElementById("renderConfig_properties").value),
         dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
         data: JSON.parse(document.getElementById("renderConfig_data").value),
+        moonbeamInstance: chart,
         renderComplete: function(){
             console.log("renderComplete is called");
         }

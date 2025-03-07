@@ -2,11 +2,19 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
+// 行を読み取るためのインターフェースを作成
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+/**
+ * 指定されたソースフォルダの内容を再帰的にターゲットフォルダにコピーします。
+ * ターゲットフォルダが存在しない場合は作成されます。
+ *
+ * @param {string} source - コピー元のフォルダのパス。
+ * @param {string} target - コピー先のフォルダのパス。
+ */
 function copyFolderRecursiveSync(source, target) {
     // Create target directory if it doesn't exist
     if (!fs.existsSync(target)) {
@@ -28,6 +36,14 @@ function copyFolderRecursiveSync(source, target) {
     });
 }
 
+/**
+ * 指定されたJavaScriptファイルの内容を更新します。
+ *
+ * @param {string} filePath - 更新するファイルのパス。
+ * @param {string} newId - 新しいID。
+ * @param {string} oldTemplateId - 置き換える古いテンプレートID。
+ * @throws {Error} ファイルの読み込みまたは書き込みに失敗した場合にスローされます。
+ */
 function updateJsFile(filePath, newId, oldTemplateId) {
     let content = fs.readFileSync(filePath, 'utf8');
     // Replace config.id value
@@ -37,6 +53,16 @@ function updateJsFile(filePath, newId, oldTemplateId) {
     fs.writeFileSync(filePath, content);
 }
 
+/**
+ * 拡張機能を作成する非同期関数。
+ * ユーザーに拡張機能IDとコンテナタイプを尋ね、それに基づいてテンプレートフォルダをコピーし、
+ * 必要なファイルのリネームと更新を行います。
+ * 
+ * @async
+ * @function createExtension
+ * @returns {Promise<void>} プロミスが解決されると、拡張機能が正常に作成されたことを示します。
+ * @throws {Error} 拡張機能の作成中にエラーが発生した場合にスローされます。
+ */
 async function createExtension() {
     try {
         // Ask for extension ID
@@ -46,22 +72,22 @@ async function createExtension() {
             });
         });
 
-        // Ask for container type
+        // Ask for container type number（1. d3.js, 2. chart.js, 3. html）
         const containerType = await new Promise(resolve => {
-            rl.question('Select container type (svg/html): ', answer => {
-                resolve(answer.trim().toLowerCase());
+            rl.question('Enter container type (1. d3.js, 2. chart.js, 3. html): ', answer => {
+                resolve(answer.trim());
             });
         });
 
-        if (!['svg', 'html'].includes(containerType)) {
-            console.error('Invalid container type. Please specify either "svg" or "html".');
+        // Validate container type
+        if (!['1', '2', '3'].includes(containerType)) {
+            console.error('Invalid container type!');
             process.exit(1);
         }
 
         const newFolderName = `com.shimokado.${extensionId}`;
-        const templateFolder = containerType === 'svg' 
-            ? 'com.shimokado.base_bar'
-            : 'com.shimokado.params';
+        // templateFolder: 1. com.shimokado.simple_bar, 2. com.shimokado.chartjs_sample, 3. com.shimokado.params
+        const templateFolder = containerType === '1' ? 'com.shimokado.simple_bar' : containerType === '2' ? 'com.shimokado.chartjs_sample' : 'com.shimokado.params';
 
         // Copy template folder
         const sourceDir = path.join(__dirname, '..', templateFolder);
@@ -75,12 +101,17 @@ async function createExtension() {
         copyFolderRecursiveSync(sourceDir, targetDir);
 
         // Rename JS file
-        const oldJsFile = path.join(targetDir, containerType === 'svg' ? 'com.shimokado.base_bar.js' : 'com.shimokado.params.js');
+        const oldJsFile = path.join(targetDir, `${templateFolder}.js`); 
         const newJsFile = path.join(targetDir, `${newFolderName}.js`);
 
         if (fs.existsSync(oldJsFile)) {
             fs.renameSync(oldJsFile, newJsFile);
             updateJsFile(newJsFile, newFolderName, templateFolder);
+        }
+
+        const testHtmlFile = path.join(targetDir, 'test.html');
+        if (fs.existsSync(testHtmlFile)) {
+            updateJsFile(testHtmlFile, newFolderName, templateFolder);
         }
 
         console.log(`Successfully created extension: ${newFolderName}`);

@@ -37,3 +37,26 @@
   - サイズ: 14px
   - 色: #333333
   - 太さ: bold
+
+## ファイルの説明
+
+### com.shimokado.params.js
+グラフモジュールの本体
+
+### properties.json
+設定ファイル
+
+### icons/params.png
+グラフ選択で表示されるアイコン
+
+### lib/script.js
+`tdgchart.extensionManager.register(config);`の`config.resources.script`で読み込まれるスクリプト
+
+### css/style.css
+`tdgchart.extensionManager.register(config);`の`config.resources.css`で読み込まれるCSS
+
+### test.html（テスト用ファイル、デプロイ不要）
+ローカルでモジュールをテストするためのHTMLファイル。WebFOCUSにデプロイする必要はない。
+
+### tdgchart-min-for-test.js（テスト用ファイル、デプロイ不要）
+ローカルでモジュールをテストするためにtdgchart-min.jsを加工したjsファイル。WebFOCUSにデプロイする必要はない。

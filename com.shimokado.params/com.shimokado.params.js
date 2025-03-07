@@ -106,6 +106,8 @@
 		const width = renderConfig.width; // 領域の幅
 		const dataContainer = document.createElement('div');
 
+		container.innerHTML = ''; // コンテナをクリア
+
 		// データコンテナの高さと幅を設定
 		dataContainer.style.height = height + 'px';
 		dataContainer.style.width = width + 'px';
