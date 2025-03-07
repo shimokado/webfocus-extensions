@@ -65,12 +65,38 @@ function updateJsFile(filePath, newId, oldTemplateId) {
  */
 async function createExtension() {
     try {
-        // Ask for extension ID
-        const extensionId = await new Promise(resolve => {
-            rl.question('Enter extension ID (will be prefixed with com.shimokado.): ', answer => {
+        // Ask for company name
+        const companyName = await new Promise(resolve => {
+            rl.question('Enter company name: ', answer => {
                 resolve(answer.trim());
             });
         });
+
+        // Validate company name
+        if (!companyName) {
+            throw new Error('Company name cannot be empty!');
+        }
+
+        // Validate company name
+        if (!/^[a-z0-9_]+$/.test(companyName)) {
+            throw new Error('Company name must contain only lowercase alphanumeric characters and underscores!');
+        }
+
+        // Ask for extension ID
+        const extensionId = await new Promise(resolve => {
+            rl.question(`Enter extension ID (will be prefixed with com.${companyName}.): `, answer => {
+                resolve(answer.trim());
+            });
+        });
+
+        // Validate extension ID
+        if (!extensionId) {
+            throw new Error('Extension ID cannot be empty!');
+        }
+        // Validate extension ID
+        if (!/^[a-z0-9_]+$/.test(extensionId)) {
+            throw new Error('Extension ID must contain only lowercase alphanumeric characters and underscores!');
+        }
 
         // Ask for container type number（1. d3.js, 2. chart.js, 3. html）
         const containerType = await new Promise(resolve => {
@@ -85,8 +111,8 @@ async function createExtension() {
             process.exit(1);
         }
 
-        const newFolderName = `com.shimokado.${extensionId}`;
-        // templateFolder: 1. com.shimokado.simple_bar, 2. com.shimokado.chartjs_sample, 3. com.shimokado.params
+        const newFolderName = `com.${companyName}.${extensionId}`;
+    
         const templateFolder = containerType === '1' ? 'com.shimokado.simple_bar' : containerType === '2' ? 'com.shimokado.chartjs_sample' : 'com.shimokado.params';
 
         // Copy template folder
