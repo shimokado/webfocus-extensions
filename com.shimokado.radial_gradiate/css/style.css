@@ -1,0 +1,24 @@
+.data-container{
+    overflow: scroll;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.data-table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+}
+.data-table th{
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+}
+.data-table td{
+    border: 1px solid #ccc;
+    padding: 5px;
+}

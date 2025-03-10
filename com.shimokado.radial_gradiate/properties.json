@@ -1,0 +1,62 @@
+{
+    "info": {
+        "version": "1.0.0",
+        "implements_api_version": 1.0,
+        "author": "Shimokado Masataka",
+        "copyright": "Shimokado Masataka",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.chartjs_sample",
+        "icons": {
+            "medium": "icons/icon.png"
+        }
+    },
+    "properties": {
+        "external_library": "lib/chart.js"
+    },
+    "propertyAnnotations": {
+        "external_library": "str"
+    },
+    "dataBuckets": {
+        "tooltip": false,
+        "matrix": false,
+        "data_page": false,
+        "series_break": false,
+        "buckets": [
+            {
+                "id": "value",
+                "type": "measure",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            },
+            {
+                "id": "labels",
+                "type": "dimension",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "translations": {
+        "en": {
+            "name": "Bar Chart with Gradiation by Chart.js",
+            "description": "Bar Chart with Gradiation by Chart.js",
+            "icon_tooltip": "Bar Chart with Gradiation by Chart.js",
+            "value_name": "Value",
+            "value_tooltip": "Drop measure here",
+            "labels_name": "Labels",
+            "labels_tooltip": "Drop dimension here"
+        },
+        "ja": {
+            "name": "Chart.jsで書いたグラデーションの効いた棒グラフ",
+            "description": "Chart.jsで書いたグラデーションの効いた棒グラフ",
+            "icon_tooltip": "Chart.jsで書いたグラデーションの効いた棒グラフ",
+            "value_name": "値",
+            "value_tooltip": "ここにメジャーをドロップ",
+            "labels_name": "ラベル",
+            "labels_tooltip": "ここにディメンションをドロップ"
+        }
+    }
+}
