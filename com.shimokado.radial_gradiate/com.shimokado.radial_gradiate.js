@@ -99,8 +99,6 @@
 			return d.value;
 		});
 
-		console.log('labels:',data, labels);
-		console.log('values:',data, values);
 		const datax = {
 			labels: labels,
 			datasets: [{
