@@ -45,29 +45,29 @@
 	function noDataRenderCallback(renderConfig) {
 		console.log('noDataRenderCallback:', renderConfig);
 		//サンプルデータとバケットを使用してrenderCallbackを呼び出す
-		// renderConfig.data= [
-		// 	  {
-		// 		"labels": 'ENGLAND'
-		// 	   ,"value": 37853
-		// 	  }
-		// 	 ,{
-		// 		"labels": 'FRANCE'
-		// 	   ,"value": 4631
-		// 	 }
-		// ];
-		// renderConfig.dataBuckets = {
-		// 	buckets: {
-		// 	labels: {
-		// 	  title: 'Country'
-		// 	}
-		// 	,value: {
-		// 	  title: 'Sales'
-		// 	}}
-		// };
+		renderConfig.data= [
+			  {
+				"labels": 'ENGLAND'
+			   ,"value": 37853
+			  }
+			 ,{
+				"labels": 'FRANCE'
+			   ,"value": 4631
+			 }
+		];
+		renderConfig.dataBuckets = {
+			buckets: {
+			labels: {
+			  title: 'Country'
+			}
+			,value: {
+			  title: 'Sales'
+			}}
+		};
 		renderCallback(renderConfig);
 		//　または、データが無い場合のメッセージを表示する
 		
-		const container = renderConfig.container;
+		//const container = renderConfig.container;
 	}
 
 	/**
@@ -118,32 +118,8 @@
 		dataContainer.className = 'data-container';
 
 		// データコンテナのタイトルを設定
-		dataContainer.innerHTML = '<h1>com.shimokado.params</h1>';
-		dataContainer.innerHTML += '<h2>renderConfigオブジェクトをコンソールに表示しています</h2>';
+		dataContainer.innerHTML = '<h1>夢の縦結合</h1>';
 
-		// データをコンソールに表示していることを示すメッセージを表示
-		dataContainer.innerHTML = '<h2>ConsoleにrenderConfigオブジェクトを表示しています</h2>';
-
-		// データを表示		
-		// データコンテナにプロパティ、データバケット、データを表示
-		dataContainer.innerHTML += '<h3>renderConfig.properties:</h3>';
-		var propsTextArea = document.createElement('pre');
-		propsTextArea.textContent = JSON.stringify(props, null, 2);
-		dataContainer.appendChild(propsTextArea);
-		
-		dataContainer.innerHTML += '<h3>renderConfig.dataBuckets.buckets:</h3>';
-		var dataBucketsTextArea = document.createElement('pre');
-		dataBucketsTextArea.textContent = JSON.stringify(dataBuckets, null, 2);
-		dataContainer.appendChild(dataBucketsTextArea);
-		
-		dataContainer.innerHTML += '<h3>renderConfig.data:</h3>';
-		var dataTextArea = document.createElement('pre');
-		dataTextArea.textContent = JSON.stringify(data, null, 2);
-		dataContainer.appendChild(dataTextArea);
-
-		// bucketsは、データの有無や個数によって扱いにくいため配列に統一する
-
-		dataContainer.innerHTML += '<h2>bucketsのオブジェクトは常に配列にした方が使いやすい</h2>';
 
 		// バケットが存在しない場合は空の配列を返し、存在する場合は常に配列を返す
 		const labelsTitles = buckets.labels ? (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) : [];
@@ -161,48 +137,6 @@
 				detail: d.detail !== undefined ? (Array.isArray(d.detail) ? d.detail : [d.detail]) : []
 			};
 		});
-
-		// labelsTitlesを表示
-		dataContainer.innerHTML += '<h3>labelsTitles:</h3>';
-		var labelsTitlesTextArea = document.createElement('pre');
-		labelsTitlesTextArea.textContent = JSON.stringify(labelsTitles, null, 2);
-		dataContainer.appendChild(labelsTitlesTextArea);
-
-		// labelsFieldNamesを表示
-		dataContainer.innerHTML += '<h3>labelsFieldNames:</h3>';
-		var labelsFieldNamesTextArea = document.createElement('pre');
-		labelsFieldNamesTextArea.textContent = JSON.stringify(labelsFieldNames, null, 2);
-		dataContainer.appendChild(labelsFieldNamesTextArea);
-
-		// valueTitlesを表示
-		dataContainer.innerHTML += '<h3>valueTitles:</h3>';
-		var valueTitlesTextArea = document.createElement('pre');
-		valueTitlesTextArea.textContent = JSON.stringify(valueTitles, null, 2);
-		dataContainer.appendChild(valueTitlesTextArea);
-
-		// valueeFieldNamesを表示
-		dataContainer.innerHTML += '<h3>valueFieldNames:</h3>';
-		var valueFieldNamesTextArea = document.createElement('pre');
-		valueFieldNamesTextArea.textContent = JSON.stringify(valueFieldNames, null, 2);
-		dataContainer.appendChild(valueFieldNamesTextArea);
-
-		// valueNumberFormatsを表示
-		dataContainer.innerHTML += '<h3>valueNumberFormats:</h3>';
-		var valueNumberFormatsTextArea = document.createElement('pre');
-		valueNumberFormatsTextArea.textContent = JSON.stringify(valueNumberFormats, null, 2);
-		dataContainer.appendChild(valueNumberFormatsTextArea);
-
-		// detailTitlesを表示
-		dataContainer.innerHTML += '<h3>detailTitles:</h3>';
-		var detailTitlesTextArea = document.createElement('pre');
-		detailTitlesTextArea.textContent = JSON.stringify(detailTitles, null, 2);
-		dataContainer.appendChild(detailTitlesTextArea);
-
-		// datasを表示
-		dataContainer.innerHTML += '<h3>datas(配列化したdata):</h3>';
-		var datasTextArea = document.createElement('pre');
-		datasTextArea.textContent = JSON.stringify(datas, null, 2);
-		dataContainer.appendChild(datasTextArea);
 
 
 		// table要素を作成
@@ -233,15 +167,118 @@
 
 		// tbody要素を作成
 		const tbody = document.createElement('tbody');
-		// datasを元にtr要素を作成（labels, value, detailの数だけ作成）
-		datas.forEach(function(d) {
+		
+		// rowspan処理のためにデータを事前解析
+		// rowspanの計算情報を保持する配列
+		const rowspanInfo = [];
+		
+		// ラベルの列数を取得
+		const labelColumnCount = labelsTitles.length;
+		
+		// 各ラベル列のrowspan情報を計算
+		for (let colIndex = 0; colIndex < labelColumnCount; colIndex++) {
+			rowspanInfo[colIndex] = [];
+			
+			// 各行のラベルを調査
+			let currentValue = null;
+			let currentStartIndex = 0;
+			let rowspanCount = 0;
+			
+			for (let rowIndex = 0; rowIndex < datas.length; rowIndex++) {
+				const currentRowValue = datas[rowIndex].labels[colIndex];
+				
+				// 上位のラベルがすべて同じ場合のみ結合対象とする（2列目以降の処理）
+				let canMerge = true;
+				if (colIndex > 0) {
+					// 上位のすべての列で値が同じかチェック
+					for (let prevCol = 0; prevCol < colIndex; prevCol++) {
+						if (rowIndex > 0 && datas[rowIndex].labels[prevCol] !== datas[rowIndex - 1].labels[prevCol]) {
+							canMerge = false;
+							break;
+						}
+					}
+				}
+				
+				// 結合条件の評価
+				if (!canMerge || currentValue !== currentRowValue || rowIndex === datas.length - 1) {
+					// 値が変わった、または最終行に達した場合
+					if (rowspanCount > 1) {
+						// 同じ値が複数行続いた場合、rowspanを設定
+						rowspanInfo[colIndex][currentStartIndex] = rowspanCount;
+					}
+					
+					// 最終行の処理（最終行も同じ値が続いていた場合）
+					if (rowIndex === datas.length - 1 && currentValue === currentRowValue && canMerge) {
+						// 最終行も含めて計算
+						rowspanCount++;
+						if (rowspanCount > 1) {
+							rowspanInfo[colIndex][currentStartIndex] = rowspanCount;
+						}
+					} else {
+						// 新しい値でカウント開始
+						currentValue = currentRowValue;
+						currentStartIndex = rowIndex;
+						rowspanCount = 1;
+					}
+				} else {
+					// 値が同じ場合はカウントを増やす
+					rowspanCount++;
+				}
+			}
+		}
+		
+		// データを元にtr要素を作成
+		for (let rowIndex = 0; rowIndex < datas.length; rowIndex++) {
+			const d = datas[rowIndex];
 			const tr = document.createElement('tr');
-			// labelsを元にtd要素を作成
-			d.labels.forEach(function(label) {
-				const td = document.createElement('td');
-				td.textContent = label;
-				tr.appendChild(td);
-			});
+			
+			// labelsを元にtd要素を作成（必要に応じてrowspanを設定）
+			for (let colIndex = 0; colIndex < d.labels.length; colIndex++) {
+				// 前の行で結合されたセルがある場合はスキップ
+				let skipCell = false;
+				
+				// 上位のラベルがすべて同じ場合のみ結合対象とする（2列目以降の処理）
+				let canMerge = true;
+				if (colIndex > 0 && rowIndex > 0) {
+					// 上位のすべての列で値が同じかチェック
+					for (let prevCol = 0; prevCol < colIndex; prevCol++) {
+						if (d.labels[prevCol] !== datas[rowIndex - 1].labels[prevCol]) {
+							canMerge = false;
+							break;
+						}
+					}
+				}
+				
+				if (canMerge && rowIndex > 0 && colIndex < rowspanInfo.length) {
+					// 前の行との比較
+					for (let prevRowIndex = rowIndex - 1; prevRowIndex >= 0; prevRowIndex--) {
+						// rowspanが設定されている場合
+						if (rowspanInfo[colIndex][prevRowIndex] && 
+							rowIndex < prevRowIndex + rowspanInfo[colIndex][prevRowIndex] &&
+							d.labels[colIndex] === datas[prevRowIndex].labels[colIndex]) {
+							skipCell = true;
+							break;
+						}
+					}
+				}
+				
+				if (!skipCell) {
+					const td = document.createElement('td');
+					
+					// rowspanの設定（必要な場合のみ）
+					if (rowspanInfo[colIndex][rowIndex]) {
+						td.rowSpan = rowspanInfo[colIndex][rowIndex];
+					}
+					
+					// 常にすべてのセル内容をdivで囲む（rowspanの有無にかかわらず）
+					const div = document.createElement('div');
+					div.textContent = d.labels[colIndex];
+					td.appendChild(div);
+					
+					tr.appendChild(td);
+				}
+			}
+			
 			// valueを元にtd要素を作成
 			d.value.forEach(function(value, i) {
 				const td = document.createElement('td');
@@ -254,14 +291,16 @@
 				}
 				tr.appendChild(td);
 			});
+			
 			// detailを元にtd要素を作成
 			d.detail.forEach(function(detail) {
 				const td = document.createElement('td');
 				td.textContent = detail;
 				tr.appendChild(td);
 			});
+			
 			tbody.appendChild(tr);
-		});
+		}
 		table.appendChild(tbody);
 		dataContainer.appendChild(table);
 
@@ -272,7 +311,7 @@
 	}
 
 	var config = {
-		id: 'com.shimokado.params',	// エクステンションID
+		id: 'com.shimokado.table_ver1',	// エクステンションID
 		containerType: 'html',	// // 'html'または'svg'（デフォルト）
 		initCallback: initCallback,	// 拡張機能の初期化直前に呼び出される関数への参照。必要に応じてMonbeamインスタンスを設定するために使用
 		preRenderCallback: preRenderCallback,  // 拡張機能のレンダリング直前に呼び出される関数への参照。preRenderConfigオブジェクトが渡されます

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Card Dashboard Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="tdgchart-min-for-test.js"></script>
+    <script defer src="com.shimokado.table_ver2.js"></script>
+    <script defer src="lib/script.js"></script>
+    <!-- <script src="lib/d3.min.js"></script> -->
+    <style>
+        #pfjTableChart_left {
+            background-color: #f0f0f0;
+            border: 1px solid #ccf;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        #pfjTableChart_right {
+            background-color: #666;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        #chartContainer {
+            background-color: #fff;
+            border: 1px solid #f00;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+var script = '';
+
+var chart = new tdgchart({backend:'js', allowBackendFallback:true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b'});
+if (tdgchart.WF_charts == undefined)
+  tdgchart.WF_charts = {};
+tdgchart.WF_charts['jschart_HOLD_0'] = chart;
+
+// テスト用のextensionManagerのregister関数を定義
+tdgchart.extensionManager= {
+        register: function (config) {
+            console.log(config)
+            const successCallback = function(){
+                console.log("initCallback is called");
+            };
+            config.initCallback(successCallback, config);
+            window.chartConfig = config;
+        }
+    };
+
+
+chart.data = [];
+chart.title.text = '';
+chart.parsePFJString(script);
+chart.set({
+	"injectedRevision" : "$Revision: 1.2 $",
+	"dataSetLimits": {"enabled": true},
+	"catchErrors" : true
+});
+function render(dataFlg = true){
+    const renderConfig = {
+        container: document.getElementById("chartContainer"),
+        properties: JSON.parse(document.getElementById("renderConfig_properties").value),
+        dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
+        data: JSON.parse(document.getElementById("renderConfig_data").value),
+        moonbeamInstance: chart,
+        renderComplete: function(){
+            console.log("renderComplete is called");
+        }
+    };
+    // chartWidth, chartHeightが入力されている場合は設定する
+    const chartWidth = document.getElementById("chartWidth").value;
+    if(chartWidth){
+        renderConfig.properties.width = chartWidth;
+    }
+    const chartHeight = document.getElementById("chartHeight").value;
+    if(chartHeight){
+        renderConfig.properties.height = chartHeight;
+    }
+    // containerの高さと幅を設定する
+    renderConfig.container.style.width = renderConfig.properties.width + "px";
+    renderConfig.container.style.height = renderConfig.properties.height + "px";
+    
+    if(dataFlg){
+        chartConfig.preRenderCallback(renderConfig);
+        chartConfig.renderCallback(renderConfig);
+    }else{
+        chartConfig.noDataPreRenderCallback(renderConfig);
+        chartConfig.noDataRenderCallback(renderConfig);
+    }
+}
+</script>
+</head>
+
+<body>
+    <!--左右のグリッドに分ける-->
+    <div style="display: grid; grid-template-columns: 400px auto;">
+        <div id="pfjTableChart_left" style="padding: 10px;">
+            <button id="pfjTableChart_button" onClick="render()">描画</button>
+            <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button><p></p>
+            <hr>
+            <label for="chartWidth">renderConfig.width</label>
+            <input id="chartWidth" type="number" value="800" placeholder="幅を入力してください">
+            <label for="chartHeight">renderConfig.height</label>
+            <input id="chartHeight" type="number" value="600" placeholder="高さを入力してください">
+            <label for="renderConfig_properties">renderConfig.properties</label>
+            <textarea id="renderConfig_properties">
+{
+  "chartHeadroom": 50,
+  "external_library": "lib/script.js",
+  "tableStyle": {
+    "fontSize": "20px",
+    "color": "#663300"
+  },
+  "valueLabel": {
+    "fontFamily": "sans-serif",
+    "fontSize": "auto",
+    "color": "#333333",
+    "fontWeight": "bold",
+    "format": "auto"
+  },
+  "label": {
+    "text": {
+      "color": "#333333",
+      "font": "Verdana",
+      "weight": "bold",
+      "size": "14px"
+    },
+    "marker": {
+      "type": "circle"
+    }
+  },
+  "tooltip": {
+    "enabled": true
+  },
+  "showCenteredText": {
+    "enabled": true
+  }
+}
+            </textarea>
+            <label for="renderConfig_dataBuckets">renderConfig.dataBuckets</label>
+            <textarea id="renderConfig_dataBuckets">
+{
+  "internal_api_version": 1,
+  "buckets": {
+    "labels": {
+      "title": [
+        "COUNTRY",
+        "CAR",
+        "MODEL",
+        "STANDARD"
+      ],
+      "fieldName": [
+        "@_@0.__CAR0__.@1_COUNTRY",
+        "@_@0.__CAR0__.@2_CAR",
+        "@_@0.__CAR0__.@3_MODEL",
+        "@_@1.__CAR1__.@20_STANDARD"
+      ],
+      "count": 4
+    },
+    "value": {
+      "title": [
+        "DEALER_COST",
+        "RETAIL_COST",
+        "LENGTH",
+        "FUEL_CAP"
+      ],
+      "fieldName": [
+        "@_@0.__CAR0__.@SUM#6_DEALER_COST",
+        "@_@0.__CAR0__.@SUM#7_RETAIL_COST",
+        "@_@0.__CAR0__.@SUM#9_LENGTH",
+        "@_@0.__CAR0__.@SUM#14_FUEL_CAP"
+      ],
+      "numberFormat": [
+        "#,###",
+        "#,###",
+        "#,###",
+        "#,###.0"
+      ],
+      "count": 4
+    }
+  },
+  "depth": 1
+}
+            </textarea>
+            <label for="renderConfig_data">renderConfig.data</label>
+            <textarea id="renderConfig_data">
+[
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "V12XKE AUTO",
+      "4 WHEEL DISC BRAKES"
+    ],
+    "value": [
+      7427,
+      8878,
+      189.6,
+      18
+    ],
+    "_s": 0,
+    "_g": 0
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "V12XKE AUTO",
+      "POWER STEERING"
+    ],
+    "value": [
+      7427,
+      8878,
+      189.6,
+      18
+    ],
+    "_s": 0,
+    "_g": 1
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "V12XKE AUTO",
+      "RECLINING BUCKET SEATS"
+    ],
+    "value": [
+      7427,
+      8878,
+      189.6,
+      18
+    ],
+    "_s": 0,
+    "_g": 2
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "V12XKE AUTO",
+      "WHITEWALL RADIAL PLY TIRES"
+    ],
+    "value": [
+      7427,
+      8878,
+      189.6,
+      18
+    ],
+    "_s": 0,
+    "_g": 3
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "V12XKE AUTO",
+      "WRAP AROUND BUMPERS"
+    ],
+    "value": [
+      7427,
+      8878,
+      189.6,
+      18
+    ],
+    "_s": 0,
+    "_g": 4
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "XJ12L AUTO",
+      "4 WHEEL DISC BRAKES"
+    ],
+    "value": [
+      11194,
+      13491,
+      198.8,
+      24
+    ],
+    "_s": 0,
+    "_g": 5
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "XJ12L AUTO",
+      "POWER STEERING"
+    ],
+    "value": [
+      11194,
+      13491,
+      198.8,
+      24
+    ],
+    "_s": 0,
+    "_g": 6
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "XJ12L AUTO",
+      "RECLINING BUCKET SEATS"
+    ],
+    "value": [
+      11194,
+      13491,
+      198.8,
+      24
+    ],
+    "_s": 0,
+    "_g": 7
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "XJ12L AUTO",
+      "WHITEWALL RADIAL PLY TIRES"
+    ],
+    "value": [
+      11194,
+      13491,
+      198.8,
+      24
+    ],
+    "_s": 0,
+    "_g": 8
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JAGUAR",
+      "XJ12L AUTO",
+      "WRAP AROUND BUMPERS"
+    ],
+    "value": [
+      11194,
+      13491,
+      198.8,
+      24
+    ],
+    "_s": 0,
+    "_g": 9
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JENSEN",
+      "INTERCEPTOR III",
+      "AIR CONDITIONING"
+    ],
+    "value": [
+      14940,
+      17850,
+      188,
+      24
+    ],
+    "_s": 0,
+    "_g": 10
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JENSEN",
+      "INTERCEPTOR III",
+      "CHRYSLER 383 CU IN V8 ENGINE"
+    ],
+    "value": [
+      14940,
+      17850,
+      188,
+      24
+    ],
+    "_s": 0,
+    "_g": 11
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JENSEN",
+      "INTERCEPTOR III",
+      "LEAR JET AM/FM 8 TRK STEREO"
+    ],
+    "value": [
+      14940,
+      17850,
+      188,
+      24
+    ],
+    "_s": 0,
+    "_g": 12
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "JENSEN",
+      "INTERCEPTOR III",
+      "PIRELLI GR70 15 TIRES"
+    ],
+    "value": [
+      14940,
+      17850,
+      188,
+      24
+    ],
+    "_s": 0,
+    "_g": 13
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "TRIUMPH",
+      "TR7",
+      "POWER FRONT DISC BRAKES"
+    ],
+    "value": [
+      4292,
+      5100,
+      164.5,
+      14.5
+    ],
+    "_s": 0,
+    "_g": 14
+  },
+  {
+    "labels": [
+      "ENGLAND",
+      "TRIUMPH",
+      "TR7",
+      "RETRACTABLE HEADLIGHTS"
+    ],
+    "value": [
+      4292,
+      5100,
+      164.5,
+      14.5
+    ],
+    "_s": 0,
+    "_g": 15
+  },
+  {
+    "labels": [
+      "FRANCE",
+      "PEUGEOT",
+      "504 4 DOOR",
+      "ANTI SWAY BARS FRONT AND REAR"
+    ],
+    "value": [
+      4631,
+      5610,
+      182.4,
+      14.8
+    ],
+    "_s": 0,
+    "_g": 16
+  },
+  {
+    "labels": [
+      "FRANCE",
+      "PEUGEOT",
+      "504 4 DOOR",
+      "FOUR WHEEL SUSPENSION"
+    ],
+    "value": [
+      4631,
+      5610,
+      182.4,
+      14.8
+    ],
+    "_s": 0,
+    "_g": 17
+  },
+  {
+    "labels": [
+      "FRANCE",
+      "PEUGEOT",
+      "504 4 DOOR",
+      "RACK AND PINION STEERING"
+    ],
+    "value": [
+      4631,
+      5610,
+      182.4,
+      14.8
+    ],
+    "_s": 0,
+    "_g": 18
+  },
+  {
+    "labels": [
+      "ITALY",
+      "MASERATI",
+      "DORA 2 DOOR",
+      "5 LITRE SS ENGINE"
+    ],
+    "value": [
+      25000,
+      31500,
+      177,
+      25
+    ],
+    "_s": 0,
+    "_g": 19
+  },
+  {
+    "labels": [
+      "ITALY",
+      "MASERATI",
+      "DORA 2 DOOR",
+      "ALL STEEL BODY"
+    ],
+    "value": [
+      25000,
+      31500,
+      177,
+      25
+    ],
+    "_s": 0,
+    "_g": 20
+  },
+  {
+    "labels": [
+      "ITALY",
+      "MASERATI",
+      "DORA 2 DOOR",
+      "CAMPAGNOLLO LIGHT ALLOY  WHEELS"
+    ],
+    "value": [
+      25000,
+      31500,
+      177,
+      25
+    ],
+    "_s": 0,
+    "_g": 21
+  },
+  {
+    "labels": [
+      "ITALY",
+      "MASERATI",
+      "DORA 2 DOOR",
+      "MICHELIN 21 5/70 VR15XVWX TIRES"
+    ],
+    "value": [
+      25000,
+      31500,
+      177,
+      25
+    ],
+    "_s": 0,
+    "_g": 22
+  },
+  {
+    "labels": [
+      "JAPAN",
+      "DATSUN",
+      "B210 2 DOOR AUTO",
+      "POWER FRONT DISC BRAKES"
+    ],
+    "value": [
+      2626,
+      3139,
+      163,
+      11.6
+    ],
+    "_s": 0,
+    "_g": 23
+  },
+  {
+    "labels": [
+      "JAPAN",
+      "DATSUN",
+      "B210 2 DOOR AUTO",
+      "REAR DRUM BRAKES"
+    ],
+    "value": [
+      2626,
+      3139,
+      163,
+      11.6
+    ],
+    "_s": 0,
+    "_g": 24
+  },
+  {
+    "labels": [
+      "JAPAN",
+      "TOYOTA",
+      "COROLLA 4 DOOR DIX AUTO",
+      "BODY SIDE MOLDING"
+    ],
+    "value": [
+      2886,
+      3339,
+      165.2,
+      13.2
+    ],
+    "_s": 0,
+    "_g": 25
+  },
+  {
+    "labels": [
+      "JAPAN",
+      "TOYOTA",
+      "COROLLA 4 DOOR DIX AUTO",
+      "MACPHERSON STRUT FROMT SUSPENSION"
+    ],
+    "value": [
+      2886,
+      3339,
+      165.2,
+      13.2
+    ],
+    "_s": 0,
+    "_g": 26
+  },
+  {
+    "labels": [
+      "W GERMANY",
+      "AUDI",
+      "100 LS 2 DOOR AUTO",
+      "165 SR 14 RADIAL TIRES"
+    ],
+    "value": [
+      5063,
+      5970,
+      187.2,
+      15.3
+    ],
+    "_s": 0,
+    "_g": 27
+  },
+  {
+    "labels": [
+      "W GERMANY",
+      "AUDI",
+      "100 LS 2 DOOR AUTO",
+      "FRONT WHEEL DRIVE"
+    ],
+    "value": [
+      5063,
+      5970,
+      187.2,
+      15.3
+    ],
+    "_s": 0,
+    "_g": 28
+  },
+  {
+    "labels": [
+      "W GERMANY",
+      "AUDI",
+      "100 LS 2 DOOR AUTO",
+      "POWER FRONT BRAKES"
+    ],
+    "value": [
+      5063,
+      5970,
+      187.2,
+      15.3
+    ],
+    "_s": 0,
+    "_g": 29
+  }
+]
+            </textarea>
+        </div>
+        <div id="pfjTableChart_right">
+            <div id="chartContainer">ここに結果が出力される。</div>
+        </div>
+    </div>
+    
+</body>
+
+</html>

@@ -12,6 +12,11 @@
     margin: 0;
     padding: 0;
 }
+.data-table thead{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
 .data-table th{
     background-color: #f0f0f0;
     border: 1px solid #ccc;
@@ -21,4 +26,12 @@
 .data-table td{
     border: 1px solid #ccc;
     padding: 5px;
+    vertical-align: top;
+
 }
+
+.data-table td[rowspan] div{
+    position: sticky;
+    /* topはtheadの高さ + 10px */
+    top: 40px;
+    z-index: 0;
