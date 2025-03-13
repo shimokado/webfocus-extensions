@@ -113,7 +113,7 @@ async function createExtension() {
 
         const newFolderName = `com.${companyName}.${extensionId}`;
     
-        const templateFolder = containerType === '1' ? 'com.shimokado.simple_bar' : containerType === '2' ? 'com.shimokado.chartjs_sample' : 'com.shimokado.params';
+        const templateFolder = containerType === '1' ? 'com.shimokado.base_chart' : containerType === '2' ? 'com.shimokado.chartjs_sample' : 'com.shimokado.params';
 
         // Copy template folder
         const sourceDir = path.join(__dirname, '..', templateFolder);
