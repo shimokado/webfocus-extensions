@@ -173,7 +173,7 @@
 				.attr('stroke', '#fff')
 				.attr('stroke-width', 1)
 				.attr('fill', '#ccc');
-			
+
 			// // 近畿のみを描画
 			// var kinki = japan.features.filter(function (d) {
 			// 	return d.properties.nam_ja === '大阪府' || d.properties.nam_ja === '京都府' || d.properties.nam_ja === '滋賀県' || d.properties.nam_ja === '奈良県' || d.properties.nam_ja === '和歌山県' || d.properties.nam_ja === '三重県';
@@ -221,51 +221,48 @@
 				.text(function (d) {
 					return '都道府県コード: ' + d.labels + '\n' + '売上: ' + d.value;
 				});
-			
+
 			// 左上にデータを表形式で表示
 			var table = d3.select(container).append('table')
-				.attr('class', 'table');
-				// 左上にデータを表形式で表示
-				var table = d3.select(container).append('table')
-					.attr('class', 'table')
-					.style('position', 'relative')
-					.style('top', '-800px')
-					.style('left', '10px')
-					.style('background-color', 'white')
-					.style('border', '1px solid black')
-					.style('border-collapse', 'collapse');
+				.attr('class', 'table')
+				.style('position', 'relative')
+				.style('top', '-800px')
+				.style('left', '10px')
+				.style('background-color', 'white')
+				.style('border', '1px solid black')
+				.style('border-collapse', 'collapse');
 
-				var thead = table.append('thead');
-				var tbody = table.append('tbody');
+			var thead = table.append('thead');
+			var tbody = table.append('tbody');
 
-				thead.append('tr')
-					.selectAll('th')
-					.data(['都道府県コード', '売上'])
-					.enter()
-					.append('th')
-					.text(function (d) { return d; })
-					.style('border', '1px solid black')
-					.style('padding', '5px');
+			thead.append('tr')
+				.selectAll('th')
+				.data(['都道府県コード', '売上'])
+				.enter()
+				.append('th')
+				.text(function (d) { return d; })
+				.style('border', '1px solid black')
+				.style('padding', '5px');
 
-				var rows = tbody.selectAll('tr')
-					.data(data)
-					.enter()
-					.append('tr');
+			var rows = tbody.selectAll('tr')
+				.data(data)
+				.enter()
+				.append('tr');
 
-				var cells = rows.selectAll('td')
-					.data(function (row) {
-						return ['labels', 'value'].map(function (column) {
-							return { column: column, value: row[column] };
-						});
-					})
-					.enter()
-					.append('td')
-					.text(function (d) { return d.value; })
-					.style('border', '1px solid black')
-					.style('padding', '5px')
-					.style('text-align', 'right');
+			var cells = rows.selectAll('td')
+				.data(function (row) {
+					return ['labels', 'value'].map(function (column) {
+						return { column: column, value: row[column] };
+					});
+				})
+				.enter()
+				.append('td')
+				.text(function (d) { return d.value; })
+				.style('border', '1px solid black')
+				.style('padding', '5px')
+				.style('text-align', 'right');
 
-				});
+		});
 
 		renderConfig.renderComplete();
 	}
