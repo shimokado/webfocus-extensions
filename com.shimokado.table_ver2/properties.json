@@ -11,7 +11,7 @@
     },
     "properties": {
         "chartHeadroom": 50,
-        "external_library": "lib/script.js",
+        "external_library": "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js",
         "tableStyle": {
             "fontSize": "20px",
             "color": "#663300"

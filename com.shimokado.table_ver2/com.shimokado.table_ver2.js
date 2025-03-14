@@ -55,6 +55,107 @@
 	}
 
 	/**
+	 * テーブルをExcelファイルとしてダウンロードする関数
+	 * @param {HTMLTableElement} table - エクスポートするテーブル要素
+	 * @param {string} fileName - 保存するファイル名
+	 */
+	function exportTableToExcel(table, fileName) {
+		// テーブルのセル情報を取得
+		const merges = [];
+		const rows = [];
+		let rowIndex = 0;
+		
+		// ヘッダー行の処理
+		Array.from(table.querySelectorAll('thead tr')).forEach(tr => {
+			const row = [];
+			Array.from(tr.cells).forEach((cell, colIndex) => {
+				const value = cell.textContent.trim();
+				row.push(value);
+				
+				// セル結合がある場合
+				if (cell.colSpan > 1 || cell.rowSpan > 1) {
+					merges.push({
+						s: { r: rowIndex, c: colIndex },
+						e: { r: rowIndex + (cell.rowSpan - 1), c: colIndex + (cell.colSpan - 1) }
+					});
+					
+					// colspan分の空セルを追加（後のセルのインデックスを正確にするため）
+					for (let i = 1; i < cell.colSpan; i++) {
+						row.push('');
+					}
+				}
+			});
+			rows.push(row);
+			rowIndex++;
+		});
+		
+		// ボディ行の処理
+		Array.from(table.querySelectorAll('tbody tr')).forEach(tr => {
+			const row = [];
+			Array.from(tr.cells).forEach((cell, colIndex) => {
+				// 数値を適切に処理
+				let value = cell.textContent.trim();
+				// 数値に変換できる場合は数値として扱う（カンマ除去）
+				const numValue = Number(value.replace(/,/g, ''));
+				if (!isNaN(numValue) && value !== '') {
+					value = numValue;
+				}
+				row.push(value);
+				
+				// セル結合がある場合
+				if (cell.colSpan > 1 || cell.rowSpan > 1) {
+					merges.push({
+						s: { r: rowIndex, c: colIndex },
+						e: { r: rowIndex + (cell.rowSpan - 1), c: colIndex + (cell.colSpan - 1) }
+					});
+					
+					// colspan分の空セルを追加
+					for (let i = 1; i < cell.colSpan; i++) {
+						row.push('');
+					}
+				}
+			});
+			rows.push(row);
+			rowIndex++;
+		});
+		
+		// ワークブックとワークシートを作成
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.aoa_to_sheet(rows);
+		
+		// セル結合情報を適用
+		ws['!merges'] = merges;
+		
+		// ヘッダーのスタイル設定
+		const headerStyle = {
+			fill: { fgColor: { rgb: "DDDDDD" } },
+			font: { bold: true }
+		};
+		
+		// ヘッダーセルにスタイルを適用
+		const headerRowCount = table.querySelectorAll('thead tr').length;
+		for (let r = 0; r < headerRowCount; r++) {
+			const row = rows[r];
+			for (let c = 0; c < row.length; c++) {
+				const cellRef = XLSX.utils.encode_cell({ r: r, c: c });
+				if (!ws[cellRef]) continue;
+				
+				// セルスタイルのオブジェクトが無ければ作成
+				if (!ws[cellRef].s) ws[cellRef].s = {};
+				
+				// スタイルを適用
+				Object.assign(ws[cellRef].s, headerStyle);
+			}
+		}
+		
+		// ワークブックに追加
+		XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+		
+		// Excelファイルをダウンロード
+		XLSX.writeFile(wb, fileName + '.xlsx');
+	}
+
+	/**
 	 * 各チャートエンジンの描画サイクル中に呼び出されます（必須）
 	 */
 	function renderCallback(renderConfig) {
@@ -73,6 +174,29 @@
 		// データコンテナを作成
 		const dataContainer = document.createElement('div');
 		dataContainer.className = 'table-container';
+		
+		// ダウンロードボタンを作成
+		const buttonContainer = document.createElement('div');
+		buttonContainer.style.textAlign = 'right';
+		buttonContainer.style.margin = '0 0 10px 0';
+		
+		const downloadButton = document.createElement('button');
+		downloadButton.textContent = 'Excelダウンロード';
+		downloadButton.style.padding = '5px 10px';
+		downloadButton.style.backgroundColor = '#f0f0f0';
+		downloadButton.style.border = '1px solid #ddd';
+		downloadButton.style.borderRadius = '3px';
+		downloadButton.style.cursor = 'pointer';
+		
+		// ボタンにクリックイベントを追加
+		downloadButton.addEventListener('click', function() {
+			const table = dataContainer.querySelector('table');
+			const fileName = 'table_data_' + new Date().toISOString().slice(0, 10);
+			exportTableToExcel(table, fileName);
+		});
+		
+		buttonContainer.appendChild(downloadButton);
+		dataContainer.appendChild(buttonContainer);
 		
 		// テーブルのスタイルを適用
 		const tableStyle = props.tableStyle || {};
@@ -98,13 +222,14 @@
 		const labelTitles = buckets.labels && buckets.labels.title ? 
 			(Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) : [];
 		// ラベルのヘッダーは結合して表示
-			const th = document.createElement('th');
-			th.textContent = labelTitles[0] || '';
-			th.colSpan = labelCount;
-			th.style.padding = '8px';
-			th.style.borderBottom = '2px solid #ddd';
-			th.style.textAlign = 'left';
-			headerRow.appendChild(th);
+		const th = document.createElement('th');
+		th.textContent = labelTitles[0] || '';
+		th.colSpan = labelCount;
+		th.style.padding = '8px';
+		th.style.borderBottom = '2px solid #ddd';
+		th.style.backgroundColor = '#f0f0f0'; // 背景色を追加
+		th.style.textAlign = 'left';
+		headerRow.appendChild(th);
 		
 		// 値の列ヘッダーを作成
 		const valueTitles = buckets.value && buckets.value.title ? 
@@ -115,6 +240,7 @@
 			th.textContent = title;
 			th.style.padding = '8px';
 			th.style.borderBottom = '2px solid #ddd';
+			th.style.backgroundColor = '#f0f0f0'; // 背景色を追加
 			th.style.textAlign = 'right';
 			headerRow.appendChild(th);
 		});
@@ -241,7 +367,9 @@
 		noDataPreRenderCallback: noDataPreRenderCallback,
 		noDataRenderCallback: noDataRenderCallback,
 		resources: {
-			script: ['lib/script.js'],
+			script: [
+				'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js' // SheetJSライブラリを追加
+			],
 			css: ['css/style.css']
 		},
 		modules: {
