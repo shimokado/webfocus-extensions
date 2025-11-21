@@ -14,7 +14,11 @@
         "external_library": "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js",
         "tableStyle": {
             "fontSize": "20px",
-            "color": "#663300"
+            "color": "#663300",
+            "fontFamily": "Arial, sans-serif",
+            "fontWeight": "normal",
+            "backgroundColor": "#f9f9f9",
+            "border": "1px solid #ddd"
         },
 		"valueLabel": {
 			"fontFamily": "sans-serif",
@@ -47,7 +51,11 @@
         "external_library": "str",
         "tableStyle": {
             "fontSize": "str",
-            "color": "str"
+            "color": "str",
+            "fontFamily": "str",
+            "fontWeight": "str",
+            "backgroundColor": "str",
+            "border": "str"
         },
         "valueLabel": {
             "fontFamily": "str",

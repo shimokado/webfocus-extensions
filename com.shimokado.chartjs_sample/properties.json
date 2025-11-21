@@ -10,10 +10,38 @@
         }
     },
     "properties": {
-        "external_library": "lib/chart.js"
+        "external_library": "lib/chart.js",
+        "label": {
+            "text": {
+                "color": "#666666",
+                "font": "Arial, sans-serif",
+                "size": "12px",
+                "weight": "normal"
+            }
+        },
+        "valueLabel": {
+            "color": "#333333",
+            "fontFamily": "Arial, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "bold"
+        }
     },
     "propertyAnnotations": {
-        "external_library": "str"
+        "external_library": "str",
+        "label": {
+            "text": {
+                "color": "str",
+                "font": "str",
+                "size": "str",
+                "weight": "str"
+            }
+        },
+        "valueLabel": {
+            "color": "str",
+            "fontFamily": "str",
+            "fontSize": "str",
+            "fontWeight": "str"
+        }
     },
     "dataBuckets": {
         "tooltip": false,

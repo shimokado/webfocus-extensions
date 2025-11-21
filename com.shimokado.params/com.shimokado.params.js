@@ -208,6 +208,13 @@
 		// table要素を作成
 		const table = document.createElement('table');
 		table.className = 'data-table';
+		
+		// テーブル全体にプロパティベースのスタイルを適用
+		applyTableStyles(table, props);
+		
+		// プロパティからテーブル全体のスタイルを適用
+		applyTableStyles(table, props);
+		
 		// thead要素を作成
 		const thead = document.createElement('thead');
 		// tr要素を作成
@@ -269,6 +276,28 @@
 		container.appendChild(dataContainer);
 
 		renderConfig.renderComplete(); // 必須: レンダリングが完了したことをチャートエンジンに通知します
+	}
+
+	/**
+	 * テーブル全体にプロパティベースのスタイルを適用
+	 * @param {HTMLElement} table - テーブル要素
+	 * @param {Object} props - プロパティオブジェクト
+	 */
+	function applyTableStyles(table, props) {
+		if (props.tableStyle) {
+			if (props.tableStyle.fontSize) {
+				table.style.fontSize = props.tableStyle.fontSize;
+			}
+			if (props.tableStyle.color) {
+				table.style.color = props.tableStyle.color;
+			}
+			if (props.tableStyle.fontFamily) {
+				table.style.fontFamily = props.tableStyle.fontFamily;
+			}
+			if (props.tableStyle.fontWeight) {
+				table.style.fontWeight = props.tableStyle.fontWeight;
+			}
+		}
 	}
 
 	var config = {

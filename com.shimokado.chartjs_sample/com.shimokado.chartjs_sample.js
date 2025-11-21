@@ -55,6 +55,58 @@
 	}
 
 	/**
+	 * labelプロパティからChart.jsのスケールフォント設定を作成
+	 * @param {Object} props - プロパティオブジェクト
+	 * @returns {Object} Chart.js用のスケールフォント設定
+	 */
+	function createScaleFontConfig(props) {
+		const fontConfig = {};
+		
+		if (props.label && props.label.text) {
+			if (props.label.text.size) {
+				fontConfig.size = parseInt(props.label.text.size);
+			}
+			if (props.label.text.font) {
+				fontConfig.family = props.label.text.font;
+			}
+			if (props.label.text.weight) {
+				fontConfig.weight = props.label.text.weight;
+			}
+			if (props.label.text.color) {
+				fontConfig.color = props.label.text.color;
+			}
+		}
+		
+		return Object.keys(fontConfig).length > 0 ? fontConfig : undefined;
+	}
+
+	/**
+	 * valueLabelプロパティからChart.jsのデータラベルフォント設定を作成
+	 * @param {Object} props - プロパティオブジェクト
+	 * @returns {Object} Chart.js用のデータラベルフォント設定
+	 */
+	function createDataLabelFontConfig(props) {
+		const fontConfig = {};
+		
+		if (props.valueLabel) {
+			if (props.valueLabel.fontSize && props.valueLabel.fontSize !== 'auto') {
+				fontConfig.size = parseInt(props.valueLabel.fontSize);
+			}
+			if (props.valueLabel.fontFamily) {
+				fontConfig.family = props.valueLabel.fontFamily;
+			}
+			if (props.valueLabel.fontWeight) {
+				fontConfig.weight = props.valueLabel.fontWeight;
+			}
+			if (props.valueLabel.color) {
+				fontConfig.color = props.valueLabel.color;
+			}
+		}
+		
+		return Object.keys(fontConfig).length > 0 ? fontConfig : undefined;
+	}
+
+	/**
 	 * 各チャートエンジンの描画サイクル中に呼び出されます（必須）
 	 * ここで拡張機能をレンダリングする必要があります
 	 * @param {Object} renderConfig - width、heightなどの追加プロパティを含む標準のコールバック引数オブジェクト
@@ -71,7 +123,7 @@
 		// データをコンソールに表示
 		console.log('renderCallback:', renderConfig);
 
-		// const props = renderConfig.properties; // 実行プログラムでセットされているプロパティ
+		const props = renderConfig.properties; // 実行プログラムでセットされているプロパティ
 		const container = renderConfig.container; // 出力先のコンテナ
 		const data = renderConfig.data; // WebFOCUSが出力したデータ
 		const dataBuckets = renderConfig.dataBuckets; // データバケット
@@ -99,17 +151,49 @@
 			return d.value;
 		});
 
+		// Chart.js用のフォント設定を作成
+		const scaleFontConfig = createScaleFontConfig(props);
+		const dataLabelFontConfig = createDataLabelFontConfig(props);
+
 		// chart.jsのバーを描画
-		new Chart(canvas, {
-		  type: 'bar',
-		  data: {
-			labels: labels,
-			datasets: [{
-			  label: buckets.value.title,
-			  data: values
-			}]
-		  }
-		});
+		const chartConfig = {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: buckets.value.title,
+					data: values
+				}]
+			},
+			options: {
+				scales: {
+					x: {
+						ticks: scaleFontConfig ? { font: scaleFontConfig } : undefined
+					},
+					y: {
+						ticks: scaleFontConfig ? { font: scaleFontConfig } : undefined
+					}
+				},
+				plugins: {
+					legend: {
+						labels: dataLabelFontConfig ? { font: dataLabelFontConfig } : undefined
+					}
+				}
+			}
+		};
+
+		// 空のオプションを削除
+		if (chartConfig.options.scales.x && !chartConfig.options.scales.x.ticks) {
+			delete chartConfig.options.scales.x;
+		}
+		if (chartConfig.options.scales.y && !chartConfig.options.scales.y.ticks) {
+			delete chartConfig.options.scales.y;
+		}
+		if (chartConfig.options.plugins.legend && !chartConfig.options.plugins.legend.labels) {
+			delete chartConfig.options.plugins.legend;
+		}
+
+		new Chart(canvas, chartConfig);
 
 		container.appendChild(canvas);
 

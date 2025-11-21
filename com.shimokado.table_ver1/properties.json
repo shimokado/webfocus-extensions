@@ -14,7 +14,9 @@
         "external_library": "lib/script.js",
         "tableStyle": {
             "fontSize": "20px",
-            "color": "#663300"
+            "color": "#663300",
+            "fontFamily": "Arial, sans-serif",
+            "fontWeight": "normal"
         },
 		"valueLabel": {
 			"fontFamily": "sans-serif",
@@ -47,7 +49,9 @@
         "external_library": "str",
         "tableStyle": {
             "fontSize": "str",
-            "color": "str"
+            "color": "str",
+            "fontFamily": "str",
+            "fontWeight": "str"
         },
         "valueLabel": {
             "fontFamily": "str",

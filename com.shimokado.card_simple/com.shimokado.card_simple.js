@@ -32,6 +32,50 @@
 	}
 	
 	/**
+	 * ラベル要素にプロパティベースのスタイルを適用
+	 * @param {HTMLElement} element - ラベル要素
+	 * @param {Object} props - プロパティオブジェクト
+	 */
+	function applyLabelStyles(element, props) {
+		if (props.label && props.label.text) {
+			if (props.label.text.color) {
+				element.style.color = props.label.text.color;
+			}
+			if (props.label.text.font) {
+				element.style.fontFamily = props.label.text.font;
+			}
+			if (props.label.text.size) {
+				element.style.fontSize = props.label.text.size;
+			}
+			if (props.label.text.weight) {
+				element.style.fontWeight = props.label.text.weight;
+			}
+		}
+	}
+
+	/**
+	 * 値要素にプロパティベースのスタイルを適用
+	 * @param {HTMLElement} element - 値要素
+	 * @param {Object} props - プロパティオブジェクト
+	 */
+	function applyValueLabelStyles(element, props) {
+		if (props.valueLabel) {
+			if (props.valueLabel.color) {
+				element.style.color = props.valueLabel.color;
+			}
+			if (props.valueLabel.fontFamily) {
+				element.style.fontFamily = props.valueLabel.fontFamily;
+			}
+			if (props.valueLabel.fontSize && props.valueLabel.fontSize !== 'auto') {
+				element.style.fontSize = props.valueLabel.fontSize;
+			}
+			if (props.valueLabel.fontWeight) {
+				element.style.fontWeight = props.valueLabel.fontWeight;
+			}
+		}
+	}
+
+	/**
 	 * レンダリングコールバック
 	 * @param {object} renderConfig - レンダリング設定
 	 * @param {object} renderConfig.moonbeamInstance - Moonbeamインスタンス
@@ -78,9 +122,15 @@
 			label.className = 'card-label';
 			label.textContent = row.labels;
 			
+			// ラベルにプロパティベースのスタイルを適用
+			applyLabelStyles(label, props);
+			
 			var value = document.createElement('div');
 			value.className = 'card-value';
 			value.textContent = chart.formatNumber(row.value, dataBuckets.value.numberFormat || '###');
+			
+			// 値にプロパティベースのスタイルを適用
+			applyValueLabelStyles(value, props);
 			
 			card.appendChild(label);
 			card.appendChild(value);

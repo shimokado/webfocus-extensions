@@ -158,6 +158,34 @@
 	/**
 	 * 各チャートエンジンの描画サイクル中に呼び出されます（必須）
 	 */
+	/**
+	 * テーブル全体にプロパティベースのスタイルを適用
+	 * @param {HTMLElement} table - テーブル要素
+	 * @param {Object} props - プロパティオブジェクト
+	 */
+	function applyTableStyles(table, props) {
+		if (props.tableStyle) {
+			if (props.tableStyle.fontSize) {
+				table.style.fontSize = props.tableStyle.fontSize;
+			}
+			if (props.tableStyle.color) {
+				table.style.color = props.tableStyle.color;
+			}
+			if (props.tableStyle.fontFamily) {
+				table.style.fontFamily = props.tableStyle.fontFamily;
+			}
+			if (props.tableStyle.fontWeight) {
+				table.style.fontWeight = props.tableStyle.fontWeight;
+			}
+			if (props.tableStyle.backgroundColor) {
+				table.style.backgroundColor = props.tableStyle.backgroundColor;
+			}
+			if (props.tableStyle.border) {
+				table.style.border = props.tableStyle.border;
+			}
+		}
+	}
+
 	function renderCallback(renderConfig) {
 		console.log('renderCallback:', renderConfig);
 
@@ -198,21 +226,14 @@
 		buttonContainer.appendChild(downloadButton);
 		dataContainer.appendChild(buttonContainer);
 		
-		// テーブルのスタイルを適用
-		const tableStyle = props.tableStyle || {};
-		const fontSize = tableStyle.fontSize || '12px';
-		const color = tableStyle.color || '#333';
-		
-		// ラベルの数を取得（すべてのデータ行で同じと仮定）
-		const labelCount = data[0] ? data[0].labels.length : 0;
-		
 		// テーブル要素を作成
 		const table = document.createElement('table');
 		table.className = 'data-table';
 		table.style.width = '100%';
 		table.style.borderCollapse = 'collapse';
-		table.style.fontSize = fontSize;
-		table.style.color = color;
+		
+		// テーブル全体にプロパティベースのスタイルを適用
+		applyTableStyles(table, props);
 		
 		// ヘッダーを作成
 		const thead = document.createElement('thead');

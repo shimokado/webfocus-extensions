@@ -14,6 +14,20 @@
         "tableStyle": {
             "fontSize": "20px",
             "color": "#663300"
+        },
+        "label": {
+            "text": {
+                "color": "#555555",
+                "font": "Arial, sans-serif",
+                "size": "14px",
+                "weight": "normal"
+            }
+        },
+        "valueLabel": {
+            "color": "#2c3e50",
+            "fontFamily": "Georgia, serif",
+            "fontSize": "18px",
+            "fontWeight": "bold"
         }
     },
 
@@ -21,6 +35,20 @@
         "tableStyle": {
             "fontSize": "str",
             "color": "str"
+        },
+        "label": {
+            "text": {
+                "color": "str",
+                "font": "str",
+                "size": "str",
+                "weight": "str"
+            }
+        },
+        "valueLabel": {
+            "color": "str",
+            "fontFamily": "str",
+            "fontSize": "str",
+            "fontWeight": "str"
         }
     },
 
