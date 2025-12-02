@@ -98,22 +98,22 @@ async function createExtension() {
             throw new Error('Extension ID must contain only lowercase alphanumeric characters and underscores!');
         }
 
-        // Ask for container type number（1. d3.js, 2. chart.js, 3. html）
+        // Ask for container type number（1. d3.js, 2. chart.js, 3. html, 4. Apexcharts）
         const containerType = await new Promise(resolve => {
-            rl.question('Enter container type (1. d3.js, 2. chart.js, 3. html): ', answer => {
+            rl.question('Enter container type (1. d3.js, 2. chart.js, 3. html, 4. Apexcharts): ', answer => {
                 resolve(answer.trim());
             });
         });
 
         // Validate container type
-        if (!['1', '2', '3'].includes(containerType)) {
+        if (!['1', '2', '3', '4'].includes(containerType)) {
             console.error('Invalid container type!');
             process.exit(1);
         }
 
         const newFolderName = `com.${companyName}.${extensionId}`;
     
-        const templateFolder = containerType === '1' ? 'com.shimokado.base_chart' : containerType === '2' ? 'com.shimokado.chartjs_sample' : 'com.shimokado.params';
+        const templateFolder = containerType === '1' ? 'com.shimokado.base_chart' : containerType === '2' ? 'com.shimokado.chartjs_sample' : containerType === '3' ? 'com.shimokado.params' : 'com.shimokado.apexchart_bar';
 
         // Copy template folder
         const sourceDir = path.join(__dirname, '..', templateFolder);

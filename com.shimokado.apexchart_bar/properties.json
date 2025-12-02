@@ -1,0 +1,90 @@
+{
+    "info": {
+        "version": "1.0.0",
+        "implements_api_version": 1.0,
+        "author": "Shimokado Masataka",
+        "copyright": "Shimokado Masataka",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.chartjs_sample",
+        "icons": {
+            "medium": "icons/icon.png"
+        }
+    },
+    "properties": {
+        "external_library": "lib/apexcharts.js",
+        "label": {
+            "text": {
+                "color": "#666666",
+                "font": "Arial, sans-serif",
+                "size": "12px",
+                "weight": "normal"
+            }
+        },
+        "valueLabel": {
+            "color": "#333333",
+            "fontFamily": "Arial, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "bold"
+        }
+    },
+    "propertyAnnotations": {
+        "external_library": "str",
+        "label": {
+            "text": {
+                "color": "str",
+                "font": "str",
+                "size": "str",
+                "weight": "str"
+            }
+        },
+        "valueLabel": {
+            "color": "str",
+            "fontFamily": "str",
+            "fontSize": "str",
+            "fontWeight": "str"
+        }
+    },
+    "dataBuckets": {
+        "tooltip": false,
+        "matrix": false,
+        "data_page": false,
+        "series_break": false,
+        "buckets": [
+            {
+                "id": "value",
+                "type": "measure",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            },
+            {
+                "id": "labels",
+                "type": "dimension",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "translations": {
+        "en": {
+            "name": "Simple Bar Chart with ApexCharts",
+            "description": "A simple bar chart written with ApexCharts",
+            "icon_tooltip": "Simple Bar Chart with ApexCharts",
+            "value_name": "Value",
+            "value_tooltip": "Drop a measure here",
+            "labels_name": "Labels",
+            "labels_tooltip": "Drop a dimension here"
+        },
+        "ja": {
+            "name": "ApexChartsで書いた簡単な棒グラフ",
+            "description": "ApexChartsで書いてみただけのグラフ",
+            "icon_tooltip": "ApexChartsで書いた簡単な棒グラフ",
+            "value_name": "値",
+            "value_tooltip": "ここにメジャーをドロップ",
+            "labels_name": "ラベル",
+            "labels_tooltip": "ここにディメンションをドロップ"
+        }
+    }
+}

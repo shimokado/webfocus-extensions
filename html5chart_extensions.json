@@ -1,4 +1,5 @@
 {
+  "com.shimokado.apexchart_bar": { "enabled": true },
   "com.shimokado.base_char": { "enabled": true },
   "com.shimokado.card_dashboard": { "enabled": true },
   "com.shimokado.card_simple": { "enabled": true },
