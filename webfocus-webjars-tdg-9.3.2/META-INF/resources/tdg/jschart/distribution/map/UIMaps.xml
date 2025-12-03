@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 1996-2023. Cloud Software Group, Inc. All rights reserved. -->
+<!--$Revision: 1.19 $:-->
+<Maps>
+	<Json>
+		<Map file="US.json" name="USA" layer='regions'></Map>
+		<Map file="world.json" name="World" layer='countries'></Map>
+		<Map file="europe.json" name="Europe" layer='countries'></Map>
+		<Map file="africa.json" name="Africa" layer='countries'></Map>
+		<Map file="asia.json" name="Asia" layer='countries'></Map>
+		<Map file="AU.json" name="Australia" layer='regions'></Map>
+		<Map file="AT.json" name="Austria" layer='regions'></Map>
+		<Map file="DK.json" name="Denmark" layer='regions'></Map>
+		<Map file="DE.json" name="Germany" layer='regions'></Map>
+		<Map file="JP.json" name="Japan" layer='regions'></Map>
+		<Map file="north_america.json" name="North_America" layer='countries'></Map>
+		<Map file="south_america.json" name="South_America" layer='countries'></Map>
+		<Map file="SE.json" name="Sweden" layer='regions'></Map>
+	</Json>
+	
+	<BaseMap>
+		<Map name="ArcGIS_World_Street_Map">
+			<![CDATA[
+			{
+			title: "ArcGIS_World_Street_Map",
+			url : function() { return 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';},
+			layerInfo: {
+					attribution: function() { return "&copy; <a target='_blank' href='https://www.tibco.com/'>Tibco Software</a> | " + 
+					"Map Tiles: &copy; Esri";},
+					minZoom: 0,
+					maxZoom: 16
+						}
+			}		
+			]]>
+		</Map>
+	</BaseMap>
+</Maps>
+<!--
+		var agsMapStreet = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:19
+		var agsMapTopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:19
+		var agsMapImagery = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:19
+		var agsMapTerrain = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:13
+		var agsMapGray = 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:16
+		var agsMapNatGeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:16
+		var agsMapOcean = 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}';
+			minZoom:0, 
+			maxZoom:16
+
+		var agsMapLayer = new L.TileLayer(agsMapStreet, {
+                maxZoom: 19,
+                attribution: 'Map Tiles: &copy; Esri'
+ -->

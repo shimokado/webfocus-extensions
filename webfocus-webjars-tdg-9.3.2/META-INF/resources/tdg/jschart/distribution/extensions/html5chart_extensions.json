@@ -1,0 +1,8 @@
+{
+	"com.ibi.geo.layer": {"enabled": true},
+	"com.ibi.geo.map": {"enabled": true},
+	"com.esri.map"		: 
+		{ 
+		"enabled" : true
+		}
+}

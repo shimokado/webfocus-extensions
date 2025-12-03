@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD></HEAD>
+<BODY>
+<script type='text/javascript'>
+function send_req() {
+
+//	var url = 'http://172.30.152.78:8850/';
+//	var url = 'http://localhost:8850/';
+//	var url = 'http://192.168.1.101:8850/';
+	var url = 'http://192.168.1.101:9552/';
+	
+	var body = "<!DOCTYPE html>\n<HTML>\n<HEAD>\n<TITLE>AdhocRequest</TITLE>\n";
+	body += "<script type='text/javascript' src='tdgchart-concat_full.js'><" + "/script>\n</HEAD>\n";
+	body += "<BODY BGCOLOR='ffffff'>\n<div class='chart' id='jschart_HOLD_0' style='vertical-align:text-bottom'></div>\n";
+	body += "<script type='text/javascript'>\nvar chart = new tdgchart();\nchart.set({\nchartType: 'area',\nwidth: 300,\n";
+	body += "height: 200,\ndata: [[1,0,2], [2,5,2], [3,1,2]],\nhtmlToolTip: {enabled: false},\nblaProperties: {orientation: 'vertical'},\n";
+	body += "border: {width: 1, color: 'black'},\nseries: [{series: 'all', tooltip: null}],\nmouseOverIndicator: {enabled: false}\n";
+	body += "});\nchart.draw('jschart_HOLD_0');\n</" + "script>\n</BODY>\n</HTML>";
+
+	var req = new XMLHttpRequest();
+	req.open('POST', url);
+	req.onload = function() {
+		if (req && req.status === 200 && req.readyState === 4) {
+			document.write(req.responseText);
+			document.close();
+		}
+	};
+	var json = {
+		page_size: {width: 1000, height: 700},
+		css_to_svg: false,
+		output_format: 'png',
+//		output_format: 'svg',
+		render_delay: 2300,
+		img_format: 'html',
+		moonbeam_mode: false,
+		in_encoding: "windows-1255",
+//		in_filename: "arc_extension.html"
+//		in_filename: "ibitempg.htm"
+//		in_filename: "webfonts.htm"
+//		in_filename: "bubblemap.htm"
+//		in_filename: "leaflet_bubble.html"
+//		in_filename: "marker_chart.html"
+//		url: 'http://172.30.152.78:8850/?page_size={"width":800,"height":600}&output_format=svg&moonbeam_mode=true',
+		url: 'http://192.168.1.101:9988/moonbeam_server/pktest6a/index.html',
+//		page: body
+	};
+
+	json = {
+		"in_filename": "C:\\work\\ibichart_HEAD\\webapps\\webfocus\\tdg\\jschart\\js.source\\src\\moonbeam_server\\yoram_easelly_extensions_repro\\1523300197.6313\\index2.html",
+		"out_filename": "foobar.png",
+		"img_format": "file",
+		"output_format": "png",
+		render_delay: 5000,
+		"page_size": {"width": 1000,  "height": 700 },
+		"moonbeam_mode": false
+	};
+
+	json = {
+		"in_filename": "C:\\work\\ibichart_HEAD\\webapps\\webfocus\\tdg\\jschart\\js.source\\src\\moonbeam_server\\yoram_easelly_extensions_repro\\1523300197.6313\\index2.html",
+		"out_filename": "ibiigrph.pdf",
+		"img_format": "file",
+		"output_format": "pdf",
+		"page_size": {"width": 1200,  "height": 1200},
+		"render_delay": "auto",
+		"moonbeam_resource_path": "/",
+		"moonbeam_mode": false,
+		"easelly_mode": true
+	};
+
+	json = {
+		"in_filename": "C:\\work\\ibichart_HEAD\\webapps\\webfocus\\tdg\\jschart\\js.source\\src\\moonbeam_server\\yoram_test_2\\1524596681.5892\\index2.html",
+		"out_filename": "foo.png",
+		"img_format": "file",
+		"output_format": "png",
+		"page_size": { "width": 1200, "height": 1200 },
+		"render_delay": 5000,
+		"moonbeam_mode": false,
+		"easelly_mode": true
+	};
+
+	jsonx = {
+		"in_filename": "C:\\work\\ibichart_HEAD\\webapps\\webfocus\\tdg\\jschart\\extraneous\\peter_phantom_fuzzy_rasterize\\index.html",
+		"out_filename": "foo.pdf",
+		"img_format": "file",
+		"output_format": "pdf",
+		"page_size": { "width": 1200, "height": 1200 },
+		"render_delay": 500,
+		"moonbeam_mode": false,
+		"easelly_mode": true
+	};
+
+	json = {
+		"in_filename": "C:\\work\\ibichart_HEAD\\webapps\\webfocus\\tdg\\jschart\\js.source\\src\\debug\\JSCHART_Datalabels_Fex.htm",
+		"out_filename": "foo.pdf",
+		"img_format": "file",
+		"output_format": "pdf",
+		"page_size": '{"width": 800, "height": 600}',
+		"moonbeam_mode": true
+	};
+
+	jsonx = {
+		"in_filename": "C:\\work\\ibichart_HEAD\\webapps\\webfocus\\tdg\\jschart\\js.source\\src\\moonbeam_server\\easelly_background\\index.html",
+		"out_filename": "foo.pdf",
+		"img_format": "file",
+		"output_format": "pdf",
+		"moonbeam_mode": false,
+		"easelly_mode": true
+	};
+
+	req.send(JSON.stringify(json));
+	var btn = document.getElementById('btn');
+	btn.innerHTML = "Sending ...";
+	btn.disabled = true;
+}
+
+//document.body.onload = send_req;
+
+</script>
+<button id="btn" onclick="send_req()">Send Request</button>
+</BODY>
+</HTML>

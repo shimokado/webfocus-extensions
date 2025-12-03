@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Card Dashboard Test</title>
-    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
     <script src="tdgchart-min-for-test.js"></script>
     <script defer src="com.shimokado.table_ver1.js"></script>
-    <script defer src="lib/script.js"></script>
-    <!-- <script src="lib/d3.min.js"></script> -->
+    <!-- <script defer src="lib/script.js"></script> -->
+    <!-- <!-- <script src="lib/d3.min.js"></script> --> -->
     <style>
         #pfjTableChart_left {
             background-color: #f0f0f0;
@@ -53,14 +53,7 @@ if (tdgchart.WF_charts == undefined)
   tdgchart.WF_charts = {};
 tdgchart.WF_charts['jschart_HOLD_0'] = chart;
 
-// テスト用のextensionManagerのregister関数を定義
-tdgchart.extensionManager= {
-        register: function (config) {
-            console.log(config)
-            const successCallback = function(){
-                console.log("initCallback is called");
-            };
-            config.initCallback(successCallback, config);
+// テスト用のextensionManagerのregister関数は tdgchart-min-for-test.js に移動しましたconfig.initCallback(successCallback, config);
             window.chartConfig = config;
         }
     };

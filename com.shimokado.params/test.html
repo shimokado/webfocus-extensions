@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Card Dashboard Test</title>
-    <link rel="stylesheet" href="css/style.css">
+    <!-- CSS is now loaded dynamically by tdgchart-min-for-test.js -->
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
     <script src="tdgchart-min-for-test.js"></script>
     <script defer src="com.shimokado.params.js"></script>
-    <script defer src="lib/script.js"></script>
+    <!-- JS libraries are now loaded dynamically by tdgchart-min-for-test.js -->
+    <!-- <script defer src="lib/script.js"></script> -->
     <!-- <script src="lib/d3.min.js"></script> -->
     <style>
         #pfjTableChart_left {
@@ -18,27 +20,32 @@
             border-radius: 5px;
             padding: 10px;
         }
+
         #pfjTableChart_right {
             background-color: #666;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
         }
+
         #chartContainer {
             background-color: #fff;
             border: 1px solid #f00;
             border-radius: 5px;
             padding: 10px;
         }
+
         label {
             display: block;
             font-weight: bold;
             margin-top: 10px;
         }
+
         input {
             width: 100%;
             margin-bottom: 10px;
         }
+
         textarea {
             width: 100%;
             height: 200px;
@@ -46,67 +53,64 @@
         }
     </style>
     <script>
-var script = '';
+        var script = '';
 
-var chart = new tdgchart({backend:'js', allowBackendFallback:true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b'});
-if (tdgchart.WF_charts == undefined)
-  tdgchart.WF_charts = {};
-tdgchart.WF_charts['jschart_HOLD_0'] = chart;
+        var chart = new tdgchart({ backend: 'js', allowBackendFallback: true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b' });
+        if (tdgchart.WF_charts == undefined)
+            tdgchart.WF_charts = {};
+        tdgchart.WF_charts['jschart_HOLD_0'] = chart;
 
-// テスト用のextensionManagerのregister関数を定義
-tdgchart.extensionManager= {
-        register: function (config) {
-            console.log(config)
-            const successCallback = function(){
-                console.log("initCallback is called");
+        // テスト用のextensionManagerのregister関数は tdgchart-min-for-test.js に移動しました
+        // window.chartConfig は tdgchart-min-for-test.js の extensionManager.register() で設定されます
+
+
+        chart.data = [];
+        chart.title.text = '';
+        chart.parsePFJString(script);
+        chart.set({
+            "injectedRevision": "$Revision: 1.2 $",
+            "dataSetLimits": { "enabled": true },
+            "catchErrors": true
+        });
+
+        function render(dataFlg = true) {
+            if (!window.chartConfig) {
+                console.error("chartConfig is not defined. Make sure com.shimokado.params.js has been loaded and registered.");
+                return;
+            }
+
+            const renderConfig = {
+                container: document.getElementById("chartContainer"),
+                properties: JSON.parse(document.getElementById("renderConfig_properties").value),
+                dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
+                data: JSON.parse(document.getElementById("renderConfig_data").value),
+                moonbeamInstance: chart,
+                renderComplete: function () {
+                    console.log("renderComplete is called");
+                }
             };
-            config.initCallback(successCallback, config);
-            window.chartConfig = config;
-        }
-    };
+            // chartWidth, chartHeightが入力されている場合は設定する
+            const chartWidth = document.getElementById("chartWidth").value;
+            if (chartWidth) {
+                renderConfig.properties.width = chartWidth;
+            }
+            const chartHeight = document.getElementById("chartHeight").value;
+            if (chartHeight) {
+                renderConfig.properties.height = chartHeight;
+            }
+            // containerの高さと幅を設定する
+            renderConfig.container.style.width = renderConfig.properties.width + "px";
+            renderConfig.container.style.height = renderConfig.properties.height + "px";
 
-
-chart.data = [];
-chart.title.text = '';
-chart.parsePFJString(script);
-chart.set({
-	"injectedRevision" : "$Revision: 1.2 $",
-	"dataSetLimits": {"enabled": true},
-	"catchErrors" : true
-});
-function render(dataFlg = true){
-    const renderConfig = {
-        container: document.getElementById("chartContainer"),
-        properties: JSON.parse(document.getElementById("renderConfig_properties").value),
-        dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
-        data: JSON.parse(document.getElementById("renderConfig_data").value),
-        moonbeamInstance: chart,
-        renderComplete: function(){
-            console.log("renderComplete is called");
+            if (dataFlg) {
+                window.chartConfig.preRenderCallback(renderConfig);
+                window.chartConfig.renderCallback(renderConfig);
+            } else {
+                window.chartConfig.noDataPreRenderCallback(renderConfig);
+                window.chartConfig.noDataRenderCallback(renderConfig);
+            }
         }
-    };
-    // chartWidth, chartHeightが入力されている場合は設定する
-    const chartWidth = document.getElementById("chartWidth").value;
-    if(chartWidth){
-        renderConfig.properties.width = chartWidth;
-    }
-    const chartHeight = document.getElementById("chartHeight").value;
-    if(chartHeight){
-        renderConfig.properties.height = chartHeight;
-    }
-    // containerの高さと幅を設定する
-    renderConfig.container.style.width = renderConfig.properties.width + "px";
-    renderConfig.container.style.height = renderConfig.properties.height + "px";
-    
-    if(dataFlg){
-        chartConfig.preRenderCallback(renderConfig);
-        chartConfig.renderCallback(renderConfig);
-    }else{
-        chartConfig.noDataPreRenderCallback(renderConfig);
-        chartConfig.noDataRenderCallback(renderConfig);
-    }
-}
-</script>
+    </script>
 </head>
 
 <body>
@@ -114,7 +118,8 @@ function render(dataFlg = true){
     <div style="display: grid; grid-template-columns: 400px auto;">
         <div id="pfjTableChart_left" style="padding: 10px;">
             <button id="pfjTableChart_button" onClick="render()">描画</button>
-            <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button><p></p>
+            <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button>
+            <p></p>
             <hr>
             <label for="chartWidth">renderConfig.width</label>
             <input id="chartWidth" type="number" value="400" placeholder="幅を入力してください">
@@ -281,7 +286,7 @@ function render(dataFlg = true){
             <div id="chartContainer">ここに結果が出力される。</div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

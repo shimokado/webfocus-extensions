@@ -1,0 +1,934 @@
+/*Copyright (C) 1996-2023. Cloud Software Group, Inc. All rights reserved.*/
+/* $Revision: */
+@charset "utf-8";
+
+.mlm_colors {
+	color: inherit;
+	background-color: inherit;
+}
+.esri-view .esri-view-root {
+        height: 100% !important;
+}
+.esri-component.esri-scale-range-slider {
+	background-color: rgba(255,255,255,.33) !important;
+}
+.esri-view-width-xlarge .esri-popup__main-container {
+    width: 340px !important;
+}
+.esri-expand__content {
+	 max-height: 500px !important;
+	 z-index:10 !important;
+}
+.esri-widget__table tr td, .esri-widget__table tr th {
+	padding-top: 0.15em !important;
+	padding-bottom: 0.15em !important;
+}
+.root_container {
+	/*background-color: black;*/
+}
+.lyr-menu {
+	height: 20px;
+	padding-left: 8px;
+	align-self: center;
+}
+.daylight_widget {
+ width: auto;
+ gap: 7px;
+ padding: 10px;
+}
+.mlm-slider{
+    background-color: var(--primary-color-gray-light);
+}
+.mlm-check-box{
+    color:"#23b7e5"
+}
+
+.map-layout-obj
+{
+    margin:0;
+  /*  padding:1px;*/
+    position:relative;
+    /*border: 1px solid gray;*/
+}
+.map-container-frame
+{
+    width:inherited;
+    height:100%;
+}
+.myEdit {
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+}
+.map-container-tbar
+{
+  /*font-size:1.85em;
+  padding: .2em;
+  padding-top:0;*/            
+    display: block;
+    border-radius:0px;                   
+    visibility:hidden;
+}
+.map-tools-container{
+    margin: 0;
+    padding: 0;
+    border: 0 solid #fff;
+    width:100%;
+    height:100%;
+    align-items: center;
+    align: center;
+
+}
+.page_box {
+	width:97%;
+	margin:3px;
+}
+.separator {      
+    border-left: 1px solid #ccc;
+}
+.activeLayerSelect
+{
+   margin: 0.4em;
+   margin-left: 0.6em;
+   padding: 0.3em;
+   align-items: inherit;
+   width: 15em;
+   height: 1.8em;
+}
+.distanceUnits
+{               
+   width: 6em;
+}
+.widgetPosition-spinner {
+	width: 5em;
+	line-height:0.8em;
+}
+.widgetPosition-spinner > input{
+	padding: 0.3em;
+}
+.mlm-time-picker > .ibx-timepicker-spinner > input {
+	padding-bottom: 0;
+    padding-top: 0;
+    width: 55px;
+}
+.breakpoints-spinner {
+	min-width: 4.2em;
+	line-height:0.5em;
+	margin: 5px;
+	max-height: 25px;
+}
+.titleEdit {
+	width: 150px;
+	margin:5px;
+	margin-right:0px;
+}
+.maptitleEdit {
+	width: 210px;
+	margin:5px;
+	margin-right:0px;
+}
+.searchEdit {
+	margin:5px;
+	margin-right:0px;
+}
+.cutoffsEdit, searchEdit {
+	width: 210px;
+	margin:5px;
+	border-radius: 5px;
+}
+.cutoffsEdit > input, .mlm-discover-unitsMenu > input {
+	height: 30px;
+}
+.distanceEdit
+{       
+    width: 6em;
+    margin: 0px;
+}
+.effectEdit
+{       
+  /*  width: 180px; */
+    border-radius: 0.2em;
+}
+.layers-label {
+	margin-right: 5px;
+	line-height:18px;
+}
+.fromTo {
+	margin-left: 7px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+/*	margin-right: 90px;*/
+	outline: none !important;
+}
+.fromTo .ibx-label-text {
+	margin-right: 10px;
+}
+/*.conditions-box {
+	width: 90%;
+}*/
+.dragImage, .background-color-menu-button, .effectEdit
+{
+   border-style: solid;
+   border-width: 1px;
+   border-color: #ccc;
+}
+.tbar-spacer
+{
+    flex:1 1 auto;
+}
+.addDataLayer, .addGroupLayer{
+	padding-left: 15px;
+	padding-right: 15px;
+	color: "inherit";
+	width:"auto";
+	margin:5px;
+	margin-top: 5px;
+}
+.devLabel {
+	margin:5px;
+}
+.aniLabel, .discoverLabel {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.effect-box > .discoverLabel, .feature-effect-box > .discoverLabel, .conditions-box > .discoverLabel,  
+	.where-box > .discoverLabel, .ibx-accordion-page-content > .discoverLabel, .feature-effect-box > .aniLabel, .mlm-timeslider-options-vbox {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.colorSwatch {
+	margin-top:2px;
+	margin-bottom:2px;
+	border-style: solid;
+   border-width: 1px;
+   border-color: #ccc;
+}
+.mapSubmenuShadow {
+	 box-shadow: 2px 2px grey, -1px -1px .4em grey;
+	 width: auto !important;
+}
+.tooltipcontainer {
+    width:auto;
+    position:absolute;
+    background-color:black;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius:3px;
+    box-shadow: 0px 4px black;
+    padding: 5px;
+    padding-bottom: 0;
+    color:white;
+    display:none;
+    z-index:100;
+}
+.tooltipcontainerEsri {
+    width:auto;
+    position:absolute;                    
+    padding: 5px;
+    padding-bottom: 0;                    
+    display:none;
+    z-index:10000;
+}
+.wfc-map-container-symbolEditor {
+	/*position:absolute; 
+	margin-right:10px;
+	border:1px solid red;*/
+	padding: 5px;
+}
+.map-wdg-symbol-settings {
+	z-index:10000;
+	padding: 5px;	
+	border: 1px solid #ccc;
+}
+.maps-notes-textarea {
+    width:265px;
+    height: 40px;                      
+    padding: 5px;    
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.map-container
+{
+    flex:1 1 auto;
+}
+
+.selection-tools
+{
+    border:none;
+}
+.location-select {
+	width:120px;
+}
+
+.radio-group-checked {
+    color: #2171b5;
+}
+.btn-travel-type {
+	width: 100px;	
+	padding-top:0;
+    padding-bottom:0;
+}
+.mlm-travelTypeRadio {
+    padding-bottom: 15px;    
+}
+.mlm-discover-horSeparator {
+	border-bottom: 1px solid #ebe7e7;
+}
+.btn-travel-type > .ibx-label-glyph.ibx-glyph-spacer {
+	margin-right: 0.8em;
+}
+.feature-effect-box > .refScale > .ibx-switch-spacer {
+	max-width: 0.3em;
+}
+.btn-travel-type.ibx-check-box.checked {
+	background-color: #242642;
+	color: white;
+}
+.btn-sel-type, .btn-sel-type:hover, .btn-inter-type, .btn-inter-type:hover
+{
+    border:none;
+}
+.btn-ani-settings {
+	
+}
+.btn-sel-type:enabled
+{
+    color: #07a1df;
+}
+.btn-sel-type:checked
+{
+    color: #07a1df;
+}
+.collapse-btn
+{
+    position:absolute;
+    right:10px;
+    top:10px;
+    padding:.25em;
+    margin:2px;
+    background-color:white;
+    z-index: 10000;
+    box-shadow:0px 0px 5px 0px gray;
+}
+.map-toc-main, .map-wdg-dev-tools
+{                   
+    display: block;
+    border-radius:0px;
+    min-width:300px;
+    overflow: auto;
+}
+.shapeTools
+{
+    margin:.33em;
+    font-size: 1.5em;
+}
+.map-selTools-main
+{
+    display: block; 
+    border-radius:0px;                   
+}
+.map-toc-wrapper
+{
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+}
+.wrapper {
+	padding-bottom:10px;
+}
+.widget_settings {
+    line-height: 12px;
+   /* margin: 2px;*/
+    padding-top: 3px;
+    padding-bottom: 3px;
+    overflow: visible;
+}
+.map-wdg-camera-wrapper
+ {
+     display: inline-block;
+     width: 100%;
+ }
+ .map-selTools-wrapper
+ {
+     display: inline-block;
+     width: 100%;
+     overflow: hidden;
+ }
+ .map-layer-box
+ {
+     margin: 1px;
+     border-style: solid;
+     border-width: 0 0 1px 0;
+     border-color: #d9d9d9
+ }
+ .discover-searchEdit {
+ 	 margin: 1px;
+ 	 padding: 1px;
+ 	 width: 195px;
+ }
+ .mlm-breakpoints-box
+ {   
+     border-style: none;
+     padding-left: 8px;
+ }
+ .mlm-travelModeRadio {
+ 	width: 130px;
+ 	padding-left: 5px;
+ }
+ .mlm-travelModeRadio > .ibx-label-text {
+ 	padding-left: 5px;
+ }
+ .mlm-travelRadio {
+ 	margin-top: 8px;
+ 	margin-bottom: 8px;
+ }
+ .mlm-travelTypeModeRadio > .ibx-check-box.checked, .mlm-travelTypeModeRadio > .ibx-check-box {
+ 	margin-right: 5px;
+ }
+ .mlm_discover_iframe {
+ 	height: 260px;
+ 	width:100%;
+ }
+ .mlm_discover_reportOut {
+ 	min-height: 50px;
+ 	height: auto;
+ 	border-style: none;
+ }
+ .mlm-timeDistance  {
+ 	padding: 5px;
+ 	padding-left: 58px;
+ 	
+ }
+ .mlm-timeModeRadio {
+	margin-top: 5px;
+    margin-bottom: 5px;
+ }
+ .mlm-time-picker {
+ 	margin-left: 60px;
+  /*   margin-top: 5px;
+    margin-bottom: 5px;
+   padding: 0; */
+    margin-right: 48px;
+    border-radius: 5px;
+ }
+ .mlm-discover-modeLabel {
+ 	width: 55px;
+ }
+ .mlm-discover-modeLabel {
+ 	width: 55px;
+ }
+ .mlm-discover-unitsMenu {
+    width: 80px;
+    margin-right: 45px;
+    border-radius: 5px;
+ }
+ .mlm-discover-cutoffsAddRemove {
+   border: 1px solid rgba(110,110,110,.3);
+    border-radius: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
+ }
+ .mlm-discover-unitsMenu > .ibx-select-open-btn {
+ 	border-style: none;
+ }
+ .map-tools-box-header {
+     border-top: 1px solid #ccc;
+     border-bottom: 1px solid #ccc;
+     padding-top: 6px;
+ }
+ 
+.map-toc-content
+{
+   display: block;
+   width: 100%;
+   height: 100%;
+   max-height: 300px;
+   padding: 5px;
+   overflow: auto;
+}
+.lyr-wdg-main
+{
+    height:auto;
+    overflow:hidden;
+    border:1px solid #f0f0f0;
+    border-radius:1px;
+    position: absolute;
+    width: 100%;
+    display: block;
+    top: 0;
+    left: 0;
+}
+.lyr-wrapper
+{
+    display: inline-block;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.lyr-header-left
+{
+    position: relative;
+    display: inline-block;
+    float: left;
+    padding: 3px;
+    width:65%;
+}
+.lyr-header-right
+{
+    position: relative;
+    display: inline-block;
+    float: right;
+    padding: 3px;
+    width:35%;
+}
+
+.lyr
+{
+    border: none;
+	cursor: pointer;
+}
+
+.selection-type{
+    font-size: .6em;
+    border: none;
+    color: #525252;
+}
+.lyr-legend:hover
+{
+    border: none;
+    color: #525252;
+}
+.lyr-options:hover
+{
+    border: none;
+    color: #525252;
+}
+.btn-layer-zoomto:hover
+{
+    border: none;
+    color: #525252;
+}
+.lyr-geom
+{
+    color: #07a1df;
+}
+.lyr-btn-active
+{
+    color: #07a1df;
+}
+
+.waitGlyph {
+    font-size:5em;
+    color: #07a1df;
+}
+.lyrGlyph
+{
+    font-size:1.3em;
+    color: #525252;
+    margin: 5px;
+}
+.lyr-content-box
+{
+    height:auto;
+    overflow:hidden;
+    border:1px solid #f0f0f0;
+    border-radius:1px;
+    width: 100%;
+    display: block;
+    align: stretch;
+}
+.lyr-opacity-box, .lyr-layer-look-box, .fov-box, .filters-box, .filter-box
+{
+    width: 99%;
+    overflow:hidden;
+    display: inline-block;
+    padding-top:2px;
+    padding-bottom:2px;
+}
+.filters-box {
+	border:1px solid #f0f0f0;
+}
+.titleEditBox {
+	width:auto;
+	padding-left:20px;
+}
+.lyr-options-wrapper
+{
+    width: 100%;
+    overflow:hidden;
+    display: block;
+   /* padding-top:10px;
+  padding-bottom:10px;*/
+    align-items: center;
+
+}
+.lyr-slider
+{
+    display: inline-block;
+    width: 90%;
+}
+.mlm-discover-cutoffs-slider
+{
+    width: 95%;
+    padding-left: 60px;
+}
+.measTools {
+	width:300px;
+}
+.camera_text{
+	width:200px;
+	height:250px;
+	display:none;
+}
+.color-picker-swatch {
+	width: 100%;
+}
+.animation-renderer-box {
+	width: inherit;
+/*    max-height: 90vh;
+    overflow: auto;*/
+}
+.animation {
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.discover-box {
+	width: 95%;
+    max-height: 90vh;
+    overflow: auto;
+}
+.camera-box, .save-box, .layers-box, .widgets-box, .settings-box, .discover-box, .route-box, .effect-box {
+	padding:3px;
+	margin:5px;
+	border: 1px solid #ccc;
+	line-height: 15px;
+}
+.blend-effect-box, .heatmap-box, .mlm-timeslider-stops {
+border-bottom: 1px solid #ccc;
+}
+.mlm-timeslider-stops {
+	margin-bottom:10px;
+}
+.effect-box, .blend-effect-box, .heatmap-box, .media-box {
+	width: 100%;
+	margin-left:0px;
+}
+.feature-effect-box {
+	border: 1px solid #ccc;
+	padding: 0;
+	margin: 2px;
+	padding: 3px;
+}
+.where-box, .geometry-box {
+	border: 1px solid #ccc;
+	padding: 2px;
+    margin-top: 5px;
+}
+/*.comp-operator {
+	width: 50px;
+	margin-right: 10px;
+    padding-left: 10px;
+}*/
+.route-box {
+    width: 200px;
+    margin-left: 0;
+}
+.btn-RefreshLayer {
+	margin: 5px 0px 5px 0px;
+	/*max-width: 0.3em;
+	height: 18px;	*/
+    border-radius: 5px;  
+    border: 1px solid #1041c9;
+    margin-left:5px;
+}
+.route-box > .mlm-travelTypeRadio > .btn-travel-type, .route-box > .map-buttons-box > .btn-travel-type, .mlm-featureSelectionTypeRadio > .btn-travel-type,
+  .lyr-opacity-box > .btn-travel-type, .lyr-opacity-box > .btn-travel-type, .feature-effect-box > .map-buttons-box > .btn-travel-type,
+  .mlm-selectionRadio > .btn-travel-type  {
+	width:55px;	
+	height: 25px;
+/*	font-size: 10px;*/
+	padding: 0px;
+}
+.mlm-selectionRadio > .btn-travel-type  {
+	width:40px;	
+}
+.esri-layer-list__item--has-children>.esri-layer-list__list {
+    font-size: inherit;
+}
+.layers-box, .widgets-box {
+	margin-left:1px;
+	margin-right:1px;
+}
+
+.camera-box {
+	width: 93%;
+}
+.devToolsButton {
+	font-size: 15px;
+	height: 32px;
+	width: 32px;
+   margin: 5px 10px 5px 10px;
+}
+.disc_button {
+	font-size: 15px;
+	margin: 1px;
+	height: 34px;	
+	width:34px;
+}
+.disc_button-wb {
+	border: 1px solid rgba(110,110,110,.3);
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+.sat-select {  
+   outline: none;
+   margin-top:3px;
+   margin-bottom:3px;
+}       
+.sat-button {  
+   border-radius: 0.2em;
+   border: 1px solid #ccc;
+   outline: none;
+   margin-right:20px;
+   margin-bottom:3px;
+}    
+
+.satContent {
+	line-height: 1.7
+}
+div.satContent>div:nth-of-type(odd) {
+ /* background: #ff642e;*/
+}
+.layers-list-select{
+   width: 225px;
+   opacity: 1;
+   outline: none;
+   margin-top:5px;
+   margin-bottom:5px;
+}
+.multiLayerMapSlider
+{
+    width: 100%;    
+/*     margin: 5px;*/
+}
+.multiLayerMapSlider > .ibx-slider-label-value {
+	padding:0;
+}
+.lyr-opacity-lbl
+{
+    text-transform: uppercase;
+    color:  #2171b5;
+}
+.lyr-heatmap-toggle, .lyr-cluster-toggle
+{
+   padding: 10px;
+}
+.htm-type, .cls-type, .std-type {
+    padding-left:15px;
+    padding-right:15px;
+}
+          
+.map-container-message {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+.map-container-message, .map-container-message .messageTextWrapper, .map-container-message .messageIconWrapper {
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+.map-container-message  {
+	height: 100%;
+	width: 100%;
+	backdrop-filter: blur(8px);
+}
+
+.map-container-message .messageTypeWrapper {
+	padding: 0 12.5%;
+	overflow-y: auto;
+	width: 75%;
+}
+
+.map-container-message .messageIconWrapper {
+	height: 96px;
+}
+
+.map-container-message .messageHidden {
+	display: none;
+}
+
+.map-container-message {
+	font-size: 48px;
+}
+
+.map-container-message .messageCustomHTML {
+	height: 48px;
+	width: 48px;
+	border-radius: 4px;
+	position: relative;
+}
+
+.map-container-message .messageLabel {
+	  font-size: 16px;
+}
+.map-container-message .canvas-messaging-error .messageIcon {
+	color: #dc143c;
+}
+
+
+.map-container-message .canvas-messaging-error .messageDetails, .map-container-message .canvas-messaging-cancel .messageDetails {
+	font-size: 10px;
+	width: 100%;
+	margin-top: 16px;
+	border: hidden;
+	border-top: 1px solid #eeeeee;
+	padding-top: 8px;
+}
+
+.container-message-hidden {
+	visibility: hidden	
+}
+.mlmScreenshotImage {
+	display:none;
+	width: 100%;
+	height:100%;
+	z-index:10000;
+	background-repeat: no-repeat;
+  	background-position: center;
+}
+.disabledwidget {
+    pointer-events: none;
+    opacity: 0.4;
+}
+.selectItemColor {
+	width:10px;
+	height:10px;
+}
+.esri-daylight .esri-slider.esri-slider--horizontal .esri-slider__thumb {
+ width:15px;
+ height:15px;
+}
+.mlm_switch {
+	padding-left:10px;	
+}
+}
+.wrapper_1 .weather_widget {
+	padding-left: 3px;
+    padding-right: 3px;
+}
+.mlm-camera-settings > .ibx-accordion-page-content{
+	overflow-y: hidden;	
+}
+
+.mlm-symbol-font-sizeSelect {
+	width: 90px;
+    max-height: 28px;
+    margin-left: 5px;
+}
+.mlm-symbol-fontnameSelect, .mlm-line-style {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 275px;
+	max-height: 28px;
+}
+.mlm-symbol-button {
+	height: 10px;
+    padding-left: 0.01rem !important;
+    padding-right: 0.1rem !important;
+}
+.mlm-hbox-padding {
+	padding-right: 10px;
+	width: 280px;
+}
+.mlm-symbol-editor-font {
+	width: 225px;
+}
+.mlm-tsInterval-unitsMenu {
+	width: 115px;
+    margin-left: 7px;
+}
+.mlm-tsMode, .mlm-tsLayout, .mlm-tsLayers, .mlm-date-start, .mlm-date-end {
+	width: 195px;
+}
+.mlm-timeslider-options {
+	width: 320px;
+}
+.mlm-ts-loop {
+	max-width: 110px;
+}
+.mlm-ts-loop > .ibx-switch-spacer, .mlm-ts-timeVisible > .ibx-switch-spacer{
+	max-width: 1.2em;
+	min-width: 1.2em;
+}
+.mlm-symbol-editor-parent {
+	/*max-height: 500px;
+	overflow-y:auto;*/
+	width: 300px;
+}
+.mlm-color-picker-swatch {
+	border: 2px solid black;
+	margin: 5px;
+	padding: 5px;
+	margin-right: 0;
+}
+.mlm-bold-label {
+	font-weight: bold;
+}
+.mlm-nopadding-label {
+	padding-left: 0;
+}
+.mlm-text-settings, .wfc-map-container-symbolEditor {
+	width: 280px;
+}
+.mlm-timeSlider {
+	position: absolute;
+	left: 5%;
+	right: 5%;
+	bottom: 20px;
+}
+
+.mlm-date-start {
+	margin-bottom: 5px;
+}
+.mlm-tscount-spinner, .mlm-stopsTypeRadio, .mlm-playRate-spinner {
+    margin-right:125px;
+}
+.mlm-ts-loop, .mlm-ts-timeVisible {
+  margin-right:135px;
+}
+.mlm-ts-spinner {
+	border:none  !important;
+	height: 0.9em;
+}
+.mlm-ts-options-startDate {
+	margin-top:5px;
+}
+.mlm-ts-options-endDate {
+	margin-bottom:5px;
+}
+.wfc-map-disabledwidgetPreview > *{
+    pointer-events: none;
+    opacity: 0.8;
+}
+.wfc-map-disabledDiscoverwidget {
+    width: 375px;
+    height: 400px;
+    background-color: #f3f3f3;
+    opacity: 0.6;
+}
+.mlm-color-colorpick {
+	padding-top: 8px;
+	padding-left: 5px;
+}
+.mlm-color-colorpick .cp-text-value{
+	border: 0;
+	padding: 0;
+}

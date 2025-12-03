@@ -1,0 +1,627 @@
+{
+	"info": {
+		"version": 1.0,
+		"implements_api_version": 2.0,
+		"author": "Cloud Software Group, Inc.",
+		"copyright": "Cloud Software Group, Inc.",
+		"url": "",
+		"icons": {
+			"medium": "icons/icon.png"
+		}
+	},
+
+	"properties": {
+		"baseLayer": {
+            "basemap": "",
+			"zoomType" : "",
+            "center": [0,0],
+            "zoom": 2,
+            "zoomToOnLoad": ""
+        },
+        "overlayLayers": [],
+        "groups":[],
+        "layers": {
+        	"create":true,
+			"visible": false,
+			"attachTo": "top-left"
+		},
+        "devTools": {
+			"create":false,
+			"visible": true,
+			"attachTo": "top-right"
+		},
+		"zoom": {
+			"visible": true,
+			"attachTo": "bottom-right"
+		},
+		"legend": {
+			"create":true,
+			"visible": true,
+			"attachTo": "bottom-left"
+		},
+		"navigation-toggle": {
+			"viewType":"3d",
+			"visible": true,
+			"attachTo": "bottom-right"
+		},
+		"camera": {
+			"viewType":"3d",
+			"create":true,
+			"attachTo": "top-right"
+		},
+		"compass": {
+			"visible": true,
+			"attachTo": "bottom-right"
+		},
+		"scalebar": {
+			"visible": true,
+            "attachTo": "bottom-right",
+            "scalebarStyle": "line",
+            "scalebarUnit": "dual"
+        },       
+        "scalerange": {
+        	"create":false,
+			"visible": false,
+            "attachTo": "bottom-right"
+		},        
+        "interaction" : { 
+        	"create":true,
+			"visible": true,
+			"attachTo": "top-right",
+			"default": "search",
+			"members" : {
+				"direction": {
+					"create":false
+				},
+				"measurement": {
+					"create":false
+				},
+				"search": {
+					"create":true
+				},
+				"location": {
+					"create":false
+				},
+				"sketch": {
+					"create":false
+				}
+			}
+        },
+		
+		"locate": {"create":false},
+		"basemaps": {
+			"create":true,
+			"visible": false,
+			"attachTo": "top-right"
+		},
+		"timeslider": {
+			"create":false,
+			"visible": false,
+			"attachTo": "bottom-left",
+			"loop":false,
+			"playRate":1000,
+			"timeVisible":true,
+			"mode": "time-window",
+			"layout":"compact" 
+		},
+		"bookmarks": {
+			"create":true,
+			"visible": false,
+			"attachTo": "top-right"
+		},
+		"discover": {			
+			"create":false,
+			"visible": false,
+			"attachTo": "top-right"
+		},
+		"maintoolbar": {
+			"create": true,
+			"visible": true,
+			"attachTo": "top-center"
+		},
+
+		"selectionDistance": {
+            "visible": false,
+            "units": "MILES"
+        },
+        "ttHighlight" : { 
+        	"color": "white",
+        	"haloColor": "white",
+        	"haloOpacity": 0.8,
+        	"fillOpacity": 0.5
+        },
+        "selHighLight":{ 
+        	"color": "white",
+        	"haloColor": "black", 
+        	"haloOpacity": 0.8, 
+        	"fillOpacity": 0.5 
+        },
+        "theme" : "",
+        "inheritEsriTheme": true,
+        "viewType":"2d"
+	},
+	
+	"propertyAnnotations": {
+		"global": {
+			"esriColor": {
+			                "typeAnnotation": "type",
+			                "typeValues": ["str", "number", "object"]
+			            },
+            "stringOrArray": {
+                "typeAnnotation": "type",
+                "typeValues": [
+                    "str",
+                    "array"
+                ],
+                "arrayTypes": "str"
+            },
+            "stringOrNumber": {
+                "typeAnnotation": "type",
+                "typeValues": ["str","number"]
+            },            
+            "baseMapEntry" : {
+                "name" : "str",
+                "title" : "str",
+                "url" : "str",
+                "thumbnailUrl" : "str", 
+                "showInBasemapControl" : "bool",
+                "basemapLayer" : "json",
+                "ibiBaseLayer" : "str",
+                "basemapPortalId": "str"
+            },
+            "attachLocation" : {
+				"typeAnnotation": "str",
+				"stringValues": [
+					"top-right",
+					"bottom-right",
+					"bottom-left",
+					"top-left",
+					"top-leading",
+					"top-trailing",
+					"bottom-leading",
+					"bottom-trailing",
+					"top-center",
+					"bottom-center",
+					"manual"					
+				]
+			},
+			"attachPosition": {
+                "typeAnnotation": "type",
+                "typeValues": ["object","number","str"]
+            },
+			"layer": {
+                "geometrySourceType": {
+                    "typeAnnotation": "str",
+                    "stringValues": [
+                        "geojson",
+                        "esri",
+                        "csv",
+                        "seriesdata",
+                        "ibijson"
+                    ]
+                },                
+                "layerType": {
+                    "typeAnnotation": "str",
+                    "stringValues": [
+                        "featurelayer",
+                        "tile"
+                    ]
+                },
+                "title": "str",
+                "url": "str",
+                "options": {
+                    "opacity": "number",
+                    "visible": "bool",
+                    "index" : "number"
+                },
+                "layerOptions": {
+                    "id": "str"
+                },
+                "iconPath": "str",
+                "ibiAddLayer": "str"
+            },
+            "effectObj" : {
+            	"name":"str", 
+            	"value": "str",
+            	"selected": "bool"
+            }            
+        },
+		"viewType": {
+			"typeAnnotation": "str",
+			"stringValues": [
+				"3d",
+				"2d"
+			]
+		},
+		"chartHeadroom": "number",
+		"basemap": {
+			"typeAnnotation": "str"
+		},
+		"overlayLayers": {
+            "typeAnnotation": "array",
+            "arrayTypes": "global.layer"
+        },
+        "groups" : {
+        	"typeAnnotation": "array",
+        	"arrayTypes": "object"
+        },
+        "dynamicLayers": {
+            "typeAnnotation": "array", 
+            "arrayTypes": "global.layer"
+        },
+		"baseLayer": {
+            "basemap": {
+                "typeAnnotation": "str"
+            },
+            "zoomType" : {
+				"typeAnnotation": "str",
+				"stringValues": [
+					"",
+                    "auto",
+                    "camera",
+                    "center-zoom",
+                    "layer"
+                ]
+			},
+            "camera": {
+				"fov": "number",
+				"heading": "number",
+				"position": {
+					"latitude": "number",
+					"longitude": "number",
+					"z": "number",
+					"spatialReference": {
+						"wkid": "number"
+					}
+				},
+				"tilt":"number"
+			},
+            "center": {
+                "typeAnnotation": "array",
+                "arrayTypes": "number"
+            },
+            "zoom": "number",
+            "zoomToOnLoad": "str"
+        },
+        "baseMapInfo" : {
+            "customBaseMaps" : {
+                "typeAnnotation" : "array",
+                "arrayTypes": "global.baseMapEntry"
+            },
+            "effect":"str"
+        },
+		"ground": "str",
+		"background" : "global.esriColor",
+		"layers": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"devTools": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"zoom": {			
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"legend": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"basemaps": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"bookmarks": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"timeslider": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation",
+			"fullTimeExtent": {
+				"start":"str",
+				"end":"str"
+			},
+			"loop":"bool",
+			"playRate":"number",
+			"timeVisible":"bool",
+			"mode" : {
+				"typeAnnotation": "str",
+	                "stringValues": [
+	                    "instant",
+	                    "time-window",
+	                    "cumulative-from-start",
+	                    "cumulative-from-end"
+	                ]
+			},
+			"layout" : {
+				"typeAnnotation": "str",
+	                "stringValues": [
+	                    "auto",
+	                    "compact",
+	                    "wide"
+	                ]
+			},
+			"stops": {
+				"count":"number",
+				"dates":{
+					"typeAnnotation": "array",
+        			"arrayTypes": "str"
+				},				
+				"interval": {
+					"value":"number",
+					"unit": {
+			                "typeAnnotation": "str",
+			                "stringValues": [
+			                    "milliseconds",
+			                    "seconds",
+			                    "minutes",
+			                    "hours",
+			                    "days",
+			                    "weeks",
+			                    "months",
+			                    "years",
+			                    "decades",
+			                    "centuries"
+			                ]
+			         }
+			     }
+			}			
+		},
+		"discover": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"interaction": {
+			"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",			
+			"attachTo": "global.attachLocation",
+			"default":"str",
+			"members" : {
+				"direction": {
+					"create":"bool"
+				},
+				"measurement": {
+					"create":"bool"
+				},
+				"search": {
+					"create":"bool"
+				},
+				"location": {
+					"create":"bool"
+				},
+				"sketch": {
+					"create":"bool"
+				}
+			}
+		},
+		"uiTheme": {
+			"typeAnnotation": "object",
+            "widgets" : {
+                "color": "global.esriColor",
+                "font-family": "str",
+                "font-weight" : "str",
+                "font-style": "str",
+                "background-color" : "global.esriColor"
+            },
+            "active" : { "color": "global.esriColor"},
+            "hover" : {
+                "color": "global.esriColor",
+                "background-color" : "global.esriColor"
+            },
+            "legend" : {
+                "color": "global.esriColor",
+                "font-family": "str",
+                "font-weight" : "str",
+                "font-style": "str"
+            },
+            "deemphasizeEffects" : {
+            	"typeAnnotation": "array",
+                "arrayTypes":"global.effectObj"            	
+            },
+            "emphasizeEffects" :  {
+            	"typeAnnotation": "array",
+            	"arrayTypes":"global.effectObj"  
+            }
+        },
+        "scalerange": {
+        	"create": "bool",
+			"visible": "bool",
+			"index": "global.attachPosition",
+            "attachTo": "global.attachLocation",
+            "region" : "str",
+            "maxScaleLimit" : "number",
+            "minScaleLimit" : "number"
+		},
+		"scalebar": {
+			"visible": "bool",
+			"index": "global.attachPosition",
+            "attachTo": "global.attachLocation",
+            "scalebarStyle": {
+                "typeAnnotation": "str",
+                "stringValues": [
+                    "ruler",
+                    "line"
+                ]
+            },
+            "scalebarUnit": {
+                "typeAnnotation": "str",
+                "stringValues": [
+                    "dual",
+                    "english",
+                    "metric"
+                ]
+            }
+        },
+		"navigation-toggle": {		
+			"viewType":"str",
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"camera": {		
+			"viewType":"str",
+			"visible": "bool",
+			"create": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"compass": {				
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": "global.attachLocation"
+		},
+		"attribution": {				
+			"visible": "bool",
+			"index": "number",
+			"attachTo": "global.attachLocation"
+		},
+		"maintoolbar": {	
+			"create": "bool",		
+			"visible": "bool",
+			"index": "global.attachPosition",
+			"attachTo": {
+				"typeAnnotation": "str",
+				"attachTo": "global.attachLocation"
+			}
+		},
+		"selectionDistance": {
+            "visible": "bool",
+            "units": {
+				"typeAnnotation": "str",
+				"stringValues": [
+                    "FEET",
+                    "KILOMETERS",
+                    "METERS",
+                    "MILES",
+                    "NAUTICAL_MILES",
+                    "YARDS"
+                ]
+			}
+        },
+        "ttHighlight" : {
+       		"color": "global.esriColor",
+       		"haloColor": "global.esriColor", 
+       		"haloOpacity": "number", 
+       		"fillOpacity": "number" 
+       	},
+        "selHighLight": {
+	        "color": "global.esriColor",
+	        "haloColor": "global.esriColor", 
+	        "haloOpacity": "number", 
+	        "fillOpacity": "number" 
+        },
+        "locate": {"create":"bool"},
+        "theme": {
+        	"typeAnnotation": "str",
+        	"stringValues": [
+        		"",
+                "light",
+    			"dark",
+    			"light-blue",
+    			"dark-blue",
+    			"light-green",
+    			"dark-green",
+    			"light-purple",
+    			"dark-purple",
+    			"light-red",
+    			"dark-red"
+            ]
+        },
+        "apikey" : "str",
+        "inheritEsriTheme" : "bool",
+        "tooltipEnabled" : "bool",
+        "describe" : "bool",
+        "refreshLayers" : "bool",
+        "portalId":"str",
+        "mapTitle":"str",
+        "noUIcontrols":"bool",
+        "layersOrder": {
+        	"typeAnnotation": "str",
+        	"stringValues": [
+                "as-is",
+    			"optimal"
+            ]
+        },
+        "environment" :{
+		    "lighting": {
+		        "type" : {
+		        	"typeAnnotation": "str",
+		        	"stringValues": [
+		                "virtual",
+		    			"sun"
+		            ]
+		        },
+                "directShadowsEnabled": "bool",
+                "ambientOcclusionEnabled": "bool",
+                "cameraTrackingEnabled": "bool"
+            },
+            "background": {
+              "type": "str",
+              "color": "global.esriColor"
+            },
+            "starsEnabled": "bool",	
+            "atmosphereEnabled": "bool",
+            "atmosphere": {
+                "quality": {
+		        	"typeAnnotation": "str",
+		        	"stringValues": [
+		                "high",
+		    			"low"
+		            ]
+		        }
+            },
+            "weather": {
+            	"type" : {
+		        	"typeAnnotation": "str",
+		        	"stringValues": [
+		                "sunny",
+		    			"cloudy",
+		    			"rainy",
+		    			"snowy",
+		    			"foggy"
+		            ]
+		        },
+		        "cloudCover": "number",
+      			"precipitation": "number",
+      			"fogStrength": "number",
+      			"snowCover": {
+      				"typeAnnotation": "str",
+		        	"stringValues": [
+		                "enabled",
+		    			"disabled"
+		            ]
+      			}
+	        }            	 
+        }        
+	},
+
+	"translations": {
+		"en": {
+			"name": "Template for creating new extensions",
+			"description": "When creating a new extension, start by cloning this extension",
+			"icon_tooltip": "This extension does ...", 
+			"value_name": "Value Bucket", 
+			"value_tooltip": "Drop a measure here", 
+			"labels_name": "Label Bucket", 
+			"labels_tooltip": "Drop a dimension here"
+		}
+	}
+}

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Created-By: Maven JAR Plugin 3.3.0
+Build-Jdk-Spec: 11
+Specification-Title: webfocus-webjars-tdg
+Specification-Version: 9.3
+Specification-Vendor: Cloud Software Group, Inc.
+Implementation-Title: webfocus-webjars-tdg
+Implementation-Version: 9.3.2
+Implementation-Vendor: Cloud Software Group, Inc.
+Build-Number: 6
+Build-Tag: jenkins-WF_Branch_Management-tool-webfocus-build-release-rele
+ ase%2Fbranch9.3-6
+Build-Timestamp: 1730899652106
+

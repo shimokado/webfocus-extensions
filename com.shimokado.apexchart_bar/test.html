@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>apexcharts sample</title>
     <script src="tdgchart-min-for-test.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="lib/apexcharts.js"></script>
-    <!-- <script src="lib/d3.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <!-- <script defer src="lib/apexcharts.js"></script> -->
+    <!-- <!-- <script src="lib/d3.min.js"></script> --> -->
     <style>
         #pfjTableChart_left {
             background-color: #f0f0f0;
@@ -52,14 +52,7 @@ if (tdgchart.WF_charts == undefined)
   tdgchart.WF_charts = {};
 tdgchart.WF_charts['jschart_HOLD_0'] = chart;
 
-// テスト用のextensionManagerのregister関数を定義
-tdgchart.extensionManager= {
-        register: function (config) {
-            console.log(config)
-            const successCallback = function(){
-                console.log("initCallback is called");
-            };
-            config.initCallback(successCallback, config);
+// テスト用のextensionManagerのregister関数は tdgchart-min-for-test.js に移動しましたconfig.initCallback(successCallback, config);
             window.chartConfig = config;
         }
     };

@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (C) 1996-2023. Cloud Software Group, Inc. All rights reserved.
+$Revision: 1.0 $:-->
+
+<ibx-res-bundle name="test_res_bundle.xml" loadContext="bundle">
+    <strings>
+		<string-file src="{res}/com.ibi.intl.ibxtools.wfcomponents.multilayermap.wfc_multilayermap" />	
+		<string-file src="{res}/com.ibi.intl.ibxtools.wfcomponents.font_formatter.wfc_font_formatter" />
+    </strings> 
+
+    <styles>
+    	<style-file src="{context}/ibxtools/wfshell/wfthemes/default/theme.css"/> 
+    	<style-file src="../css/geo_map.css"/>
+    	<style-file src="../css/geo_map_datepicker.css"/>
+    </styles>
+    <markup>
+    	<markup-block>   
+    		<!-- Widget to show messages within containers -->
+			<div class="wfc-map-container-message map-container-message" data-ibx-type="ibxVBox" aria-disabled="false" data-ibx-name="containerMessage">
+			 	<div class="messageTypeWrapper" data-ibx-type="ibxVBox" data-ibx-name="messageTypeWrapper">
+					<div class="messageIconWrapper" data-ibx-type="ibxVBox"  data-ibx-name="messageTypeWrapper1">
+						<div class="messageIcon" data-ibx-name="messageIcon" data-ibx-type="ibxLabel" data-ibxp-glyph-classes="ibx-icons ds-icon-layers"></div>
+					</div>
+					<div class="messageTextWrapper" data-ibx-type="ibxVBox" data-ibx-name="messageTextWrapper">
+						<div aria-disabled="false" data-ibx-type="ibxLabel" data-ibxp-text-align="left" data-ibxp-justify="start" data-ibxp-text-wrap="true" class="messageLabel" data-ibx-name="messageLabel"></div>
+						<div aria-disabled="false" class="messageDetails" data-ibx-name="messageDetails"></div>
+					</div>
+				</div>
+			</div>
+		</markup-block>		
+        <markup-block>        	
+            <div class="map-layout-obj map-container-frame" data-ibx-type="ibxVBox" data-ibxp-align="stretch">                
+                <div class="cmd-toggleTOC" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleTOC"></div>
+                <div class="cmd-ToggleView" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleView"></div>
+                <div class="cmd-BtnCollapse" data-ibx-type="ibxCommand" data-ibxp-id = "cmdBtnCollapse"></div>
+                <div class="cmd-BtnExpand" data-ibx-type="ibxCommand" data-ibxp-id = "cmdBtnExpand"></div>
+                <div class="cmd-ToggleST" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleST"></div>
+                <div class="cmd-ToggleBM" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleBM"></div>
+                <div class="cmd-ToggleLE" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleLE"></div>     
+                <div class="cmd-SaveCustom" data-ibx-type="ibxCommand" data-ibxp-id = "cmdSaveCustom"></div> 
+                <div class="cmd-TimeSlider" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleTimeSlider"></div> 
+                <div class="cmd-ScalerangeSlider" data-ibx-type="ibxCommand" data-ibxp-id = "cmdToggleScalerangeSlider"></div> 
+                <div class="cmd-Discover" data-ibx-type="ibxCommand" data-ibxp-id = "cmdDiscover"></div>
+                <div class="cmd-RemoveCustom" data-ibx-type="ibxCommand" data-ibxp-id = "cmdRemoveCustom"></div>
+                <div class="cmd-search" data-ibx-type="ibxCommand" data-ibxp-id = "cmdsearch"></div>
+                <div class="cmd-measurement" data-ibx-type="ibxCommand" data-ibxp-id = "cmdmeasurement"></div>
+                <div class="cmd-direction" data-ibx-type="ibxCommand" data-ibxp-id = "cmddirection"></div>
+                <div class="cmd-locate" data-ibx-type="ibxCommand" data-ibxp-id = "cmdlocate"></div> 
+                <div class="cmd-location" data-ibx-type="ibxCommand" data-ibxp-id = "cmdlocation"></div>  
+                <div class="cmd-sketch" data-ibx-type="ibxCommand" data-ibxp-id = "cmdSketch"></div>     
+            <!--   <div class="map-layout-obj map-container-tbar esri-widget" data-ibx-type="ibxPopup" data-ibxp-align="stretch"  
+                            data-ibx-options="{'movable':true, 'escapeToClose': false, moveHandle:'.map-tools-box-header', visible: false,
+                            'modal': false, 'autoClose': false, autoPosition: false, 'destroyOnClose': false, 'position':{'my': 'center top',
+                             'at':'center top', 'of':'.map-container'}}">
+                    <div class="map-tools-box-header" data-ibx-type="ibxHBox" data-ibxp-align="center">     
+                        </div>--> 
+                    
+                    <div class="measTools esri-widget" style="display:none;" data-ibx-type="ibxHBox">
+	                    <div tabindex="0" class="cmdRadioGroup" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdMeasType" data-ibx-name="rgMeasType" data-ibxp-align="center">     
+	                       	<div tabindex="0" data-ibxp-user-value = "cmdDistMs" class="btn-sel-type btnDistToolMs esri-icon-measure-line esri-widget--button" title="@ibxString('mlmap.DistMs')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+	                        <div tabindex="0" data-ibxp-user-value= "cmdAreaMs" class="btn-sel-type btnAreaToolMs esri-icon-measure-area esri-widget--button" title="@ibxString('mlmap.AreaMs')" data-ibxp-justify="center"   data-ibx-type="ibxRadioButton"></div>                        
+	                        <div tabindex="0" data-ibxp-user-value = "cmdClearMs" class="btn-sel-type btnClearMs esri-icon-trash esri-widget--button" title="@ibxString('mlmap.ClearMs')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+	                    </div>
+                    </div> 
+                    <div class="measTools3d esri-widget" style="display:none;" data-ibx-type="ibxHBox">
+	                    <div tabindex="0" class="cmdRadioGroup" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdMeasType" data-ibx-name="rgMeasType" data-ibxp-align="center">     
+	                       	<div tabindex="0" data-ibxp-user-value = "cmdDistMs" class="btn-sel-type btnDistToolMs esri-icon-measure-line esri-widget--button" title="@ibxString('mlmap.DistMs')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+	                        <div tabindex="0" data-ibxp-user-value= "cmdAreaMs" class="btn-sel-type btnAreaToolMs esri-icon-measure-area esri-widget--button" title="@ibxString('mlmap.AreaMs')" data-ibxp-justify="center"   data-ibx-type="ibxRadioButton"></div>                        
+	                        <div tabindex="0" data-ibxp-user-value = "cmdClearMs" class="btn-sel-type btnClearMs esri-icon-trash esri-widget--button" title="@ibxString('mlmap.ClearMs')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+	                    </div>
+                    </div> 
+                    <div class="mlm-timeSlider" data-ibx-type="ibxHBox" data-ibxp-align="center">
+        	
+        			</div>
+                    <div class="map-layout-obj map-container-tbar" data-ibx-type="ibxHBox" data-ibxp-align="center">
+                        <div tabindex="0" data-ibxp-command = "cmdToggleTOC" class="btn-sel-type btnToggleTOC" title="@ibxString('mlmap.Layers')" data-ibxp-glyph-classes="ibx-icons ds-icon-layers"  data-ibx-type="ibxButton"></div>
+                        <div tabindex="0" data-ibxp-command = "cmdToggleLE" class="btn-sel-type btnToggleLE" title="@ibxString('mlmap.Legend')" data-ibxp-glyph-classes="ibx-icons ds-icon-map-legend"  data-ibx-type="ibxButton"></div>
+                        <div tabindex="0" data-ibxp-command = "cmdToggleBM" class="btn-sel-type btnToggleBM" title="@ibxString('mlmap.Switch_Basemap')" data-ibxp-glyph-classes="ibx-icons ds-icon-map"  data-ibx-type="ibxButton"></div>                        
+                        <div tabindex="0" data-ibxp-command = "cmdToggleView" class="btn-sel-type btnToggleView" title="@ibxString('mlmap.viewType')" data-ibx-type="ibxButton">3D</div>
+                     <div class="separator actions" data-ibx-type="ibxHBox">
+                      	<div tabindex="0" data-ibxp-command = "cmdRemoveCustom" class="btn-sel-type btnRemoveCustom" title="@ibxString('mlmap.reset')" data-ibxp-glyph-classes="ibx-icons ds-icon-reset" data-ibx-type="ibxButton"></div>
+                      	<div tabindex="0" data-ibxp-command = "cmdlocate" class="btn-sel-type btnlocate esri-icon esri-icon-locate" title="@ibxString('mlmap.locate')" data-ibx-type="ibxButton"></div>                     
+                   	</div>    
+                   	 <div class="separator actions" data-ibx-type="ibxHBox">
+                      	<div tabindex="0" data-ibxp-command = "cmdSaveCustom" class="btn-sel-type btnSaveCustom" title="@ibxString('mlmap.bookmarks')"  data-ibxp-glyph-classes="ibx-icons ds-icon-bookmark"  data-ibx-type="ibxButton"></div> 
+                      	<div tabindex="0" data-ibxp-command = "cmdToggleTimeSlider" class="btn-sel-type btnTimeSlider" title="@ibxString('mlmap.timeslider')"  data-ibxp-glyph-classes="ibx-icons ds-icon-slider"  data-ibx-type="ibxButton"></div> 
+                      	<div tabindex="0" data-ibxp-command = "cmdToggleScalerangeSlider" class="btn-sel-type btnScalerangeSlider" title="@ibxString('mlmap.scalerange')"  data-ibxp-glyph-classes="ibx-icons ds-icon-slider-range"  data-ibx-type="ibxButton"></div>                       
+                   	</div>    
+                    <div class="separator interactionTools" data-ibx-type="ibxHBox">
+                    	<div tabindex="0" data-ibxp-command = "cmdDiscover" class="btn-sel-type btnDiscover" title="@ibxString('mlmap.discover')"  data-ibxp-glyph-classes="ibx-icons ds-icon-magic"  data-ibx-type="ibxButton"></div>
+                     	<div tabindex="0" data-ibxp-command = "cmdsearch" class="btn-inter-type btnsearch esri-icon-search" title="@ibxString('mlmap.search')" data-ibx-type="ibxButton"></div>
+		                <div tabindex="0" data-ibxp-command= "cmdmeasurement" class="btn-inter-type btnmeasurement esri-icon-measure-line" title="@ibxString('mlmap.measurement')"  data-ibx-type="ibxButton"></div>                        
+		                <div tabindex="0" data-ibxp-command = "cmddirection" class="btn-inter-type btndirection esri-icon-directions" title="@ibxString('mlmap.direction')" data-ibx-type="ibxButton"></div>
+		                <div tabindex="0" data-ibxp-command = "cmdlocation" class="btn-inter-type btnlocation esri-icon esri-icon-locate-circled" title="@ibxString('mlmap.location')" data-ibx-type="ibxButton"></div>
+		                <div tabindex="0" data-ibxp-command = "cmdSketch" class="btn-inter-type btnsketch esri-icon ds-icon-edit" title="@ibxString('mlmap.sketch')" data-ibx-type="ibxButton"></div>  	
+                       <!--    	<div tabindex="0" class="cmdRadioGroup" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdInterType" data-ibx-name="rgInterType" data-ibxp-align="center">     
+	                        	<div tabindex="0" data-ibxp-user-value = "cmdSearch" class="btn-sel-type btnSearch esri-icon-measure-line" title="@ibxString('mlmap.DistMs')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+		                        <div tabindex="0" data-ibxp-user-value= "cmdMeasurement" class="btn-sel-type btnMeasurement esri-icon-measure-line" title="@ibxString('mlmap.measurement')" data-ibxp-justify="center"   data-ibx-type="ibxRadioButton"></div>                        
+		                        <div tabindex="0" data-ibxp-user-value = "cmdToggleDir" class="btn-sel-type btnToggleDir esri-icon-directions" title="@ibxString('mlmap.direction')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+		                        <div tabindex="0" data-ibxp-user-value = "cmdToggleLocation" class="btn-sel-type btnToggleLocation esri-icon-directions" title="@ibxString('mlmap.location')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+		                    </div> -->
+                        </div>  
+                        <div class="separator selTools" data-ibx-type="ibxHBox">  
+                            <div tabindex="0" class="cmdRadioGroup" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdSelType" data-ibx-name="rgSelType" data-ibxp-align="center">                        
+                                <div tabindex="0" class="btn-sel-type sel-extent" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.RectSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons" data-ibxp-user-value="selExtent"></div>
+                                <div tabindex="0" class="btn-sel-type sel-circle" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.RadSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons" data-ibxp-user-value="selCircle"></div>                        
+                                <div tabindex="0" class="btn-sel-type sel-polygon" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.FreehandSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons" data-ibxp-user-value="selPolygon"></div>
+								<div tabindex="0" class="btn-sel-type sel-custpolygon" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.CustomSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons" data-ibxp-user-value="selCustPolygon"></div>    
+                                <div tabindex="0" class="btn-sel-type sel-pan" data-ibx-type="ibxRadioButton" data-ibxp-justify="center" data-ibxp-user-value="selPan"></div> 
+                            </div>                     
+                        </div>                  
+                    </div>
+                <!--  </div> -->
+                <div id="com-ibi-geo-map" class="map-layout-obj map-container"  data-ibx-type="ibxWidget">
+                </div>
+            </div>
+        </markup-block>
+        <markup-block>
+           <div class="map-toc-main" data-ibx-type="ibxPopup" data-ibxp-align="stretch"  data-ibx-options="{'movable':true, moveHandle:'.map-layer-box', 'modal': false, 'autoClose': false, autoPosition: false, 'destroyOnClose': false, 'position':{'my': 'left+10 top+75', 'at':'left top', 'of':'.map-container'}}">
+                <div class="map-toc-wrapper" data-ibx-type="ibxVBox" data-ibxp-align="left">
+                    <div class="map-layer-box" data-ibx-type="ibxHBox" data-ibxp-align="center"  >
+                        <div class="lyrGlyph" data-ibxp-glyph-classes="ibx-icons ibx-glyph-portal"  data-ibx-type="ibxLabel"></div>
+                    </div>
+                    <div class="map-toc-content"  data-ibx-type="ibxVBox" data-ibxp-align="stretch">
+                    </div>
+                </div>
+            </div>
+        </markup-block>
+        <markup-block>
+           <div class="map-wdg-camera-wrapper" data-ibx-name="tabGrid" data-ibx-type="ibxTabPage" data-ibxp-tab-options="{'text':'@ibxString('mlmap.camera')'}">
+	          <div class="camera-box" data-ibx-type="ibxVBox" data-ibx-name="_camera-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+	            <div data-ibx-type="ibxAccordionPage" class="df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.weather)'}">
+	            	<div class="wrapper_1 weather_widget" data-ibx-type="ibxVBox" data-ibxp-align="stretch"></div>
+	            </div>
+	            <div data-ibx-type="ibxAccordionPage" class="mlm-accordion-3d-settings df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.daylight)'}">
+	            	<div class="wrapper_1 daylight_widget" data-ibx-type="ibxVBox" data-ibxp-align="stretch"></div>
+	            </div>
+	            <div data-ibx-type="ibxAccordionPage" class="mlm-accordion-3d-settings df-ps-page colorPage" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.backcolor)'}">
+					<div class="mlm-color-colorpick" data-ibx-type="ibxColorPicker" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}" ></div>	
+				</div>
+				<div data-ibx-type="ibxAccordionPage" class="mlm-accordion-3d-settings df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.other_settings)'}">
+					<div class="wrapper_1 other_settings" data-ibx-type="ibxVBox" data-ibxp-align="start">
+						<div class="wrapper_1" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'spaceAround', 'align': 'stretch'}">
+					 		<div data-qa-id="widgetStarsSwitch" class="mlm_switch aniLabel mlm3d_env_stars" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgetStars" title="@ibxString(mlmap.toggleStars)" data-ibxp-text="@ibxString(mlmap.toggleStars)"></div>
+					 		<div data-qa-id="widgetAtmSwitch" class="mlm_switch aniLabel mlm3d_env_atm" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgetAtm" title="@ibxString(mlmap.toggle_atmosphere)" data-ibxp-text="@ibxString(mlmap.toggle_atmosphere)"></div>
+						</div>
+						<div data-qa-id="widgetQualitySwitch" class="mlm_switch aniLabel mlm3d_env_atmQ" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgetQuality" title="@ibxString(mlmap.atmosphere_quality)" data-ibxp-text="@ibxString(mlmap.atmosphere_quality)"></div>
+						<div data-qa-id="widgetlightingSwitch" class="mlm_switch aniLabel mlm3d_env_lighting" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgetlighting" title="@ibxString(mlmap.atmosphere_lighting)" data-ibxp-text="@ibxString(mlmap.atmosphere_lighting)"></div>
+				<!-- 		<div data-qa-id="widgetShadowsSwitch" class="mlm_switch aniLabel" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgetShadows" title="@ibxString(mlmap.toggle_shadows)" data-ibxp-text="@ibxString(mlmap.toggle_shadows)"></div>  -->
+					</div>
+				</div>
+	           	<div data-ibx-type="ibxAccordionPage" class="mlm-accordion-3d-settings df-ps-page mlm-camera-settings" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.camera)'}">
+			   		<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.fov')</div>
+					<div class="fov-slider multiLayerMapSlider" tabindex="0" data-ibx-name="fov-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-value-text-pos="start" data-ibxp-marker-shape="circle" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="55" data-ibxp-min="1" data-ibxp-max="170" data-ibxp-popup-value="false"></div>
+					<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.heading')</div>
+					<div class="heading-slider multiLayerMapSlider" tabindex="0" data-ibx-name="heading-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-value-text-pos="start" data-ibxp-marker-shape="circle" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="360" data-ibxp-popup-value="false"></div>
+					<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.tilt')</div>
+					<div class="tilt-slider multiLayerMapSlider" tabindex="0" data-ibx-name="tilt-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-value-text-pos="start" data-ibxp-marker-shape="circle" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="90" data-ibxp-popup-value="false"></div>				
+					<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.latitude')</div>
+					<div class="latitude-slider multiLayerMapSlider" tabindex="0" data-ibx-name="latitude-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-value-text-pos="start" data-ibxp-marker-shape="circle" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="-90" data-ibxp-max="90" data-ibxp-popup-value="false"></div>
+					<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.longitude')</div>
+					<div class="longitude-slider multiLayerMapSlider" tabindex="0" data-ibx-name="longitude-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-value-text-pos="start" data-ibxp-marker-shape="circle" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="-180" data-ibxp-max="180" data-ibxp-popup-value="false"></div>
+						<div class="esri-layer-list__item-title devLabel elevation-slider-lbl" data-ibx-type="ibxLabel">@ibxString('mlmap.height')</div>
+						<div class="elevation-slider multiLayerMapSlider" tabindex="0" data-ibx-name="elevation-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-value-text-pos="start" data-ibxp-marker-shape="circle" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="200000" data-ibxp-popup-value="false"></div>
+					
+				<!--	<div class="wrapper_1" data-ibx-type="ibxHBox" data-ibxp-align="stretch">
+						<div class="refresh devToolsButton esri-widget-button esri-widget esri-interactive" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-align="center" data-ibxp-glyph-classes="fas fa-sync" data-ibx-name="_refresh" title="@ibxString('mlmap.SyncC')"></div>
+					</div>			-->		
+			   </div>
+			   </div>
+	        </div>
+        </markup-block>
+        <markup-block>
+           <div class="route-box" data-ibx-type="ibxVBox" data-ibx-name="_route-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+		   		<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.travelmode')</div>
+	   			<div tabindex="0" class="cmdRadioGroup mlm-travelTypeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTravelType" data-ibx-name="rgTravelType" data-ibxp-align="stretch" data-ibx-options="{'justify': 'spaceAround', 'align': 'center'}">     
+                   	<div tabindex="0" data-ibxp-user-value = "automobile" class="btn-travel-type btnDriving esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-checked="true" data-ibxp-glyph-classes="ibx-icons ds-icon-drive"  title="@ibxString('mlmap.tt_driving')" data-ibx-type="ibxRadioButton"></div>
+                    <div tabindex="0" data-ibxp-user-value= "truck" class="btn-travel-type btnTrucking esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-glyph-classes="ibx-icons ds-icon-truck" title="@ibxString('mlmap.tt_trucking')" data-ibx-type="ibxRadioButton"></div>                        
+                    <div tabindex="0" data-ibxp-user-value = "walk" class="btn-travel-type btnWalking esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-glyph-classes="ibx-icons ds-icon-walk" title="@ibxString('mlmap.tt_walking')" data-ibx-type="ibxRadioButton"></div>
+				</div>
+				<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.actions')</div>	
+				<div class="map-buttons-box" data-ibx-type="ibxHBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'spaceAround', 'align': 'center'}">					
+					<div class="btn-travel-type esri-widget--button gotolayer" tabindex="0" data-ibx-type="ibxButton" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-move-to-target" title="@ibxString('mlmap.ZoomToLayer')"></div>
+					<div class="btn-travel-type esri-widget--button updatedirectios" tabindex="0" data-ibx-type="ibxButton" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-refresh" title="@ibxString('mlmap.refresh_layer')"></div>
+					<div class="btn-travel-type esri-widget--button esri-icon-directions showdirections" tabindex="0" data-ibx-type="ibxButton" data-ibxp-align="center" title="@ibxString('mlmap.direction')"></div>
+			    
+			    </div>		
+		   </div>
+        </markup-block>
+        <markup-block>  ''''
+        	<!-- timeslider options Widget -->        	
+        	<div class="mlm-timeslider-options" data-ibx-name-root="true" data-ibx-type="ibxDialog" data-ibxp-type="large" data-ibxp-destroy-on-close="false" data-ibx-options="{'moveHandle':'null','movable':true, 'defaultAction':'.ibx-dialog-apply-button','buttons':'applycancelcustom','autoClose':'true', 'captionOptions':{'text':'@ibxString('mlmap.options')'}}"> 
+        		<div class="layers mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.Layers')</div>
+        			<div class="mlm-tsLayers" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="Layers" data-ibxp-value="Layers" data-ibxp-readonly="true" data-ibx-options="{'multiSelect': true}">
+	                </div>
+        		</div>
+        		<div class="mlm-ts-options-startDate" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-options="{'justify': 'start', 'align': 'top'}" data-ibx-type="ibxLabel">@ibxString('mlmap.dateStart')</div>
+        			<div class="mlm-date-start" tabindex="0" data-ibx-type="ibxDatePicker" data-ibx-options="{'autoOpen':'false', 'showTime':true, 'initDate':'false'}" data-ibxp-change-month="true" data-ibxp-change-year="true" data-ibxp-year-range="1900:2099" data-ibx-name="_timeEntentStartDatePicker" title="@ibxString('mlmap.dateFrom')"></div>
+        		</div>	
+        		<div class="mlm-ts-options-endDate" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-options="{'justify': 'start', 'align': 'top'}" data-ibx-type="ibxLabel">@ibxString('mlmap.dateEnd')</div>	
+        			<div class="mlm-date-end" tabindex="0" data-ibx-type="ibxDatePicker" data-ibx-options="{'autoOpen':'false', 'showTime':true, 'initDate':'false'}" data-ibxp-change-month="true" data-ibxp-change-year="true" data-ibxp-year-range="1900:2099" data-ibx-name="_timeEntentEndDatePicker" title="@ibxString('mlmap.dateTo')"></div>
+        		</div>
+        		<div class="mlm-timeslider-stops" data-ibx-type="ibxVBox" data-ibx-options="{'justify': 'start', 'align': 'right'}" >
+        		<div class="mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.stops')</div>
+        			<div tabindex="0" class="cmdRadioGroup mlm-stopsTypeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTravelType" data-ibx-name="rgTravelType" data-ibxp-align="stretch" data-ibx-options="{'justify': 'start', 'align': 'center'}">     
+	                   	<div tabindex="0" data-ibxp-user-value = "count" class="mlm-symbol-button btnCount esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-checked="true" data-ibxp-glyph-classes="ibx-icons ds-icon-count"  title="@ibxString('mlmap.tt_bycount')" data-ibx-type="ibxRadioButton"></div>
+	                    <div tabindex="0" data-ibxp-user-value= "interval" class="mlm-symbol-button btnInterval esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-glyph-classes="ibx-icons ds-icon-between" title="@ibxString('mlmap.tt_byinterval')" data-ibx-type="ibxRadioButton"></div>                        
+	              <!--     <div tabindex="0" data-ibxp-user-value = "dates" class="btn-travel-type btnWalking esri-widget-button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-glyph-classes="ibx-icons ds-icon-walk" title="@ibxString('mlmap.tt_bydates')" data-ibx-type="ibxRadioButton"></div>  -->  
+					</div>
+        		<!--	<div class="stops-interval-count" tabindex="0" data-ibx-justify="start" data-ibx-type="ibxSwitch" data-ibx-name="_widgeIntervalCount" title="@ibxString(mlmap.stops)" data-ibx-options="{'switchPosition': 'right'}" ></div>-->
+        		</div>
+        		<div class="stops-count mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.count')</div>
+        			<div tabIndex="0" class="mlm-tscount-spinner esri-input widgetPosition-spinner" data-ibx-name="_widgettscount" data-ibx-justify="stretch" data-ibx-type="ibxSpinner" data-ibxp-min="2" data-ibxp-max="1000" data-ibxp-value="10" ></div>
+        		</div>
+        		<div class="stops-interval mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.interval')</div>
+        			<div tabIndex="0" class="mlm-ts-intValue-spinner widgetPosition-spinner esri-input" data-ibx-name="_widgettsintvalue" data-ibx-justify="stretch" data-ibx-type="ibxSpinner" data-ibxp-min="1" data-ibxp-max="1000" data-ibxp-value="0" ></div>
+        			<div class="mlm-tsInterval-unitsMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="units" data-ibxp-value="units" data-ibxp-readonly="true">
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="milliseconds" data-ibxp-selected="true">@ibxString('mlmap.milliseconds')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="seconds" >@ibxString('mlmap.seconds')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="minutes" >@ibxString('mlmap.minutes')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="hours" >@ibxString('mlmap.hours')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="days" >@ibxString('mlmap.days')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="weeks" >@ibxString('mlmap.weeks')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="months" >@ibxString('mlmap.months')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="years" >@ibxString('mlmap.years')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="decades" >@ibxString('mlmap.decades')</div>
+	                	<div class="mlm-tsInterval-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="centuries" >@ibxString('mlmap.centuries')</div>
+	                </div>
+        		</div>
+        		<div class="stops-dates mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.dates')</div>
+        		</div>
+        		</div>
+        		<div class="mode mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.tmode')</div>
+        			<div class="mlm-tsMode" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="mode" data-ibxp-value="mode" data-ibxp-readonly="true">
+	                	<div class="mlm-tsMode-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="instant">@ibxString('mlmap.instant')</div>
+	                	<div class="mlm-tsMode-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="time-window" data-ibxp-selected="true" >@ibxString('mlmap.time-window')</div>
+	                	<div class="mlm-tsMode-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="cumulative-from-start" >@ibxString('mlmap.cumulative-from-start')</div>
+	                	<div class="mlm-tsMode-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="cumulative-from-end" >@ibxString('mlmap.cumulative-from-end')</div>
+	                </div>
+        		</div>
+        		<div class="layout mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.layout')</div>
+        			<div class="mlm-tsLayout" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="layout" data-ibxp-readonly="true">
+	              <!--  	<div class="mlm-tslayout-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="auto" data-ibxp-selected="true">@ibxString('mlmap.auto')</div> --> 
+	                	<div class="mlm-tslayout-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="compact" >@ibxString('mlmap.compact')</div>
+	                	<div class="mlm-tslayout-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="wide" >@ibxString('mlmap.wide')</div>
+	                </div>
+        		</div>
+        		<div class="playRate mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-options="{'textWrap': 'true'}" data-ibx-type="ibxLabel">@ibxString('mlmap.playRate')</div>
+        			<div tabIndex="0" class="mlm-playRate-spinner widgetPosition-spinner esri-input" data-ibx-name="_widgettsplayRate" data-ibx-justify="stretch" data-ibx-type="ibxSpinner" data-ibxp-step="100" data-ibxp-min="100" data-ibxp-max="100000000" data-ibxp-value="1000" ></div>
+        		</div>
+        		<div class="loop mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'left'}" >
+        	 		<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.loop')</div>
+        			<div class="mlm-ts-loop" tabindex="0" data-ibx-justify="start" data-ibx-type="ibxSwitch" data-ibx-name="_widgeLoop" data-ibx-options="{'switchPosition': 'right'}" ></div>
+        		<!--	<div data-qa-id="widgetLoopSwitch" class="esri-layer-list__item-title mlm-bold-label mlm-ts-loop" tabindex="0" data-ibx-type="ibxSwitch" data-ibxp-text="@ibxString(mlmap.loop)"></div>
+        			<div class="mlm-ts-timeVisible esri-layer-list__item-title mlm-bold-label " tabindex="0" data-ibx-justify="start" data-ibxp-checked="true" data-ibx-type="ibxSwitch" data-ibx-name="_widgetimeVisible" data-ibxp-text="@ibxString(mlmap.timeVisible)"></div> -->
+        		</div>
+        		<div class="timeVisible mlm-timeslider-options-vbox" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+        			<div class="esri-layer-list__item-title mlm-bold-label" data-ibx-type="ibxLabel">@ibxString('mlmap.timeVisible')</div>
+        			<div class="mlm-ts-timeVisible" tabindex="0" data-ibx-justify="start" data-ibxp-checked="true" data-ibx-type="ibxSwitch" data-ibx-name="_widgetimeVisible" data-ibx-options="{'switchPosition': 'right'}" ></div>
+        		</div>  
+        	
+        	</div>
+    		<!-- symbol editor Widget -->
+			<div class="wfc-map-container-symbolEditor" data-ibx-type="ibxVBox" aria-disabled="false" data-ibx-name="symbolEditor">
+				<div class="esri-layer-list__item-title mlm-not-line-settings mlm-bold-label mlm-nopadding-label" data-ibx-type="ibxLabel">@ibxString('mlmap.text')</div>
+			 	<div class="maps-notes-textarea mlm-not-line-settings" tabindex="0" data-ibx-type="ibxTextArea" data-ibx-name="_mapsNotes" data-ibx-options="{'spellCheck': 'true'}" title="@ibxString('mlmap.typehere')"></div>
+				<div class="mlm-text-settings" data-ibx-type="ibxVBox" data-ibx-name="mlm-text-settings" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">					
+					<div class="mlm-symbol-fontnameSelect" tabIndex="0" data-ibx-type="ibxSelect" data-ibx-name="fontName" data-ibxp-align="stretch" data-ibxp-readonly="false" title="@ibxString('wfc_font_formatter_fontname')"></div>	
+					<div class="mlm-hbox-padding" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'spaceBetween', 'align': 'center'}" >
+						<div tabindex="0" class="cmdRadioGroup mlm-symbol-fontdecoration" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdfontdecoration" data-ibx-name="rgfontdecoration" data-ibxp-align="stretch" data-ibx-options="{'align': 'left'}">     
+		                   	<div tabindex="0" data-ibxp-user-value = "none" class="mlm-symbol-button btnNone esri-widget--button" data-ibxp-checked="true" data-ibxp-glyph-classes="ibx-icons ds-icon-text"  title="@ibxString('mlmap.none')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+		                    <div tabindex="0" data-ibxp-user-value= "underline" class="mlm-symbol-button btnunderline esri-widget--button" data-ibxp-glyph-classes="ibx-icons ds-icon-underline" title="@ibxString('mlmap.underline')" data-ibxp-justify="center"   data-ibx-type="ibxRadioButton"></div>                        
+		                    <div tabindex="0" data-ibxp-user-value = "line-through" class="mlm-symbol-button btnLinethrough esri-widget--button" data-ibxp-glyph-classes="ibx-icons ds-icon-text-strikethrough" title="@ibxString('mlmap.line-through')" data-ibxp-justify="center"  data-ibx-type="ibxRadioButton"></div>
+						</div>	
+						<div class="font-formatter-size-select font-formatter-size-controls mlm-symbol-font-sizeSelect" tabIndex="0" data-ibx-type="ibxSelect" data-ibx-name="fontSizeSelector" data-ibxp-align="stretch"  title="@ibxString('wfc_font_formatter_size_spinner')"></div>
+						<div tabindex="0" class="mlm-color-picker-swatch text-colorpick-button" data-ibx-name="btnColor" data-ibx-type="ibxMenuButton" data-ibxp-use-value-as-text="true" data-ibxp-glyph-classes="ibx-icons">
+							<div data-ibx-type="ibxMenu" data-ibx-name="colorMenu" data-ibxp-destroy-on-close="false">
+								<div tabindex="0" class="mlm-color-picker-swatch ibx-menu-item text-colorpick" data-ibx-name="colorPicker" data-ibx-type="ibxColorPicker" data-ibxp-set-opacity="true"></div>
+							</div>
+						</div>
+					</div>
+					<div class="esri-layer-list__item-title devLabel mlm-nopadding-label" data-ibx-type="ibxLabel">@ibxString('mlmap.textAngle')</div>
+					<div class="textangle-slider multiLayerMapSlider" tabindex="0" data-ibx-name="textangle-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="1" data-ibxp-value="0" data-ibxp-min="-180" data-ibxp-max="180" data-ibxp-value-text-pos="end" data-ibxp-popup-value="false"></div>
+				</div>	
+				<div class="esri-layer-list__item-title  mlm-bold-label mlm-not-line-settings mlm-bold-label mlm-nopadding-label" data-ibx-type="ibxLabel">@ibxString('mlmap.shape')</div>
+				<div class="esri-layer-list__item-title mlm-bold-label mlm-bold-label mlm-nopadding-label mlm-line-settings" data-ibx-type="ibxLabel">@ibxString('mlmap.line')</div>
+				<div class="mlm-hbox-padding" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'spaceBetween', 'align': 'center'}" >
+					<div class="" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+						<div class="mlm-symbol-editor-color mlm-backgroundcolor-label" data-ibx-type="ibxLabel">@ibxString('mlmap.backcolor')</div>				
+						<div tabindex="0" class="mlm-color-picker-swatch background-colorpick-button" data-ibx-name="btnColor" data-ibx-type="ibxMenuButton" data-ibxp-use-value-as-text="true" data-ibxp-glyph-classes="ibx-icons">
+							<div data-ibx-type="ibxMenu" data-ibx-name="colorMenu" data-ibxp-destroy-on-close="false">
+								<div tabindex="0" class="mlm-color-picker-swatch ibx-menu-item background-colorpick" data-ibx-name="colorPicker" data-ibx-type="ibxColorPicker" data-ibxp-set-opacity="true"></div>
+							</div>
+						</div>
+					</div>
+					<div class="mlm-not-line-settings" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+						<div class="mlm-symbol-editor-color" data-ibx-type="ibxLabel">@ibxString('mlmap.bordercolor')</div>				
+						<div tabindex="0" class="mlm-color-picker-swatch border-colorpick-button" data-ibx-name="btnColor" data-ibx-type="ibxMenuButton" data-ibxp-use-value-as-text="true" data-ibxp-glyph-classes="ibx-icons">
+							<div data-ibx-type="ibxMenu" data-ibx-name="colorMenu" data-ibxp-destroy-on-close="false">
+								<div tabindex="0" class="mlm-color-picker-swatch ibx-menu-item border-colorpick" data-ibx-name="colorPicker" data-ibx-type="ibxColorPicker" data-ibxp-set-opacity="true"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- <div data-ibx-type="ibxAccordionPage" class="mlm-symbol-editor-color mlm-backgroundcolor-label" data-ibxp-auto-close="true" data-ibxp-selected="false" data-user-data="fitToContainerSize" data-ibxp-btn-options="{'text': '@ibxString(mlmap.backcolor)'}">
+					<div class="background-colorpick" data-ibx-type="ibxColorPicker" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}" ></div>	
+				</div> -->
+				
+				<div class="esri-layer-list__item-title mlm-line-settings mlm-nopadding-label" data-ibx-type="ibxLabel">@ibxString('mlmap.lineStyle')</div>
+				<div class="mlm-line-style mlm-line-settings" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-align="stretch" data-ibx-name="line-style" data-ibxp-readonly="true">
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="solid" data-ibxp-selected="true">@ibxString('mlmap.solid')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dash" data-ibxp-selected="false">@ibxString('mlmap.dash')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dash-dot" data-ibxp-selected="false">@ibxString('mlmap.dash-dot')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dot" data-ibxp-selected="false">@ibxString('mlmap.dot')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="long-dash" data-ibxp-selected="false">@ibxString('mlmap.long-dash')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="long-dash-dot" data-ibxp-selected="false">@ibxString('mlmap.long-dash-dot')</div>                	
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="long-dash-dot-dot" data-ibxp-selected="false">@ibxString('mlmap.long-dash-dot-dot')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="short-dash" data-ibxp-selected="false">@ibxString('mlmap.short-dash')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="short-dash-dot" data-ibxp-selected="false">@ibxString('mlmap.short-dash-dot')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="short-dash-dot-dot" data-ibxp-selected="false">@ibxString('mlmap.short-dash-dot-dot')</div>
+                	<div class="mlm-linestyle-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="short-dot" data-ibxp-selected="false">@ibxString('mlmap.short-dot')</div>
+	            </div> 
+				<div class="esri-layer-list__item-title mlm-width-label mlm-nopadding-label" data-ibx-type="ibxLabel">@ibxString('mlmap.borderWidth')</div>
+				<div class="borderWidth-slider multiLayerMapSlider" tabindex="0" data-ibx-name="borderWidth-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="1" data-ibxp-value="1" data-ibxp-min="0" data-ibxp-max="10" data-ibxp-value-text-pos="end" data-ibxp-popup-value="false"></div>
+				<div class="mlm-graphics-settings" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+				
+				</div>
+		<!-- 		<div data-ibx-type="ibxAccordionPage" class="mlm-symbol-editor-color mlm-not-line-settings" data-ibxp-auto-close="true" data-ibxp-selected="false" data-user-data="fitToContainerSize" data-ibxp-btn-options="{'text': '@ibxString(mlmap.bordercolor)'}">
+					<div class="border-colorpick" data-ibx-type="ibxColorPicker" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}" ></div>	
+				</div>  -->
+			</div>
+		</markup-block>
+        <markup-block>
+           <div class="heatmap-box esri-widget" data-ibx-type="ibxVBox" data-ibx-name="_heatmap-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'stretch'}">
+              <div data-ibx-type="ibxAccordionPage" class="df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.pane_heatmap_settings)'}">
+              	<div class="feature-effect-box" data-ibx-type="ibxVBox" data-ibx-name="_heatmap-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+	              	<div class="esri-layer-list__item-title discoverLabel schemesLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.schemes')</div>
+	              	<div class="sel-schemes typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibx-name="schemesList" data-ibxp-readonly="true" data-user-data="schemesName"></div>
+	              	<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.maxdensity')</div>
+					<div class="maxdens-slider multiLayerMapSlider" tabindex="0" data-ibx-name="maxdens-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-value="0.04" data-ibxp-min="0" data-ibxp-max="200" data-ibxp-popup-value="true"></div>
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.mindensity')</div>
+					<div class="mindens-slider multiLayerMapSlider" tabindex="0" data-ibx-name="mindens-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="20" data-ibxp-popup-value="true"></div>
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.radiusdensity')</div>
+					<div class="raddens-slider multiLayerMapSlider" tabindex="0" data-ibx-name="raddens-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-value="18" data-ibxp-min="2" data-ibxp-max="112" data-ibxp-popup-value="true"></div>
+	           		<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.refScale')</div>
+					<div class="refscale-slider multiLayerMapSlider" tabindex="0" data-ibx-name="refscale-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="20" data-ibxp-popup-value="true"></div>
+	           <!--     <div data-qa-id="widgetfromToSwitch" class="refScale aniLabel" tabindex="0" data-ibx-type="ibxSwitch" data-ibxp-user-value="refScale" data-ibx-name="_widgerefScale" title="@ibxString(mlmap.refScale)" data-ibxp-text="@ibxString(mlmap.refScale)"></div> -->  
+              	</div>
+              </div>
+           </div>
+        </markup-block>
+        <!--media editing         -->
+        <markup-block>
+           <div class="media-box esri-widget" data-ibx-type="ibxVBox" data-ibx-name="_media-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'stretch'}">
+              <div data-ibx-type="ibxAccordionPage" class="df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.pane_media_settings)'}">
+              	<div class="feature-effect-box" data-ibx-type="ibxVBox" data-ibx-name="_media-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+	              	<div class="esri-layer-list__item-title discoverLabel schemesLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.elements')</div>
+	              	<div class="sel-elements typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibx-name="elementsList" data-ibxp-readonly="true" data-user-data="schemesName"></div>
+	              	<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.horizontalExtent')</div>
+					<div class="horextent-slider multiLayerMapSlider" tabindex="0" data-ibx-name="horextent-slider" data-ibx-type="ibxRange" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="1" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="0" data-ibxp-popup-value="true"></div>
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.verticalExtent')</div>
+					<div class="vertextent-slider multiLayerMapSlider" tabindex="0" data-ibx-name="vertextent-slider" data-ibx-type="ibxRange" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="1" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="0" data-ibxp-popup-value="true"></div>
+					<div class="esri-layer-list__item-title discoverLabel media_altitute" data-ibx-type="ibxLabel">@ibxString('mlmap.altitude')</div>
+					<div class="altitute-slider multiLayerMapSlider" tabindex="0" data-ibx-name="altitute-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="1" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="10000" data-ibxp-popup-value="true"></div>
+	                <div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.rotation')</div>
+					<div class="rotation-slider multiLayerMapSlider" tabindex="0" data-ibx-name="rotation-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="1" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="360" data-ibxp-popup-value="true"></div>
+	                <div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.Opacity')</div>
+					<div class="opacity-slider multiLayerMapSlider" tabindex="0" data-ibx-name="opacity-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-user-data="fitToContainerSize" data-ibxp-step="0.01" data-ibxp-value="1" data-ibxp-min="0" data-ibxp-max="1" data-ibxp-popup-value="true"></div>	                
+              	</div>
+              </div>
+           </div>
+        </markup-block>
+        <!--media editing         -->
+        <markup-block>
+           <div class="blend-effect-box esri-widget" data-ibx-type="ibxVBox" data-ibx-name="_effect-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'stretch'}">
+              <div data-ibx-type="ibxAccordionPage" class="df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.pane_blending_effect)'}">
+		   		<div class="feature-effect-box blendingEffect" data-ibx-type="ibxVBox" data-ibx-name="_effect-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+			   		<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.blendMode')</div>
+		   			<div class="sel-blend-mode typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibx-name="blendModeList" data-ibxp-readonly="true" data-user-data="blendModeIds"></div>
+		   			<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.effect')</div>		   			
+		   			<div class="layerEffect_sel typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibxp-readonly="false" data-user-data="layereffect">
+		   				<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="" data-ibxp-selected="true">@ibxString('mlmap.no_sel')</div>
+		   			</div>
+		   		<!--  	<div class="effectEdit esri-input" tabindex="0" data-ibx-type="ibxTextField"></div>-->
+		   		</div>
+		   	 </div>
+		   	 <div data-ibx-type="ibxAccordionPage" class="df-ps-page featureEffect" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString('mlmap.feature_effect)'}">
+	   			<div class="feature-effect-box" data-ibx-type="ibxVBox" data-ibx-name="_effect-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+		   			<div class="map-buttons-box" data-ibx-type="ibxHBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'spaceAround', 'align': 'center'}">	
+					<!-- 	<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.feature_effect')</div> -->
+						<div class="btn-travel-type esri-widget--button gotolayer aniLabel" tabindex="0" data-ibx-type="ibxButton" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-move-to-target" title="@ibxString('mlmap.ZoomToLayer')"></div>
+						<div class="layer_auto_refresh aniLabel" tabindex="0" data-ibx-justify="start" data-ibx-type="ibxSwitch" data-ibx-name="_widgeAutoRefresh" title="@ibxString(mlmap.auto_refresh_layer)" data-ibx-options="{'switchPosition': 'right'}" ></div>
+						<div class="esri-widget--button btn-RefreshLayer" data-ibxp-checked="true" tabindex="0" data-ibx-type="ibxButton" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-refresh" title="@ibxString('mlmap.refresh_layer')"></div>			    	
+					</div>	
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.Selection')</div>					
+		   			<div tabindex="0" class="cmdRadioGroup mlm-featureSelectionTypeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTravelType" data-ibx-name="rgTravelType" data-ibxp-align="stretch" data-ibx-options="{'justify': 'spaceAround', 'align': 'center'}">     
+	                   	<div tabindex="0" data-ibxp-user-value = "field" class="btn-travel-type btnField esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-checked="true" data-ibxp-glyph-classes="ibx-icons ds-icon-filter"  title="@ibxString('mlmap.filter_field')" data-ibx-type="ibxRadioButton"></div>
+	                    <div tabindex="0" data-ibxp-user-value= "geometry" class="btn-travel-type btnGeometry esri-widget--button" data-ibx-options="{'justify': 'center', 'align': 'center'}" data-ibxp-glyph-classes="ibx-icons ds-icon-polygon" title="@ibxString('mlmap.filter_spatial')" data-ibx-type="ibxRadioButton"></div>  
+					</div>				
+					<div class="where-box" data-ibx-type="ibxVBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">			
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.filter')</div>
+						<div class="sel-filters typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibxp-readonly="true" data-user-data="fields"></div>
+					<!-- 	<div class="map-buttons-box" data-ibx-type="ibxHBox" data-ibxp-align="stretch" data-ibx-options="{'align': 'center'}">
+							<div class="conditions-box" data-ibx-type="ibxVBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}"> -->
+								<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.condition')</div>
+								<div class="comp-operator" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="comp-operator" data-ibxp-value="comp-operator" data-ibxp-readonly="true">
+				                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="=" data-ibxp-selected="true">@ibxString('mlmap.eq')</div>
+				                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="&lt;&gt;" data-ibxp-selected="false">@ibxString('mlmap.ne')</div>
+				                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="&gt;" data-ibxp-selected="false">@ibxString('mlmap.gt')</div>
+				                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="&gt;=" data-ibxp-selected="false">@ibxString('mlmap.gteq')</div>
+				                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="&lt;" data-ibxp-selected="false">@ibxString('mlmap.lt')</div>
+				                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="&lt;=" data-ibxp-selected="false">@ibxString('mlmap.lteq')</div>
+				            </div> 
+			      <!--       </div>  -->
+			            <div class="conditions-box" data-ibx-type="ibxVBox" data-ibxp-align="stretch" data-ibx-options="{'align': 'center'}"> 
+			            	<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel" >@ibxString('mlmap.values')</div>
+							<div class="filter_values esri-input" tabindex="0" title="@ibxString('mlmap.comma')" data-ibx-type="ibxTextField"></div>
+							<div class="filter_values_slider" tabindex="0" data-ibx-name="fv-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-ibxp-popup-value="true"></div>				
+							<div class="filter_values_sel typeMenu" tabindex="0" data-ibx-type="ibxSelectPaged" data-ibx-options="{'search':true, 'selectionControls':true}" data-ibxp-multi-select="true" data-ibx-name="valuesModeList" data-ibxp-readonly="true" data-user-data="valuesModeIds"></div>
+						</div>
+					</div>		
+					<div class="geometry-box" data-ibx-type="ibxVBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">		
+						<div tabindex="0" class="cmdRadioGroup mlm-selectionRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTravelType" data-ibx-name="rgTravelType" data-ibxp-align="stretch" data-ibx-options="{'justify': 'spaceAround', 'align': 'center'}">     
+	                   		<div tabindex="0" class="btn-travel-type btn-sel-type sel-extent" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.RectSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons ds-icon-selection-square" data-ibxp-user-value="selExtent"></div>
+	                        <div tabindex="0" class="btn-travel-type btn-sel-type sel-circle" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.RadSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons ds-icon-selection-circular" data-ibxp-user-value="selCircle"></div>                        
+	                        <div tabindex="0" class="btn-travel-type btn-sel-type sel-polygon" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.FreehandSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons ds-icon-selection-marquee" data-ibxp-user-value="selPolygon"></div>
+	                         <div tabindex="0" class="btn-travel-type btn-sel-type sel-polyline" data-ibx-type="ibxRadioButton" title="@ibxString('mlmap.LineSel')" data-ibxp-justify="center" data-ibxp-glyph-classes="ibx-icons ds-icon-selection-polyline" data-ibxp-user-value="selPolyline"></div> 
+	 					</div>
+	 					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.Distance')</div>
+	 					<div class="distance_slider" tabindex="0" data-ibx-name="dist-slider" data-ibx-type="ibxHSlider" data-ibxp-marker-shape="circle" data-ibxp-step="0.1" data-ibxp-min="0.5" data-ibxp-value="1.0" data-ibxp-max="2.0" data-ibxp-popup-value="true"></div>
+					</div>
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.inclEfffect')</div>
+				<!-- 	<div class="includedEffect esri-input" tabindex="0" data-ibx-type="ibxTextField"></div> -->
+					<div class="includedEffect_sel typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibxp-readonly="false" data-user-data="inceffect">
+						<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="" data-ibxp-selected="true">@ibxString('mlmap.no_sel')</div>
+					</div>
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.exlEffect')</div>
+					<div class="excludedEffect_sel typeMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibxp-multi-select="false" data-ibxp-readonly="false" data-user-data="exleffect">
+						<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="" data-ibxp-selected="true">@ibxString('mlmap.no_sel')</div>
+					</div>
+				<!--	<div class="excludedEffect esri-input" tabindex="0" data-ibx-type="ibxTextField"></div> -->
+				</div>
+				</div>
+		   </div>
+        </markup-block>
+        <markup-block>    
+        	<div class="animation-renderer-box" data-ibx-type="ibxVBox" data-ibx-name="_ani-rend-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">       
+	        	<div data-ibx-type="ibxAccordionPage" class="df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.animation)'}">
+	       	   		<div class="feature-effect-box" data-ibx-type="ibxVBox" data-ibx-name="_effect-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">  
+				   		<div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.trailWidth')</div>
+						<div class="trailWidth-slider" tabindex="0" data-ibx-name="lw-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="center" data-ibxp-min-text-pos="center" data-ibxp-user-value="trailWidth" data-ibxp-value="1.5" data-ibxp-marker-shape="circle" data-ibxp-min="0" data-ibxp-max="10" data-ibxp-popup-value="true"></div>
+					<!--	<div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.color')</div>
+						<div class="color-menu-button colorSwatch" data-ibx-name="btnColor" data-ibxp-user-value="color" data-ibx-type="ibxMenuButton" data-ibxp-use-value-as-text="true" data-ibxp-glyph-classes="color-picker-swatch">
+							<div data-ibx-type="ibxMenu" data-ibx-name="colorMenu" data-ibxp-destroy-on-close="false">
+								<div tabindex="0" class="ibx-menu-item color-picker-popup" data-ibx-name="colorPicker" data-ibx-type="ibxColorPicker" data-ibxp-set-opacity="true"></div>
+							</div>
+						</div>	-->
+						<div data-ibx-type="ibxAccordionPage" class="df-ps-page" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.color)'}">
+							<div class="mlm-color-colorpick" data-ibx-type="ibxColorPicker" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}" ></div>	
+						</div>
+						<div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.density')</div>
+						<div class="density-slider" tabindex="0" data-ibx-name="density-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="center" data-ibxp-min-text-pos="center" data-ibxp-user-value="density" data-ibxp-step="0.01" data-ibxp-marker-shape="circle" data-ibxp-value="0.8" data-ibxp-min="0" data-ibxp-max="1" data-ibxp-popup-value="true"></div>
+						<div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.trailLength')</div>
+						<div class="trailLength-slider" tabindex="0" data-ibx-name="trailLength-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="center" data-ibxp-min-text-pos="center" data-ibxp-user-value="trailLength" data-ibxp-marker-shape="circle" data-ibxp-value="200" data-ibxp-min="0" data-ibxp-max="500" data-ibxp-popup-value="true"></div>
+						<div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.flowSpeed')</div>
+						<div class="flowSpeed-slider" tabindex="0" data-ibx-name="flowSpeed-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="center" data-ibxp-min-text-pos="center" data-ibxp-user-value="flowSpeed" data-ibxp-marker-shape="circle" data-ibxp-value="10" data-ibxp-min="0" data-ibxp-max="100" data-ibxp-popup-value="true"></div>
+						<div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.maxPathLength')</div>
+						<div class="maxPathLength-slider" tabindex="0" data-ibx-name="maxPathLength-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="center" data-ibxp-min-text-pos="center" data-ibxp-user-value="maxPathLength" data-ibxp-marker-shape="circle" data-ibxp-value="200" data-ibxp-min="0" data-ibxp-max="500" data-ibxp-popup-value="true"></div>
+					<!--  <div class="esri-layer-list__item-title aniLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.toFrom')</div> -->	
+						<div data-qa-id="widgetfromToSwitch" class="fromTo aniLabel" tabindex="0" data-ibx-type="ibxSwitch" data-ibxp-user-value="flowRepresentation" data-ibx-name="_widgefromTo" title="@ibxString(mlmap.toFrom)" data-ibxp-text="@ibxString(mlmap.toFrom)"></div>
+				   </div>
+				</div>  	
+			</div>	        
+        </markup-block>
+        <markup-block>           
+           <div class="discover-box" data-ibx-type="ibxVBox" data-ibx-name="_discover-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">		   
+		   		<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.travelmode')</div>
+	   			<div tabindex="0" class="cmdRadioGroup mlm-travelTypeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTravelType" data-ibx-name="rgTravelType" data-ibxp-align="stretch" data-ibx-options="{'justify': 'spaceAround', 'align': 'center'}">     
+                   	<div tabindex="0" data-ibxp-user-value = "automobile" class="btn-travel-type btnDriving esri-widget--button" data-ibxp-checked="true" data-ibxp-glyph-classes="ibx-icons ds-icon-drive"  title="@ibxString('mlmap.tt_driving')" data-ibxp-justify="start"  data-ibx-type="ibxRadioButton">@ibxString('mlmap.tt_driving')</div>
+                    <div tabindex="0" data-ibxp-user-value= "truck" class="btn-travel-type btnTrucking esri-widget--button" data-ibxp-glyph-classes="ibx-icons ds-icon-truck" title="@ibxString('mlmap.tt_trucking')" data-ibxp-justify="start"   data-ibx-type="ibxRadioButton">@ibxString('mlmap.tt_trucking')</div>                        
+                    <div tabindex="0" data-ibxp-user-value = "walk" class="btn-travel-type btnWalking esri-widget--button" data-ibxp-glyph-classes="ibx-icons ds-icon-walk" title="@ibxString('mlmap.tt_walking')" data-ibxp-justify="start"  data-ibx-type="ibxRadioButton">@ibxString('mlmap.tt_walking')</div>
+
+				</div>		
+				<div class="mlm-discover-horSeparator" data-ibx-type="ibxHBox" data-ibxp-align="start"  ></div>		
+		   		<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.breaks')</div>	
+		   		<div class="map-layer-box mlm-breakpoints-box" data-ibx-type="ibxVBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+		   			<div class="mlm-travelRadio" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+		   				<div class="mlm-discover-modeLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.tmode')</div>
+			   			<div tabindex="0" class="cmdRadioGroup mlm-travelTypeModeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTravelTypeMode" 
+			   					data-ibx-name="rgTravelTypeMode" data-ibxp-align="stretch" >     
+		                    <div tabindex="0" data-ibxp-user-value= "time" class="mlm-travelModeRadio" title="@ibxString('mlmap.time')" 
+		                    	data-ibxp-checked="true" data-ibxp-justify="start" 
+		                    		data-ibx-type="ibxRadioButtonSimple">@ibxString('mlmap.time')</div>                        
+		                    <div tabindex="0" data-ibxp-user-value = "kilometers" class="mlm-travelModeRadio" title="@ibxString('mlmap.Distance')" 
+		                    	data-ibxp-justify="start"  data-ibx-type="ibxRadioButtonSimple">@ibxString('mlmap.Distance')</div>
+						</div>
+					</div>
+					
+					<div class="mlm-timeDistance" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+		                <div class="timeUnits mlm-discover-unitsMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="units" data-ibxp-value="units" data-ibxp-readonly="true">
+		                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="min" data-ibxp-selected="true">@ibxString('mlmap.time_minutes')</div>
+		                </div>                        
+		                <div class="distanceUnits disabledwidget mlm-discover-unitsMenu" tabindex="0" data-ibx-type="ibxSelect" data-ibx-name="units" data-ibxp-value="units" data-ibxp-readonly="true">
+		                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="kilometers" data-ibxp-selected="true">@ibxString('mlmap.dist_km')</div>
+		                	<div class="mlm-discover-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="miles" >@ibxString('mlmap.dist_miles')</div>
+		                </div>
+					</div>	
+					<div class="mlm-timeDepart mlm-travelRadio" data-ibx-type="ibxHBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+						<div class="mlm-discover-modeLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.time')</div>
+			   			<div tabindex="0" class="cmdRadioGroup mlm-timeModeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdTimeMode" data-ibx-name="discoverTimeMode" data-ibxp-align="stretch">     
+		                    <div tabindex="0" data-ibxp-user-value= "0" class="mlm-travelModeRadio" data-ibxp-checked="true" 
+		                    	data-ibxp-justify="start" data-ibx-type="ibxRadioButtonSimple">@ibxString('mlmap.departure')</div>                        
+		                    <div tabindex="0" data-ibxp-user-value = "1" class="mlm-travelModeRadio" data-ibxp-justify="start" 
+		                    	data-ibx-type="ibxRadioButtonSimple">@ibxString('mlmap.arrival')</div>
+						</div>
+					<!--	<div class="mlm-discover-departLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.departure_time')</div>
+					 <div class="mlm-date-depart" tabindex="0" data-ibx-type="ibxDatePicker" data-ibx-options="{'autoOpen':'false', 'showTime':true, 'initDate':'false'}" 
+							data-ibxp-change-month="true" data-ibxp-change-year="true" data-ibxp-year-range="1900:2099"
+							 data-ibx-name="timeDepartPicker"></div> -->	
+						
+				 </div>
+				<div class="mlm-time-picker" data-ibx-type="ibxTimePicker" 
+				 		data-ibx-options="{'justify': 'start', 'align': 'center', 'showSecond':false, 'showColon':false,'showMillisecond':false}">
+				 	 </div>
+				 	<div class="mlm-direction mlm-travelRadio" data-ibx-type="ibxHBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+						<div class="mlm-discover-modeLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.travel_course')</div>
+				   			<div tabindex="0" class="cmdRadioGroup mlm-directionModeRadio" data-ibx-type="ibxHRadioGroup" data-ibxp-command="cmdDirectionMode" 
+				   					data-ibx-name="discoverDirectionMode" data-ibxp-align="stretch">     
+		                    <div tabindex="0" data-ibxp-user-value= "to-facility" class="mlm-travelModeRadio" data-ibxp-checked="true" 
+		                    	data-ibxp-justify="start" data-ibx-type="ibxRadioButtonSimple">@ibxString('mlmap.course_to')</div>                        
+		                    <div tabindex="0" data-ibxp-user-value = "from-facility" class="mlm-travelModeRadio" data-ibxp-justify="start" 
+		                    	data-ibx-type="ibxRadioButtonSimple">@ibxString('mlmap.course_from')</div>
+						</div>
+					</div>
+				 	
+				 	 
+					<div class="" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+		   				<div class="mlm-discover-modeLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.trange')</div>
+			   			<div class="cutoffsEdit esri-input" tabindex="0" data-ibx-type="ibxTextField"></div>
+			   			<div class="mlm-discover-cutoffsAddRemove" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}" >
+			   				<div class="addCuttoff esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibxp-align="center" 
+			   					data-ibx-type="ibxButtonSimple" data-ibxp-glyph-classes="ibx-icons ds-icon-plus" title="@ibxString(mlmap.add_cuttoff)"></div>
+							<div class="removeCuttoff esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibxp-align="center" 
+								data-ibx-type="ibxButtonSimple" data-ibxp-glyph-classes="ibx-icons ds-icon-minus" title="@ibxString(mlmap.remove_cuttoff)"></div>					
+			   			</div>
+					</div>	
+				</div>	
+		   		<div class="" data-ibx-type="ibxHBox" data-ibxp-align="center"  >
+		   			<div class="mlm-discover-cutoffs-slider" tabindex="0" data-ibx-name="cutoffs-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="center" data-ibxp-min-text-pos="center" data-ibxp-user-value="cuttoff" data-ibxp-marker-shape="circle" data-ibxp-value="60" data-ibxp-min="0" data-ibxp-max="300" data-ibxp-popup-value="true"></div>
+					
+				</div>
+				<div class="mlm-discover-horSeparator" data-ibx-type="ibxHBox" data-ibxp-align="center"  ></div>					
+		   		<div class="map-breakpoints-box" data-ibx-type="ibxHBox" data-ibxp-align="stretch">		
+		   			<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.location')</div>					
+					<div class="disc_button-wb discover-searchEdit searchEdit" tabindex="0" data-ibx-type="ibxHBox" data-ibxp-align="stretch"></div>
+					<div class="btndiscover disc_button disc_button-wb esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-location-arrow" title="@ibxString('mlmap.discover')"></div>
+					<div class="btnlocate disc_button disc_button-wb esri-widget--button esri-widget esri-interactive" data-ibxp-command = "cmdlocate" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-marker" title="@ibxString('mlmap.locate')"></div>
+				</div>
+				<div class="map-breakpoints-box" data-ibx-type="ibxHBox" data-ibx-options="{'justify': 'start', 'align': 'center'}">	
+					<div class="esri-layer-list__item-title discoverLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.actions')</div>		
+					<div class="btncDirections disc_button disc_button-wb esri-widget--button esri-widget esri-interactive esri-icon-directions" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-align="center" title="@ibxString('mlmap.direction')"></div>
+					<div class="btnclear disc_button disc_button-wb esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-align="center" data-ibxp-glyph-classes="ibx-icons ds-icon-selection-clear" title="@ibxString('mlmap.ClearSel')"></div>
+				</div>
+			<div class="map-layer-box map-breakpoints-box mlm_discover_reportOut" data-ibx-type="ibxHBox" data-ibxp-align="stretch">
+				<div class="mlm_discover_iframe" data-ibx-name="mlm_discover" data-ibx-type="ibxIFrame" data-ibxp-align="stretch"></div>
+			</div>
+		   </div>	        
+        </markup-block>
+        <markup-block> 
+        	<div class="map-wdg-dev-tools" data-ibx-type="ibxVBox" >
+				<div class="wrapper_1" data-ibx-type="ibxHBox" data-ibxp-align="stretch">
+					<div class="save devToolsButton esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-glyph-classes="fas fa-save" data-ibx-name="_save" title="@ibxString('mlmap.save')"></div>
+					<div class="saveas devToolsButton esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-glyph-classes="fas fa-copy" data-ibx-name="_saveas" title="@ibxString('mlmap.saveas')"></div>
+				</div>
+				
+	        	<div class="map-wdg-dev page_box" data-ibx-type="ibxTabPane"  data-ibx-name-root="true" tabindex="-1">
+                    <div class="cmd-update" data-ibx-type="ibxCommand" data-ibxp-id="cmdUpdate" data-ibx-name="_cmdUpdate"></div>
+				
+		        <div class="map-wdg-layers-wrapper" data-ibxp-selected="true"  data-ibx-name="tabGrid" data-ibx-type="ibxTabPage" data-ibxp-tab-options="{'text':'@ibxString('mlmap.Layers')'}">
+		           <div class="settings-box" data-ibx-type="ibxVBox" data-ibx-name="_layersBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+					
+						<div class="wrapper_1" data-ibx-type="ibxHBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+						
+					<!--  	<div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start">-->
+							<div class="addDataLayer" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibx-name="_addLayer" title="@ibxString('mlmap.addDLayer')">@ibxString('mlmap.addDLayer')</div>
+							<div class="addGroupLayer" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibx-name="_addGroupLayer" title="@ibxString('mlmap.addgroupLayer')">@ibxString('mlmap.addgroupLayer')</div>	
+						</div>
+						<div class="layers-label" data-ibx-type="ibxLabel">@ibxString('mlmap.demoglayers')</div>
+						<div class="demog-layers-select layers-box" data-ibx-type="ibxSelect" data-ibxp-multi-select="true" data-ibx-name="demoLayerList" data-ibxp-readonly="true" data-user-data="demoLayerIds"></div>
+						<div class="layers-label" data-ibx-type="ibxLabel">@ibxString('mlmap.reflayers')</div>
+						<div class="ref-layers-select layers-box" data-ibx-type="ibxSelect" data-ibxp-multi-select="true" data-ibx-name="refLayerList" data-ibxp-readonly="true" data-user-data="refLayerIds"></div>
+						<div class="layers-label" data-ibx-type="ibxLabel">@ibxString('mlmap.atlaslayers')</div>
+						<div class="atlas-layers-select layers-box" data-ibx-type="ibxSelect" data-ibxp-multi-select="true" data-ibx-name="atlasLayerList" data-ibxp-readonly="true" data-user-data="atlasLayerIds"></div>
+					</div>
+		       
+		        </div>
+		        <div class="map-wdg-settings-wrapper" data-ibx-name="tabGrid" data-ibx-type="ibxTabPage" data-ibxp-tab-options="{'text':'@ibxString('mlmap.settings')'}">
+		           <div class="settings-box" data-ibx-type="ibxVBox" data-ibx-name="_settings-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+		           		<div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start">
+			           		<div class="layers-label maptitle" data-ibx-type="ibxLabel">@ibxString('mlmap.maptitle')</div>
+							<div class="maptitleEdit esri-input" data-ibx-type="ibxTextField"></div>
+						</div>
+						<div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start">
+			           		<div class="layers-label theme" data-ibx-type="ibxLabel">@ibxString('mlmap.esritheme')</div>
+							<div class="themes-select layers-box" data-ibx-type="ibxSelect" data-ibx-name="themesList" data-ibxp-readonly="true" data-user-data="themes">
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value=""  data-ibxp-selected="true">@ibxString('mlmap.none')</div>
+					   			<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="light" >@ibxString('mlmap.light')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dark">@ibxString('mlmap.dark')</div>
+							<!-- 	<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="light-blue" >@ibxString('mlmap.light-blue')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dark-blue" >@ibxString('mlmap.dark-blue')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="light-green">@ibxString('mlmap.light-green')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dark-green" >@ibxString('mlmap.dark-green')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="light-purple" >@ibxString('mlmap.light-purple')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dark-purple" >@ibxString('mlmap.dark-purple')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="light-red" >@ibxString('mlmap.light-red')</div>
+								<div class="mlm-theme-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="dark-red" >@ibxString('mlmap.dark-red')</div> -->
+					   		</div>
+					   		
+						</div>
+						<div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start">
+						<!--	<div data-ibx-type="ibxAccordionPage" class="df-ps-page"  style="width:98%;" data-ibxp-auto-close="true" data-ibxp-selected="false" data-ibxp-btn-options="{'text': '@ibxString(mlmap.backcolor)'}">
+								<div class="mlm-color-colorpick" data-ibx-type="ibxColorPicker" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}" ></div>	
+							</div>-->
+						 <div class="layers-label theme" data-ibx-type="ibxLabel">@ibxString('mlmap.backcolor')</div>
+							<div tabindex="0" class="mlm-color-picker-swatch background-color-menu-button" data-ibx-name="btnColor" data-ibx-type="ibxMenuButton" data-ibxp-use-value-as-text="true" data-ibxp-glyph-classes="mlm-color-picker-swatch">
+								<div data-ibx-type="ibxMenu" data-ibx-name="colorMenu" data-ibxp-destroy-on-close="false">
+									<div tabindex="0" class="mlm-color-picker-swatch ibx-menu-item mlm-color-colorpick" data-ibx-name="colorPicker" data-ibx-type="ibxColorPicker" data-ibxp-set-opacity="true"></div>
+								</div>
+							</div>  	
+						</div>
+						<div class="widgets-box" data-ibx-type="ibxVBox" data-ibx-name="_layersBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+				   		<div class="layers-label" data-ibx-type="ibxLabel">@ibxString('mlmap.widgetsSettings')</div>
+				   		<div class="widgets-select layers-box" data-ibx-type="ibxSelect" data-ibx-name="widgetsList" data-ibxp-readonly="true" data-user-data="widgets">
+				   			<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="mainToolBar" >@ibxString('mlmap.maintoolbar')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="legend" data-ibxp-selected="true" >@ibxString('mlmap.Legend')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="scalebar" >@ibxString('mlmap.scalebar')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="locate" >@ibxString('mlmap.locate')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="devTools">@ibxString('mlmap.devTools')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="navigation-toggle" >@ibxString('mlmap.navigationToggle')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="compass" >@ibxString('mlmap.compass')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="zoom" >@ibxString('mlmap.zoom')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="layers" >@ibxString('mlmap.Layers')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="basemaps" >@ibxString('mlmap.Switch_Basemap')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="interaction" >@ibxString('mlmap.interaction')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="search" >@ibxString('mlmap.search')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="measurement" >@ibxString('mlmap.measurement')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="direction" >@ibxString('mlmap.direction')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="location" >@ibxString('mlmap.location')</div>
+							<div class="mlm-widget-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="sketch" >@ibxString('mlmap.sketch')</div>
+				   		</div>
+				   		<div class="widget_settings" data-ibx-type="ibxVBox" data-ibxp-align="center stretch" data-ibxp-justify="spaceBetween">
+				   			<div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start">
+					   			<div class="layers-label" tabindex="-1" data-ibx-type="ibxLabel" data-ibxp-for=".widget_create">@ibxString('mlmap.create')</div>
+	                            <div data-qa-id="widgetCreateSwitch" class="widget_create" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgeCreate" title="@ibxString(mlmap.create)"></div>
+	                            <div class="layers-label" tabindex="-1" data-ibx-type="ibxLabel" data-ibxp-for=".widget_visibility">@ibxString('mlmap.visibility')</div>
+	                            <div data-qa-id="widgetVisibilitySwitch" class="widget_visibility" tabindex="0" data-ibx-type="ibxSwitch" data-ibx-name="_widgetVisibility" title="@ibxString(mlmap.visibility)"></div>
+	                        </div>   
+	                        <div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start"> 
+	                            <div class="layers-label" tabindex="-1" data-ibx-type="ibxLabel" data-ibxp-for=".widget_position">@ibxString('mlmap.position')</div>
+                        		<div tabIndex="0" class="widgetPosition-spinner esri-input" data-ibx-name="_widgetPosition" data-ibx-justify="stretch" data-ibx-type="ibxSpinner" data-ibxp-min="-1" data-ibxp-max="10" data-ibxp-value="1" ></div>
+                            </div>
+                            <div class="widget_settings" data-ibx-type="ibxHBox" data-ibxp-align="center stretch" data-ibxp-justify="start">
+	                            <div class="layers-label" tabindex="-1" data-ibx-type="ibxLabel" data-ibxp-for=".widget_location">@ibxString('mlmap.location')</div>
+		                        <div class="location-select layers-box" data-ibx-type="ibxSelect" data-ibx-name="locationList" data-ibxp-readonly="true" data-user-data="widgets">
+						   			<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="top-right" >@ibxString('mlmap.top-right')</div>
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="bottom-right">@ibxString('mlmap.bottom-right')</div>
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="bottom-left" >@ibxString('mlmap.bottom-left')</div>
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="top-left" >@ibxString('mlmap.top-left')</div>
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="top-center">@ibxString('mlmap.top-center')</div>	
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="bottom-center">@ibxString('mlmap.bottom-center')</div>	
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="top-leading" >@ibxString('mlmap.top-leading')</div>
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="top-trailing">@ibxString('mlmap.top-trailing')</div>	
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="bottom-leading" >@ibxString('mlmap.bottom-leading')</div>
+									<div class="mlm-location-item" data-ibx-type="ibxSelectItem" data-ibxp-user-value="bottom-trailing">@ibxString('mlmap.bottom-trailing')</div>									
+						   		</div>
+						   		
+                        	</div>
+                        </div>
+				   </div>		
+				   </div>
+		        </div>         
+		   </div> 
+		   </div>       
+        </markup-block>
+        <markup-block>
+            <div class="map-selTools-main" data-ibx-type="ibxPopup" data-ibxp-align="stretch"  data-ibx-options="{'movable':true, moveHandle:'.map-tools-box-header', 'modal': false, 'autoClose': false, autoPosition: false, 'destroyOnClose': false, 'position':{'my': 'left+10 top+75', 'at':'left top', 'of':'.map-container'}}">
+                <div class="map-selTools-wrapper" data-ibx-type="ibxVBox" data-ibxp-align="left">
+                    <div class="map-tools-box-header" data-ibx-type="ibxHBox" data-ibxp-align="center">                        
+                        </div>
+                    <div class="map-selTools-content"  data-ibx-type="ibxHBox" data-ibxp-align="stretch">
+                    </div>
+                </div>
+            </div>
+        </markup-block>
+        <markup-block>
+            <div class="lyr-wdg-main" data-ibx-type="ibxVBox" data-ibxp-align="stretch">
+                <!--<div class="lyr-wrapper" data-ibx-type="ibxHBox" data-ibxp-align="stretch">
+                    <div class="lyr-header-left" data-ibx-type="ibxHBox" data-ibxp-justify="start">
+                        <div class="lyr lyr-toggle" data-ibx-type="ibxCheckBoxSimple" data-ibxp-checked="false"></div>
+                        <div class="lyr lyr-geom" data-ibx-type="ibxLabel" data-ibxp-glyph-classes="ibx-icons ibx-glyph-map-polygon"></div>
+                        <div class="lyr lyr-label" data-ibx-type="ibxLabel" data-ibxp-text="Layer name"></div>
+                    </div>
+                    <div class="lyr-header-right" data-ibx-type="ibxHBox" data-ibxp-justify="end">
+                        <div class="lyr lyr-legend" data-user-data=".lyr-content-box" data-ibx-type="ibxButton" data-ibxp-glyph-classes="ibx-icons ibx-glyph-list"></div>
+                        <div class="lyr lyr-options" data-user-data=".lyr-content-box" data-ibx-type="ibxButton" data-ibxp-glyph-classes="ibx-icons ibx-glyph-sliders"></div>
+                    </div>
+                </div>
+                <div class="lyr-content-box" data-ibx-type="ibxCollapsible" data-ibx-options="{'startCollapsed':true, 'direction':'top'}">
+                    Top Bar
+                </div>-->
+            </div>
+        </markup-block>
+
+    </markup>
+    <scripts>
+        <script-block>
+        	<script-file src="{context}/tools/shared_resources/source/wf_globals.jsp"/>
+        	<script-file src="{context}/tools/portalcanvas/iframeinterface.js"/>
+        	<script-file src="{context}/ibxtools/wfcomponents/configpanel/resources/js/mapLabelFonts.wfc.js"/>
+            <script-file src="./geo_ui_dev_tools.js"/>
+            <script-file src="./geo_ui_renderer_animation.js"/>
+            <script-file src="./geo_ui_discover.js"/>
+            <script-file src="./geo_ui_camera.js"/>
+            <script-file src="./geo_ui_layer_options.js"/>
+            <script-file src="./geo_ui_route_layer.js"/>
+            <script-file src="./geo_ui_layer_effects.js"/>
+            <script-file src="./geo_ui_SymbolSettings.js"/>
+            <script-file src="./geo_ui_overlay.js"/>
+            <script-file src="./geo_ui_timeSlider_options.js"/>
+            <script-file src="./ibgeo.js"/>
+            <![CDATA[
+				//# sourceURL=mapping_res.xml
+			]]>
+        </script-block>
+    </scripts>
+
+<!--	<res-bundles>
+  		<ibx-res-bundle src="{context}/ibxtools/wfcomponents/fontFormatter/fontFormatter.wfc.res_bundle.xml"/>
+	</res-bundles>-->
+</ibx-res-bundle>

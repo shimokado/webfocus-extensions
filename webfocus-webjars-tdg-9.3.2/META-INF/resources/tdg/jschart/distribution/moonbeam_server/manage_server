@@ -1,0 +1,162 @@
+#!/bin/bash
+
+# 
+# Generic file to start and stop server using nohup and pid file
+#
+# Author:  Marcos Lin
+# Date:    15 Dec 2014
+# License: MIT License
+#
+
+log_dir="./run"
+process_name="node node_rasterizer_server.js"
+process_out="$log_dir/node_rasterizer_server.out"
+process_pid="$log_dir/node_rasterizer_server.pid"
+
+# Check command line option.
+action=$1
+shift
+params=$@
+
+help_needed () {
+    echo "$0 <start|status|stop|restart>" 1>&2
+    exit 1
+}
+
+if [ -z "$action" ]; then
+    echo "Error: missing required parameter" 1>&2
+    help_needed
+elif [[ ! "$action" =~ ^start|status|stop|restart$ ]]; then
+    echo "Error: '$action' is not valid option" 1>&2
+    help_needed
+fi
+
+
+# Check process
+running_pid ()  {
+    if [ -r "$process_pid" ]; then
+        local pid=$(cat $process_pid)
+        local proc=$(ps w -p $pid | grep "$process_name")
+        if [ -n "$proc" ]; then
+            echo $pid
+        else
+            local pid_search=$(search_pid)
+            if [ -n "$pid_search" ]; then
+                echo $pid_search
+            else
+                # pid file exists but no matching process found.  Delete the pid file
+                rm "$process_pid"
+            fi
+        fi
+    else
+        local pid_search=$(search_pid)
+        if [ -n "$pid_search" ]; then
+            echo $pid_search
+        fi
+    fi
+}
+
+search_pid() {
+    local pid=$(ps aux | grep "$process_name" | grep -v grep | awk "{ print \$2 }")
+    if [ -n "$pid" ]; then
+        # Write data
+        if [ ! -r "$process_pid" ]; then
+            echo $pid > $process_pid
+        fi
+        # Return PID found
+        echo $pid
+    fi
+}
+
+
+kill_process () {
+    local pid=$1
+    local proc=$pid
+    local retries=1
+    local max_retries=4
+    local retries_force=$(($max_retries-1))
+    echo -n "Stopping process $pid "
+    while [ $retries -lt $max_retries -a -n "$proc" ]; do
+        echo -n "."
+
+        # Force kill if last retry
+        if [ $retries -lt $retries_force ]; then
+            kill $pid > /dev/null
+        else
+            kill -9 $pid > /dev/null
+        fi
+
+        # Check if process was killed
+        proc=$(running_pid)
+        if [ -z "$proc" ]; then
+            if [ -r "$process_pid" ]; then
+                rm $process_pid
+            fi
+            retries=$max_retries
+        else
+            retries=$((retries+1))
+            sleep 1
+        fi
+    done
+    echo ""
+
+    if [ -n "$proc" ]; then
+        echo "Error: failed to kill process running as pid $pid" 1>&2
+        return 1
+    fi
+}
+
+# Actions
+pid_running=$(running_pid)
+start () {
+    if [ -z "$pid_running" ]; then
+        nohup $process_name $params &> $process_out &
+        sleep 1
+        local running_pid=$(search_pid)
+        if [ -n "$running_pid" ]; then
+            echo $! > $process_pid
+            echo "Process started with pid $(cat $process_pid)"
+        else
+            echo "Error: Process failed to start"
+            cat $process_out
+            return 1
+        fi
+    else
+        echo "Process already running as pid $pid_running"
+    fi
+}
+
+status () {
+    if [ -z "$pid_running" ]; then
+        echo "Process not running"
+    else
+        echo "Process running as pid $pid_running"
+    fi
+}
+
+stop () {
+    if [ -n "$pid_running" ]; then
+        kill_process $pid_running
+        local kill_process_result=$?
+        echo "
+
+$(date +"%Y-%m-%dT%H:%M:%S") server stop called
+        " >> $process_out
+        return $kill_process_result
+    else
+        echo "No process running"
+        return 1
+    fi
+}
+
+restart () {
+    stop
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+    pid_running=$(running_pid)
+    start
+}
+
+# Execute action
+$action

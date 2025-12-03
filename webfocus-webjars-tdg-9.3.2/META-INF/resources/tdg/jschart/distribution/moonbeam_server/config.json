@@ -1,0 +1,24 @@
+{
+	"server_protocol": "http",
+	"server_ip": "localhost",
+	"server_port": 8080,
+	"phantom_path": "phantomjs",
+	"moonbeam_path": "./tdgchart-min.js",
+	"moonbeam_resource_path": "/ibi_apps/tdg/jschart/distribution",
+	"log_filename": "stderr",
+	"debug": false,
+	"cookies": null,
+	"cookie_domain": "localhost",
+	"cookie_name_value_delimiter": "=",
+	"default_server_settings": {
+		"output_format": "png",
+		"img_format": "base64",
+		"page_size": "auto",
+		"render_delay": "auto",
+		"max_timeout": 30000,
+		"moonbeam_mode": true,
+		"easelly_mode": false,
+		"svg_img_fallback": "png",
+		"css_to_svg": true
+	}
+}

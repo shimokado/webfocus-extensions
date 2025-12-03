@@ -112,8 +112,15 @@ async function createExtension() {
         }
 
         const newFolderName = `com.${companyName}.${extensionId}`;
+
+        const templateFolderTypeMap = {
+            '1': 'com.shimokado.base_chart',
+            '2': 'com.shimokado.chartjs_sample',
+            '3': 'com.shimokado.params',
+            '4': 'com.shimokado.apexchart_bar'
+        };
     
-        const templateFolder = containerType === '1' ? 'com.shimokado.base_chart' : containerType === '2' ? 'com.shimokado.chartjs_sample' : containerType === '3' ? 'com.shimokado.params' : 'com.shimokado.apexchart_bar';
+        const templateFolder = templateFolderTypeMap[containerType];
 
         // Copy template folder
         const sourceDir = path.join(__dirname, '..', templateFolder);

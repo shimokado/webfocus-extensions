@@ -6,22 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Card Dashboard Test</title>
-    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
 </head>
 
 <body>
     <div class="chart" id="jschart_HOLD_0"></div>
-    <script type="text/javascript">
-        // グローバルオブジェクトの定義
-        window.tdgchart = {
-            extensionManager: {
-                register: function (config) {
-                    window.cardDashboardConfig = config;
-                }
-            }
-        };
-    </script>
-    <script type="text/javascript" src="lib/d3.min.js"></script>
+    <script src="tdgchart-min-for-test.js"></script>
+    <!-- <script type="text/javascript" src="lib/d3.min.js"></script> -->
     <script type="text/javascript" src="com.shimokado.zoomable-sunburst.js"></script>
     <script type="text/javascript">
         // テストデータ
@@ -213,8 +204,8 @@
         };
 
         // 拡張機能の初期化とレンダリング
-        window.cardDashboardConfig.initCallback(() => {
-            window.cardDashboardConfig.renderCallback(renderConfig);
+        window.chartConfig.initCallback(() => {
+            window.chartConfig.renderCallback(renderConfig);
         }, {});
         var divId = 'jschart_HOLD_';
         var defaultWidth = 760;

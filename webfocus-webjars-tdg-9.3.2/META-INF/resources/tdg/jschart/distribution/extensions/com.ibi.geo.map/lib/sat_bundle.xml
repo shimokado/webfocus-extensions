@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (C) 1996-2023. Cloud Software Group, Inc. All rights reserved.
+$Revision: 1.0 $:-->
+
+
+<ibx-res-bundle name="sat_bundle.xml" loadContext="bundle">
+	<markup>
+		<markup-block> 
+        	<div class="sat_Layer-options layers-box" data-ibx-type="ibxVBox" data-ibxp-align="center stretch" data-ibx-options="{'alignItems': 'center','alignContent': 'center','justify': 'center', 'align': 'center'}">
+			
+			</div>
+		</markup-block>			
+        <markup-block>
+           <div class="map-wdg-camera-wrapper" data-ibx-name="tabGrid" data-ibx-type="ibxTabPage" data-ibxp-tab-options="{'text':'@ibxString('mlmap.camera')'}">
+	           <div class="camera-box" data-ibx-type="ibxVBox" data-ibx-name="_camera-box" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+			   		<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.fov')</div>
+					<div class="fov-slider" tabindex="0" data-ibx-name="fov-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="55" data-ibxp-min="1" data-ibxp-max="170" data-ibxp-popup-value="true"></div>
+					<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.heading')</div>
+					<div class="heading-slider" tabindex="0" data-ibx-name="heading-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="360" data-ibxp-popup-value="true"></div>
+					<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.tilt')</div>
+					<div class="tilt-slider" tabindex="0" data-ibx-name="tilt-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="90" data-ibxp-popup-value="true"></div>
+					<div class="position-box" data-ibx-type="ibxVBox" data-ibxp-align="stretch" data-ibx-options="{'justify': 'center', 'align': 'center'}">
+						<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.latitude')</div>
+						<div class="latitude-slider" tabindex="0" data-ibx-name="latitude-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="-90" data-ibxp-max="90" data-ibxp-popup-value="true"></div>
+						<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.longitude')</div>
+						<div class="longitude-slider" tabindex="0" data-ibx-name="longitude-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="-180" data-ibxp-max="180" data-ibxp-popup-value="true"></div>
+					<!-- 	<div class="esri-layer-list__item-title devLabel" data-ibx-type="ibxLabel">@ibxString('mlmap.height')</div> -->
+						<div class="elevation-slider" tabindex="0" data-ibx-name="elevation-slider" data-ibx-type="ibxHSlider" data-ibxp-max-text-pos="start" data-ibxp-min-text-pos="start" data-user-data="fitToContainerSize" data-ibxp-value="0" data-ibxp-min="0" data-ibxp-max="200000" data-ibxp-popup-value="true"></div>
+					</div>
+					<div class="wrapper_1" data-ibx-type="ibxHBox" data-ibxp-align="stretch">
+						<div class="refresh devToolsButton esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibx-type="ibxButtonSimple" data-ibxp-align="center" data-ibxp-glyph-classes="fas fa-sync" data-ibx-name="_refresh" title="@ibxString('mlmap.SyncC')"></div>
+						<div class="showHidePosition devToolsButton esri-widget--button esri-widget esri-interactive esri-icon-down" tabindex="0" data-ibxp-align="center" data-ibx-type="ibxButtonSimple" title="@ibxString('mlmap.togglePosition')"></div>
+						<div class="showHideStars devToolsButton esri-widget--button esri-widget esri-interactive" tabindex="0" data-ibxp-glyph-classes="fas fa-star" data-ibxp-align="center" data-ibx-type="ibxButtonSimple" data-ibx-name="_saveas" title="@ibxString('mlmap.toggleStars')"></div>
+					</div>
+			   </div>
+	        </div>
+        </markup-block>
+	</markup>
+
+
+    <scripts>
+        <script-block> 
+			<script-file src="{context}/3rdparty_resources/satellite/satellite.min.js"/>
+			<script-file src="{context}/3rdparty_resources/satellite/three.min.js"/>
+			<script-file src="{context}/3rdparty_resources/satellite/renderer.js"/> 
+			<script-file src="./geo_ui_sat_layer_options.js"/>			
+        </script-block>
+    </scripts>
+</ibx-res-bundle>

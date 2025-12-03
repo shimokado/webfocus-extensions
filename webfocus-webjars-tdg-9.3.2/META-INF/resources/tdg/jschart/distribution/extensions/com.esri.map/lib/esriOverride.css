@@ -1,0 +1,10 @@
+.scalebar_bottom-right {
+	 right: 160px;
+}
+.esriControlsBR {
+	right: 65px;
+}
+
+.TableOfContentsButton:hover, .toggleModePan:hover, .toggleModeSelection:hover, .dijitTitlePaneTitleHover:hover, .MissingRegionCollapsed:hover {
+	background-color: #eee !important;
+}

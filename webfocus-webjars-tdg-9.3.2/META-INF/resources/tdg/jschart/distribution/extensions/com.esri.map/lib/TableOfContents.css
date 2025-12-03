@@ -1,0 +1,243 @@
+.UIButton {
+    box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+    background: #f8f8f8;
+    border-radius: 5px;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    padding: 4px 7px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.TopRightUIContainer {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 50;
+    padding: 10px;
+    display: inline;
+}
+.SelectionButton {
+    display: inline-block;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.MissingRegionButton {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    cursor: default;
+}
+.TableOfContentsButton {
+    display: block;
+    cursor: pointer;
+    right: 0px;
+    padding: 4px 10px 4px 19px;
+}
+.TableOfContentsContainer {
+    display: inline-block;
+    position: relative;
+    right: 0px;
+    z-index: 2;
+    min-height: 50px;
+    min-width: 65px;
+}
+.TableOfContents {
+    display: inline-block;
+    overflow-x : hidden;
+    max-height: 300px;
+    box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+}
+
+.TableOfContents.closed {
+    max-height: 0;
+}
+.TableOfContents  .toc-container {
+    display: inline-block;
+    border-radius: 0px 0px 5px 5px;
+    background: #f8f8f8;
+    color: #555;
+    padding: 15px 25px 0px 15px;
+    min-width: 130px;
+}
+
+.TableOfContents .toc-title {
+    padding-bottom: 20px;
+}
+.TableOfContents .toc-title-container {
+
+    white-space: nowrap;
+}
+.TableOfContents .toc-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    cursor: pointer;
+    display: inline;
+}
+.TableOfContents .toc-layer {
+    padding-bottom: 8px;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    line-height: 12px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.TableOfContents .toc-checkbox {
+    margin: 0px 8px 0px 0px;
+    vertical-align: middle;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+}
+.TableOfContents .toc-opacity-container {
+    height: 15px;
+    position: relative;
+    padding-bottom: 8px;
+}
+.TableOfContents .toc-opacity-text {
+    position: absolute;
+    top: 1px;
+    font-size: 90%;
+    pointer-events: none;
+}
+.TableOfContents .toc-slider-container {
+    position: relative;
+}
+.TableOfContents .toc-slider-bar {
+    height: 3px;
+    border: solid 1px #AAA;
+    position: absolute;
+    left: 0px;
+    top: 5px;
+    background: #E0E0E0;
+    cursor: pointer;
+}
+.TableOfContents .toc-slider-handle {
+    height: 13px;
+    border: solid 1px #888;
+    position: absolute;
+    top: 0px;
+    border-radius: 2px;
+    background: #CCC;
+    cursor: pointer;
+}
+
+.clear {
+    clear:both;
+}
+
+.toc-header {
+    background-color: #d7d7d7;
+    padding: 4px 0px 4px 15px;
+    border-radius: 5px 5px 0px 0px;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    box-shadow: 0 0px 4px rgba(0,0,0,0.4);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.dijitTitlePaneTextNode{
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.dijitTitlePane{
+    box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+    background: #f8f8f8;
+    border-radius: 5px;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    padding: 0px 0px 0px 0px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.dijitTitlePaneTitle {
+    border: 0px !important;
+    background-color: transparent !important;
+}
+
+.dijitTitlePaneTitleHover {
+    background-color: #f8f8f8 !important;
+}
+
+.dijitTitlePaneTitleFocus {
+    margin-top: 0px !important;
+    width: 80px;
+    padding: 4px 0px 0px 4px;
+}
+
+.dijitTitlePaneTitleOpen{
+    background-color: #d7d7d7 !important;
+}
+.dijitFieldsetLegendNode {
+    margin-right: 0px;
+}
+
+div.dijitTitlePaneTitleFocus:focus {
+    outline: none;
+}
+.dijitContentPane {
+    width: 400px !important;
+}
+.esriBasemapGalleryThumbnail {
+    margin: 4px !important;
+    border: 2px solid #fff;
+    border-radius: 5px;
+}
+.esriBasemapGallerySelectedNode .esriBasemapGalleryThumbnail{
+     border: 2px solid #f99 !important;
+     border-radius: 5px;
+     box-shadow: 0 0px 15px rgba(0,0,0,0.8);
+}
+.esriBasemapGalleryLabelContainer {
+    overflow: inherit;
+}
+.toc-header-arrow{
+    background-image: url("dijit/spriteArrows.png");
+    background-repeat: no-repeat;
+    height: 15px;
+    width: 6px;
+    background-position: -15px 0;
+    position: absolute;
+    left: 8px;
+    top: 8px;
+}
+.toggleModePan{
+    /*background-image: url("../../../../../../dhtml/images/icons/shared/samesize16.gif");*/
+    background-image: url("dijit/samesize16.gif");
+    background-repeat: no-repeat;
+    padding: 4px 7px 4px 27px;
+    background-size: 12px 12px;
+    background-position: 8px 4px;
+}
+.toggleModeSelection{
+    /*background-image: url("../../../../../../dhtml/images/qb/border_none_16.png");*/
+    background-image: url("dijit/border_none_16.png");
+    background-repeat: no-repeat;
+    padding: 4px 7px 4px 27px;
+    background-size: 12px 12px;
+    background-position: 8px 4px;
+}
+
+.toc-header-arrow-open{
+    background-position: 0px 0;
+    position: absolute;
+    left: 3px;
+    top: 7px;
+    padding: 0px 2px 0px 0px;
+}
+
+.esriLegendServiceLabel, .esriLegendLayerLabel, .esriLegendLayer>tbody>tr>td>table>tbody>tr>td {
+    font-size: 12px;
+}
+.esriLegendLayer>tbody>tr>td>img {
+    opacity: 1.0 !important;
+}
