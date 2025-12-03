@@ -144,6 +144,89 @@ tdgchart.extensionManager.register({
 }
 ```
 
+### 4.4 ⚠️ 重要：データ正規化について
+
+**WebFOCUSから渡されるデータ構造は可変的です。renderCallback の最初に必ずデータを正規化してください。**
+
+#### 正規化が必要な理由
+
+`renderConfig.data` と `dataBuckets` のメタデータは、以下の様に変動します：
+
+| 条件 | data の型 | labels の型 | value の型 | dataBuckets.buckets.labels.title |
+| --- | --- | --- | --- | --- |
+| 単一ラベル × 単一値 | 配列 | 文字列 | 数値 | 文字列 |
+| 複数ラベル × 複数値 | 配列 | 配列 | 配列 | 配列 |
+
+#### よくある誤り
+
+```javascript
+// ❌ 間違い: depth=1 なら data を配列にラップ
+if (renderConfig.dataBuckets.depth === 1) {
+    data = [data];  // これは誤り！depth=1 の data は既にアイテム配列
+}
+
+// ❌ 間違い: 正規化なしで labels/value にアクセス
+data.forEach(item => {
+  item.labels.forEach(label => {  // labels が文字列なら Error!
+    // ...
+  });
+});
+```
+
+#### ベストプラクティス
+
+```javascript
+function renderCallback(renderConfig) {
+  var buckets = renderConfig.dataBuckets.buckets;
+  var data = renderConfig.data;
+  
+  // ===== ステップ1: バケットメタデータを常に配列に統一 =====
+  var labelsTitles = Array.isArray(buckets.labels.title) 
+    ? buckets.labels.title 
+    : [buckets.labels.title];
+  var valueTitles = Array.isArray(buckets.value.title) 
+    ? buckets.value.title 
+    : [buckets.value.title];
+  
+  // ===== ステップ2: データアイテムを常に配列に統一 =====
+  var normalizedData = [];
+  
+  if (renderConfig.dataBuckets.depth === 1) {
+    // depth=1: data はそのままアイテム配列
+    normalizedData = data.map(function(item) {
+      return {
+        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+        value: Array.isArray(item.value) ? item.value : [item.value]
+      };
+    });
+  } else {
+    // depth>1: data は配列の配列（シリーズごとにグループ化）
+    data.forEach(function(series) {
+      if (Array.isArray(series)) {
+        series.forEach(function(item) {
+          normalizedData.push({
+            labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+            value: Array.isArray(item.value) ? item.value : [item.value]
+          });
+        });
+      }
+    });
+  }
+  
+  // ===== ステップ3: 正規化後は常に配列として安全にアクセス可能 =====
+  normalizedData.forEach(function(item) {
+    var firstLabel = item.labels[0];  // 常に文字列
+    var firstValue = item.value[0];   // 常に数値
+  });
+}
+```
+
+#### 参考資料
+
+- **詳細な実装例**: `com.shimokado.params` - コンソール出力で正規化前後を視覚的に示す
+- **詳細な解説**: [02_API_Reference.md](../../development_guide/02_API_Reference.md) の Section 3.5 を参照
+- **実装パターン**: [03_Development_Guide.md](../../development_guide/03_Development_Guide.md) の Section 1 を参照
+
 ---
 
 ## 5. よくあるタスク

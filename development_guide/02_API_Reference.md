@@ -250,9 +250,124 @@ renderConfig.dataBuckets = {
 };
 ```
 
-### 3.5 よくある誤り＆正しい処理方法
+### 3.5 ベストプラクティス：データ正規化パターン（推奨）
 
-#### ❌ 誤り1: depth=1 なら data を配列にラップする
+WebFOCUSから渡されるデータの構造が可変的であるため、**最初に全てのデータを統一形式に正規化する**ことが最も堅牢な実装パターンです。
+
+#### 正規化の目的
+
+- **labels と value を常に配列として統一**
+- **depth に応じた配列構造の差異を吸収**
+- **後続処理を簡潔に保つ**
+
+#### ベストプラクティス実装例
+
+```javascript
+/**
+ * renderConfig のデータを統一形式に正規化する関数
+ * @param {Object} renderConfig - 標準のコールバック引数オブジェクト
+ * @returns {Object} 正規化されたデータ情報
+ */
+function normalizeRenderData(renderConfig) {
+  const dataBuckets = renderConfig.dataBuckets;
+  const buckets = dataBuckets.buckets;
+  let data = renderConfig.data;
+
+  // ===== Step 1: バケットメタデータを常に配列に統一 =====
+  const labelsTitles = buckets.labels 
+    ? (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) 
+    : [];
+  const labelsFieldNames = buckets.labels 
+    ? (Array.isArray(buckets.labels.fieldName) ? buckets.labels.fieldName : [buckets.labels.fieldName]) 
+    : [];
+  const valueTitles = buckets.value 
+    ? (Array.isArray(buckets.value.title) ? buckets.value.title : [buckets.value.title]) 
+    : [];
+  const valueFieldNames = buckets.value 
+    ? (Array.isArray(buckets.value.fieldName) ? buckets.value.fieldName : [buckets.value.fieldName]) 
+    : [];
+  const valueNumberFormats = buckets.value 
+    ? (Array.isArray(buckets.value.numberFormat) ? buckets.value.numberFormat : [buckets.value.numberFormat]) 
+    : [];
+
+  // ===== Step 2: データアイテムを統一形式に正規化 =====
+  let flatData = [];
+
+  if (dataBuckets.depth === 1) {
+    // depth=1: data はそのままアイテム配列
+    flatData = data.map(function(item) {
+      return {
+        labels: item.labels !== undefined 
+          ? (Array.isArray(item.labels) ? item.labels : [item.labels]) 
+          : [],
+        value: item.value !== undefined 
+          ? (Array.isArray(item.value) ? item.value : [item.value]) 
+          : [],
+        detail: item.detail !== undefined 
+          ? (Array.isArray(item.detail) ? item.detail : [item.detail]) 
+          : [],
+        _s: item._s,
+        _g: item._g
+      };
+    });
+  } else if (dataBuckets.depth > 1) {
+    // depth>1: data は配列の配列（シリーズごとにグループ化）
+    data.forEach(function(series) {
+      if (Array.isArray(series)) {
+        series.forEach(function(item) {
+          flatData.push({
+            labels: item.labels !== undefined 
+              ? (Array.isArray(item.labels) ? item.labels : [item.labels]) 
+              : [],
+            value: item.value !== undefined 
+              ? (Array.isArray(item.value) ? item.value : [item.value]) 
+              : [],
+            detail: item.detail !== undefined 
+              ? (Array.isArray(item.detail) ? item.detail : [item.detail]) 
+              : [],
+            _s: item._s,
+            _g: item._g
+          });
+        });
+      }
+    });
+  }
+
+  // ===== Step 3: 正規化されたデータを返す =====
+  return {
+    labelsTitles: labelsTitles,
+    labelsFieldNames: labelsFieldNames,
+    valueTitles: valueTitles,
+    valueFieldNames: valueFieldNames,
+    valueNumberFormats: valueNumberFormats,
+    data: flatData  // 統一形式のデータ
+  };
+}
+
+// ===== 使用例 =====
+function renderCallback(renderConfig) {
+  // 正規化処理を一度だけ実行
+  var normalized = normalizeRenderData(renderConfig);
+  
+  // 以降、normalized.data は常に統一形式で使用可能
+  normalized.data.forEach(function(item) {
+    // item.labels は常に配列
+    // item.value は常に配列
+    var firstLabel = item.labels[0];  // 安全にアクセス可能
+    var firstValue = item.value[0];   // 安全にアクセス可能
+    
+    console.log(firstLabel, firstValue);
+  });
+}
+```
+
+#### 参考実装
+
+`com.shimokado.params` はこのパターンを実装した優れた参考例です。このプラグインはコンソール出力を通じて、正規化前後のデータ構造を視覚的に示しています。
+
+### 3.6 実装上の注意点
+
+#### ❌ よくある誤り1: depth=1 で data を無理にラップする
 
 ```javascript
 // 🔴 間違い
@@ -261,87 +376,30 @@ if (dataBuckets.depth === 1) {
 }
 ```
 
-**原因**: depth=1 の `data` はすでに `[item1, item2, ...]` の形式。これを `[[item1, item2, ...]]` にラップすると、最初の1個のアイテムだけが処理される。
+**原因**: depth=1 の `data` はすでに `[item1, item2, ...]` の形式です。
 
-#### ✅ 正しい処理1: depth に応じてフラット化
-
-```javascript
-// 🟢 正しい
-let flatData = [];
-
-if (dataBuckets.depth === 1) {
-  // depth=1: data はそのままアイテム配列
-  flatData = data.map(item => ({
-    ...item,
-    // ← value の正規化（配列 or 単一値の両方に対応）
-    value: Array.isArray(item.value) ? item.value : [item.value]
-  }));
-} else if (dataBuckets.depth > 1) {
-  // depth>1: data は配列の配列
-  data.forEach(series => {
-    if (Array.isArray(series)) {
-      series.forEach(item => {
-        flatData.push({
-          ...item,
-          value: Array.isArray(item.value) ? item.value : [item.value]
-        });
-      });
-    }
-  });
-}
-```
-
-#### ❌ 誤り2: labels/value が常に配列だと仮定
+#### ❌ よくある誤り2: 正規化なしで labels/value にアクセス
 
 ```javascript
 // 🔴 間違い
-data.forEach(item => {
-  item.labels.forEach(label => {  // ← labels が文字列なら Error!
+renderConfig.data.forEach(item => {
+  item.labels.forEach(label => {  // ← labels が文字列の場合 Error!
     // ...
   });
-  item.value[0] = item.value[0] + 100;  // ← value が数値なら Error!
 });
 ```
 
-#### ✅ 正しい処理2: 配列か単一値かチェック
+#### ✅ 推奨: 最初に正規化関数を呼び出す
 
 ```javascript
 // 🟢 正しい
-data.forEach(item => {
-  const labels = Array.isArray(item.labels) ? item.labels : [item.labels];
-  const values = Array.isArray(item.value) ? item.value : [item.value];
+function renderCallback(renderConfig) {
+  var normalized = normalizeRenderData(renderConfig);
   
-  labels.forEach(label => {
-    console.log(label);
-  });
-  
-  values.forEach((val, idx) => {
-    values[idx] = val + 100;
-  });
-});
-```
-
-#### ❌ 誤り3: depth を確認せずにデータアクセス
-
-```javascript
-// 🔴 間違い
-renderConfig.data.forEach(item => {  // depth>1 だと data[0] は配列
-  console.log(item.labels);  // Error: item.labels is undefined
-});
-```
-
-#### ✅ 正しい処理3: depth を確認してからアクセス
-
-```javascript
-// 🟢 正しい
-if (renderConfig.dataBuckets.depth === 1) {
-  renderConfig.data.forEach(item => {
-    console.log(item.labels);
-  });
-} else {
-  renderConfig.data.forEach(series => {
-    series.forEach(item => {
-      console.log(item.labels);
+  // 以降は統一形式で安全にアクセス可能
+  normalized.data.forEach(function(item) {
+    item.labels.forEach(function(label) {
+      console.log(label);  // 常に文字列
     });
   });
 }

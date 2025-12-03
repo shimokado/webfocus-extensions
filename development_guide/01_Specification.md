@@ -129,9 +129,23 @@ depth>1 では、データは**配列の配列**として渡されます（シ�
 
 以下の点に注意してください：
 
-| 状況 | labels | value |
+| 状況 | labels の型 | value の型 |
 | --- | --- | --- |
 | ラベル/値が1つのみ | **文字列** `"COUNTRY"` | **数値** `10` |
 | ラベル/値が2つ以上 | **配列** `["COUNTRY", "CAR"]` | **配列** `[100, 200]` |
 
-**正規化の重要性**：この混在した型に対応するため、development guide（実践編）で説明される正規化処理を実装することが強く推奨されます。正規化により、常に `labels` と `value` を配列として扱えるようになります。
+さらに、`dataBuckets.buckets` のメタデータについても、以下の様に変動します：
+
+```javascript
+// 単一ラベルの場合
+dataBuckets.buckets.labels.title = "COUNTRY";        // 文字列
+
+// 複数ラベルの場合
+dataBuckets.buckets.labels.title = ["COUNTRY", "CAR"]; // 配列
+```
+
+### ✅ 推奨される対応方法
+
+この混在した型に対応するため、**データ正規化パターン**を実装することが強く推奨されます。詳細は [03_Development_Guide.md](03_Development_Guide.md) および [04_Tutorials.md](04_Tutorials.md) を参照してください。
+
+実装例（ベストプラクティス）：`com.shimokado.params` を参照。このプラグインはコンソール出力を通じて、データの正規化処理とその結果を示す優れた学習教材となっています。

@@ -139,6 +139,71 @@ tdgchart.extensionManager.register({
 }
 ```
 
+### 4.4 ⚠️ 重要：データ正規化について
+
+**WebFOCUSから渡されるデータ構造は可変的です。renderCallback の最初に必ずデータを正規化してください。**
+
+#### 正規化が必要な理由
+
+`renderConfig.data` と `dataBuckets` のメタデータは、以下の様に変動します：
+
+| 条件 | data の型 | labels の型 | value の型 | dataBuckets.buckets.labels.title |
+| --- | --- | --- | --- | --- |
+| 単一ラベル × 単一値 | 配列 | 文字列 | 数値 | 文字列 |
+| 複数ラベル × 複数値 | 配列 | 配列 | 配列 | 配列 |
+
+#### ベストプラクティス
+
+`renderCallback` の最初に必ず以下の正規化を実施してください：
+
+```javascript
+function normalizeRenderData(renderConfig) {
+  var buckets = renderConfig.dataBuckets.buckets;
+  
+  // ===== バケットメタデータを常に配列に統一 =====
+  var labelsTitles = Array.isArray(buckets.labels.title) 
+    ? buckets.labels.title 
+    : [buckets.labels.title];
+  var valueTitles = Array.isArray(buckets.value.title) 
+    ? buckets.value.title 
+    : [buckets.value.title];
+  
+  // ===== データアイテムを常に配列に統一 =====
+  var normalizedData = [];
+  if (renderConfig.dataBuckets.depth === 1) {
+    normalizedData = renderConfig.data.map(function(item) {
+      return {
+        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+        value: Array.isArray(item.value) ? item.value : [item.value]
+      };
+    });
+  } else {
+    renderConfig.data.forEach(function(series) {
+      if (Array.isArray(series)) {
+        series.forEach(function(item) {
+          normalizedData.push({
+            labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+            value: Array.isArray(item.value) ? item.value : [item.value]
+          });
+        });
+      }
+    });
+  }
+  
+  return {
+    labelsTitles: labelsTitles,
+    valueTitles: valueTitles,
+    data: normalizedData
+  };
+}
+```
+
+#### 参考実装
+
+- **ベストプラクティス例**: `com.shimokado.params` - データ正規化を視覚的に示す参考実装
+- **詳細説明**: [02_API_Reference.md](../development_guide/02_API_Reference.md) の Section 3.5 を参照
+- **実装パターン**: [03_Development_Guide.md](../development_guide/03_Development_Guide.md) の Section 1 を参照
+
 ---
 
 ## 5. よくあるタスク
