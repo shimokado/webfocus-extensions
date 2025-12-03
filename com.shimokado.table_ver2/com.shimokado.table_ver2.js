@@ -197,6 +197,9 @@
 		const height = renderConfig.height; 
 		const width = renderConfig.width;
 
+		// ラベル数の取得
+		const labelCount = buckets.labels && buckets.labels.count ? buckets.labels.count : 0;
+
 		container.innerHTML = '';
 		
 		// データコンテナを作成
