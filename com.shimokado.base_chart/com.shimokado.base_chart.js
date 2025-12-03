@@ -173,6 +173,13 @@
 		// dataだけを使ったシンプルな棒グラフをd3で作成
 		var data = renderConfig.data;
 		var container = renderConfig.container;
+		
+		// データのチェック
+		if (!data || !Array.isArray(data) || data.length === 0) {
+			console.warn('No data available for rendering');
+			return;
+		}
+		
 		var w = renderConfig.properties.width || container.clientWidth;
 		var h = renderConfig.properties.height || container.clientHeight;
 
@@ -206,7 +213,17 @@
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'); // 位置を設定(マージン分だけずらす)
 
 		x.domain(data.map(function (d) { return d.labels; })); // x軸のドメインを設定(dataのlabelsを使う)
-		y.domain([0, d3.max(data, function (d) { return d.value; })]); // y軸のドメインを設定(dataのvalueを使う)
+		
+		// y軸のドメインを設定（負の値に対応）
+		var yMin = d3.min(data, function (d) { return d.value; });
+		var yMax = d3.max(data, function (d) { return d.value; });
+		
+		// 最小値が0以上の場合は0から開始、負の値がある場合はmin/maxを使用
+		if (yMin >= 0) {
+			y.domain([0, yMax]);
+		} else {
+			y.domain([yMin, yMax]);
+		}
 
 		svg.append('g') // x軸を追加
 			.attr('class', 'x axis') // クラスを設定
@@ -235,8 +252,20 @@
 			.attr('class', 'bar') // クラスを設定
 			.attr('x', function (d) { return x(d.labels); }) // x座標を設定(dataのlabelsを使う)
 			.attr('width', x.rangeBand()) // 幅を設定(バンドの幅)
-			.attr('y', function (d) { return y(d.value); }) // y座標を設定(dataのvalueを使う)
-			.attr('height', function (d) { return height - y(d.value); }); // 高さを設定(グラフの高さからy座標を引いた値)
+			.attr('y', function (d) { 
+				// y座標: 値と0ラインの小さい方（上側）
+				var yValue = y(d.value);
+				var yZero = y(0);
+				return Math.min(yValue, yZero);
+			})
+			.attr('height', function (d) { 
+				// 高さ: 値と0ラインの差の絶対値（常に正の値）
+				var yValue = y(d.value);
+				var yZero = y(0);
+				var height = Math.abs(yValue - yZero);
+				// 安全対策: 負の高さが出ないようにチェック
+				return Math.max(0, height);
+			}); // 高さを設定(0との差の絶対値)
 
 		renderConfig.renderComplete();
 	}

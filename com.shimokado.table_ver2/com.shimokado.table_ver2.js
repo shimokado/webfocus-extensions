@@ -32,21 +32,30 @@
 		
 		// グループキーを作成してデータをグループ化
 		data.forEach(item => {
+			// itemのバリデーション
+			if (!item || !item.labels || !Array.isArray(item.labels)) {
+				console.warn('Invalid item in groupAndAggregate:', item);
+				return;
+			}
+			
+			// valueが配列でない場合は配列に変換
+			const valueArray = Array.isArray(item.value) ? item.value : [item.value];
+			
 			// labelLevelまでのラベルを結合してグループキーを作成
 			const groupKey = item.labels.slice(0, labelLevel + 1).join('|');
 			
 			if (!groups[groupKey]) {
 				groups[groupKey] = {
 					labels: item.labels.slice(0, labelLevel + 1),
-					value: Array(item.value.length).fill(0),
+					value: Array(valueArray.length).fill(0),
 					count: 0,
 					isTotal: true
 				};
 			}
 			
 			// 値を集計
-			for (let i = 0; i < item.value.length; i++) {
-				groups[groupKey].value[i] += (item.value[i] || 0);
+			for (let i = 0; i < valueArray.length; i++) {
+				groups[groupKey].value[i] += (valueArray[i] || 0);
 			}
 			groups[groupKey].count += 1;
 		});
@@ -191,11 +200,40 @@
 
 		const props = renderConfig.properties; 
 		const container = renderConfig.container; 
-		const data = renderConfig.data; 
+		let data = renderConfig.data; 
 		const dataBuckets = renderConfig.dataBuckets; 
 		const buckets = dataBuckets.buckets; 
 		const height = renderConfig.height; 
 		const width = renderConfig.width;
+
+		// ===== ステップ1: データの正規化 =====
+		// depth に基づいて、フラットなデータ構造に統一
+		// depth=1: オブジェクトの配列
+		// depth>1: 配列の配列を1次元にフラット化
+		let flatData = [];
+		
+		if (dataBuckets.depth === 1) {
+			// depth=1: data はオブジェクトの配列 [{labels, value}, ...]
+			flatData = data.map(item => ({
+				labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+				value: Array.isArray(item.value) ? item.value : [item.value]
+			}));
+		} else {
+			// depth>1: data は配列の配列 [ [{labels, value}, ...], [...] ]
+			data.forEach(series => {
+				if (Array.isArray(series)) {
+					series.forEach(item => {
+						flatData.push({
+							labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+							value: Array.isArray(item.value) ? item.value : [item.value]
+						});
+					});
+				}
+			});
+		}
+		
+		// 以降の処理では flatData を使用
+		data = flatData;
 
 		// ラベル数の取得
 		const labelCount = buckets.labels && buckets.labels.count ? buckets.labels.count : 0;

@@ -20,7 +20,12 @@
 		const data = renderConfig.data;
 		const width = container.clientWidth;
 		const height = container.clientHeight || width;
-		const radius = width / 6;
+		// 縦横の小さいほうに合わせてグラフサイズを決定
+		const size = Math.min(width, height);
+		const radius = size / 6;
+
+		// コンテナをクリア
+		container.innerHTML = '';
 
 		// Transform the flat data into hierarchical format
 		const hierarchicalData = {
@@ -92,7 +97,9 @@
 		// Create SVG container
 		const svg = d3.select(container)
 			.append("svg")
-			.attr("viewBox", [-width / 2, -height / 2, width, width])
+			.attr("width", width)
+			.attr("height", height)
+			.attr("viewBox", [-size / 2, -size / 2, size, size])
 			.style("font", "12pt sans-serif");  // フォントサイズを12ptに変更
 
 		// Append the arcs

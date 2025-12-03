@@ -1,15 +1,14 @@
 {
-  "com.shimokado.apexchart_bar": { "enabled": true },
-  "com.shimokado.base_char": { "enabled": true },
+  "com.shimokado.base_chart": { "enabled": true },
   "com.shimokado.card_dashboard": { "enabled": true },
   "com.shimokado.card_simple": { "enabled": true },
   "com.shimokado.chartjs_sample": { "enabled": true },
-  "com.shimokado.geotest": { "enabled": true },
   "com.shimokado.params": { "enabled": true },
   "com.shimokado.radial_gradiate": { "enabled": true },
   "com.shimokado.simple_bar": { "enabled": true },
   "com.shimokado.table_simple": { "enabled": true },
   "com.shimokado.table_ver1": { "enabled": true },
   "com.shimokado.table_ver2": { "enabled": true },
+  "com.shimokado.apexchart_bar": { "enabled": true },
   "com.shimokado.zoomable_sunburst": { "enabled": true }
 }

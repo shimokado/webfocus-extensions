@@ -62,14 +62,18 @@
 		var chart = preRenderConfig.moonbeamInstance;
 
 		// この拡張機能のフォルダパスにあるファイルを手動で読み込んで使用する例
-		var info = tdgchart.util.ajax(preRenderConfig.loadPath + 'lib/extra_properties.json', { asJSON: true });
-
-
+		var info = null;
+		try {
+			info = tdgchart.util.ajax(preRenderConfig.loadPath + 'lib/extra_properties.json', { asJSON: true });
+		} catch (e) {
+			// extra_properties.jsonが存在しない場合はエラーを無視
+			console.warn('extra_properties.json not found:', e);
+		}
 
 		if (!chart.title.visible) {    //開発者がGRAPHリクエストでHEADINGを設定していない場合、preRenderConfig.loadPath + 'lib/extra_properties.json'にあるカスタムタイトルを使用
 			// チャートエンジンの組み込みタイトルプロパティの使用例
 			chart.title.visible = true;
-			chart.title.text = info.custom_title;
+			chart.title.text = (info && info.custom_title) ? info.custom_title : 'Simple Bar Chart';
 		} // if (!chart.title.visible) //開発者がGRAPHリクエストでFOOTINGを設定していない場合、カスタムプログラムによるフッター割り当ての例として'footnote'テキストを使用
 
 		if (!chart.footnote.visible) {

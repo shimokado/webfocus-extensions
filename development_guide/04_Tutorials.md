@@ -24,6 +24,31 @@ function renderCallback(renderConfig) {
   var width = renderConfig.width;
   var height = renderConfig.height;
   var data = renderConfig.data;
+  var dataBuckets = renderConfig.dataBuckets;
+
+  // ===== ステップ1: データの正規化（重要！）=====
+  // depth=1 でも labels/value が文字列になる場合がある
+  var normalizedData = [];
+  if (dataBuckets.depth === 1) {
+    normalizedData = data.map(function(item) {
+      return {
+        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+        value: Array.isArray(item.value) ? item.value : [item.value]
+      };
+    });
+  } else {
+    // depth > 1: 配列の配列
+    data.forEach(function(series) {
+      if (Array.isArray(series)) {
+        series.forEach(function(item) {
+          normalizedData.push({
+            labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+            value: Array.isArray(item.value) ? item.value : [item.value]
+          });
+        });
+      }
+    });
+  }
 
   // コンテナタイプは 'html' である必要があります
   // Canvas要素を作成
@@ -32,12 +57,15 @@ function renderCallback(renderConfig) {
   canvas.height = height;
   container.appendChild(canvas);
 
-  // Chart.js用のデータ変換（簡易例）
+  // ===== ステップ2: Chart.js用のデータ変換 =====
+  // 最後のラベルと最初の値フィールドを使用（簡易例）
   var chartData = {
-    labels: data.map(function(d) { return d.labels; }),
+    labels: normalizedData.map(function(d) { 
+      return d.labels[d.labels.length - 1]; 
+    }),
     datasets: [{
       label: 'My Dataset',
-      data: data.map(function(d) { return d.value; }),
+      data: normalizedData.map(function(d) { return d.value[0]; }),
       backgroundColor: 'rgba(255, 99, 132, 0.2)',
       borderColor: 'rgba(255, 99, 132, 1)',
       borderWidth: 1
@@ -64,7 +92,7 @@ function renderCallback(renderConfig) {
 
 ApexCharts はモダンなSVGチャートライブラリです。
 
-### 手順
+### 手順 (ApexCharts)
 
 1. **プロジェクト作成**: `com.mycompany.apexcharts_sample` を作成。
 2. **ライブラリ配置**: `lib` フォルダに `apexcharts.min.js` を配置。
@@ -74,10 +102,37 @@ ApexCharts はモダンなSVGチャートライブラリです。
 ```javascript
 function renderCallback(renderConfig) {
   var container = renderConfig.container;
+  var data = renderConfig.data;
+  var dataBuckets = renderConfig.dataBuckets;
   
-  // ApexCharts用のデータ変換
-  var seriesData = renderConfig.data.map(function(d) {
-    return { x: d.labels, y: d.value };
+  // ===== ステップ1: データの正規化 =====
+  var normalizedData = [];
+  if (dataBuckets.depth === 1) {
+    normalizedData = data.map(function(item) {
+      return {
+        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+        value: Array.isArray(item.value) ? item.value : [item.value]
+      };
+    });
+  } else {
+    data.forEach(function(series) {
+      if (Array.isArray(series)) {
+        series.forEach(function(item) {
+          normalizedData.push({
+            labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+            value: Array.isArray(item.value) ? item.value : [item.value]
+          });
+        });
+      }
+    });
+  }
+  
+  // ===== ステップ2: ApexCharts用のデータ変換 =====
+  var seriesData = normalizedData.map(function(d) {
+    return { 
+      x: d.labels[d.labels.length - 1],  // 最後のラベル
+      y: d.value[0]  // 最初の値
+    };
   });
 
   var options = {
@@ -106,7 +161,7 @@ function renderCallback(renderConfig) {
 
 シンプルなHTMLテーブルを表示する例です。
 
-### 手順
+### 手順 (HTML Table)
 
 1. **プロジェクト作成**: `com.mycompany.table_sample` を作成。
 2. **実装**:
