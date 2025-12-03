@@ -1,5 +1,4 @@
 {
-  "com.shimokado.base_chart": { "enabled": true },
   "com.shimokado.card_dashboard": { "enabled": true },
   "com.shimokado.card_simple": { "enabled": true },
   "com.shimokado.chartjs_sample": { "enabled": true },
