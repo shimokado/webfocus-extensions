@@ -37,6 +37,7 @@
 | [03_Development_Guide.md](development_guide/03_Development_Guide.md) | 実装パターン、ベストプラクティス |
 | [04_Tutorials.md](development_guide/04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
 | [05_Official_Manuals_JP.md](development_guide/05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
+| [06_Troubleshooting_DataDepth.md](development_guide/06_Troubleshooting_DataDepth.md) | **配列の深さ問題の詳細解説と解決方法** ⚠️ |
 
 ---
 

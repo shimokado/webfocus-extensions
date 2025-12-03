@@ -235,8 +235,9 @@
 		// 以降の処理では flatData を使用
 		data = flatData;
 
-		// ラベル数の取得
+		// ラベル数と値数の取得
 		const labelCount = buckets.labels && buckets.labels.count ? buckets.labels.count : 0;
+		const valueCount = buckets.value && buckets.value.count ? buckets.value.count : 0;
 
 		container.innerHTML = '';
 		
@@ -314,40 +315,91 @@
 		const tbody = document.createElement('tbody');
 		
 		// データ行と集計行を作成する処理
-		// 要件1: ラベルが1つの場合は合計行を表示しない
-		// 要件2: ラベルが3つ以上の場合、最後のlabels以外は合計行を表示する
+		// 要件: ラベルが2つ以上かつ値が2つ以上の場合のみ集計行を表示
 		
-		// 元のデータをコピー
-		const processedData = [...data];
+		let processedData;
 		
-		// ラベルが3つ以上ある場合のみ集計行を追加
-		if (labelCount >= 3) {
-			// 最後のラベル以外の各レベルについて集計行を作成
-			for (let level = 0; level < labelCount - 1; level++) {
-				// 対象レベルまでのラベルでグループ化して集計
-				const aggregatedData = groupAndAggregate(data, level);
-				// 集計結果をデータに追加
-				processedData.push(...aggregatedData);
-			}
-		}
-		
-		// データの表示順をソートするため、ラベルでソート
-		processedData.sort((a, b) => {
-			for (let i = 0; i < labelCount; i++) {
-				const aLabel = a.labels[i] || '';
-				const bLabel = b.labels[i] || '';
-				
-				if (aLabel !== bLabel) {
-					return aLabel.localeCompare(bLabel);
-				}
-			}
+		// ラベル数が2つ以上かつ値数が2つ以上の場合、グループ変更時に集計行を挿入する処理
+		if (labelCount >= 2 && valueCount >= 2) {
+			const resultData = [];
 			
-			// 合計行を通常の行の後に表示
-			return (a.isTotal ? 1 : 0) - (b.isTotal ? 1 : 0);
-		});
-		
-		// 前のレベルを追跡して、レベルが変わったときに合計行を挿入
-		let prevLabels = [];
+			// データを最初の (labelCount - 1) 個のラベルレベルでソート
+			data.sort((a, b) => {
+				for (let i = 0; i < labelCount - 1; i++) {
+					const aLabel = a.labels[i] || '';
+					const bLabel = b.labels[i] || '';
+					
+					if (aLabel !== bLabel) {
+						return aLabel.localeCompare(bLabel);
+					}
+				}
+				return 0;
+			});
+			
+			// グループ変更を検出して集計行を挿入（グループ開始時＝上に表示）
+			let prevGroupKeys = Array(labelCount - 1).fill(null);
+			
+			data.forEach((item, index) => {
+				// グループが変わったかチェック
+				let groupChanged = false;
+				let changeLevel = -1;
+				
+				for (let level = 0; level < labelCount - 1; level++) {
+					const currentGroupKey = item.labels.slice(0, level + 1).join('|');
+					if (currentGroupKey !== prevGroupKeys[level]) {
+						groupChanged = true;
+						changeLevel = level;
+						break;
+					}
+				}
+				
+				// グループが変わった場合、新しいグループの集計行を挿入（データの前に）
+				if (groupChanged) {
+					for (let level = changeLevel; level < labelCount - 1; level++) {
+						const currentGroupKey = item.labels.slice(0, level + 1).join('|');
+						
+						let aggregatedItem = {
+							labels: item.labels.slice(0, level + 1),
+							value: Array(item.value.length).fill(0),
+							count: 0,
+							isTotal: true
+						};
+						
+						// 新しいグループのすべてのアイテムを集計
+						data.forEach(dataItem => {
+							if (!dataItem.isTotal) {
+								const dataGroupKey = dataItem.labels.slice(0, level + 1).join('|');
+								if (dataGroupKey === currentGroupKey) {
+									const vals = Array.isArray(dataItem.value) ? dataItem.value : [dataItem.value];
+									for (let i = 0; i < vals.length; i++) {
+										aggregatedItem.value[i] += (vals[i] || 0);
+									}
+									aggregatedItem.count += 1;
+								}
+							}
+						});
+						
+						if (aggregatedItem.count > 0) {
+							resultData.push(aggregatedItem);
+						}
+					}
+				}
+				
+				// 現在のアイテムを追加
+				resultData.push(item);
+				
+				// 現在のグループキーを更新
+				for (let level = 0; level < labelCount - 1; level++) {
+					prevGroupKeys[level] = item.labels.slice(0, level + 1).join('|');
+				}
+			});
+			
+			// 結果をデータとして使用
+			processedData = resultData;
+		} else {
+			// ラベルが1つの場合、通常のデータをそのまま使用
+			processedData = [...data];
+		}
 		
 		// データ行の作成
 		processedData.forEach(item => {

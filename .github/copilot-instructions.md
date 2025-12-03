@@ -31,12 +31,13 @@
 
 | ファイル | 内容 |
 |---------|------|
-| [00_Overview.md](development_guide/00_Overview.md) | プロジェクト概要、ワークフロー、アーキテクチャ |
-| [01_Specification.md](development_guide/01_Specification.md) | ファイル構成、命名規則、必須要件 |
-| [02_API_Reference.md](development_guide/02_API_Reference.md) | tdgchart API、拡張登録メカニズム |
-| [03_Development_Guide.md](development_guide/03_Development_Guide.md) | 実装パターン、ベストプラクティス |
-| [04_Tutorials.md](development_guide/04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
-| [05_Official_Manuals_JP.md](development_guide/05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
+| [00_Overview.md](../development_guide/00_Overview.md) | プロジェクト概要、ワークフロー、アーキテクチャ |
+| [01_Specification.md](../development_guide/01_Specification.md) | ファイル構成、命名規則、必須要件 |
+| [02_API_Reference.md](../development_guide/02_API_Reference.md) | tdgchart API、拡張登録メカニズム |
+| [03_Development_Guide.md](../development_guide/03_Development_Guide.md) | 実装パターン、ベストプラクティス |
+| [04_Tutorials.md](../development_guide/04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
+| [05_Official_Manuals_JP.md](../development_guide/05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
+| [06_Troubleshooting_DataDepth.md](../development_guide/06_Troubleshooting_DataDepth.md) | **配列の深さ問題の詳細解説と解決方法** ⚠️ |
 
 ---
 
