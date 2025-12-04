@@ -35,8 +35,6 @@ Chart.js を使用してシンプルな棒グラフを表示する拡張機能�
 
 ## ファイルの説明
 
-## ファイルの説明
-
 ### com.shimokado.chartjs_sample.js
 グラフモジュールの本体
 
