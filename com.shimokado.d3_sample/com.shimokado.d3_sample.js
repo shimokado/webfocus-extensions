@@ -111,8 +111,45 @@
 			.attr('fill', d => color(d.parent.data.name))
 			.attr('stroke', '#fff')
 			.attr('stroke-width', 1)
-			// ツールチップ設定
-			.attr('tdgtitle', d => `${d.data.name}: ${chart.formatNumber(d.value, '#,###')}`);
+			// ツールチップ設定（すべてのラベル、値、割合を表示）
+			.attr('tdgtitle', d => {
+				// 階層パス全体を取得
+				const path = [];
+				let current = d;
+				while (current) {
+					if (current.data.name !== 'root') {
+						path.unshift(current.data.name);
+					}
+					current = current.parent;
+				}
+				const fullLabel = path.join(' > ');
+				
+				// 値と割合
+				const value = d.value;
+				const percentage = root.value > 0 ? ((value / root.value) * 100).toFixed(1) : 0;
+				
+				return `${fullLabel}: ${chart.formatNumber(value, '#,###')} (${percentage}%)`;
+			})
+			// SVG title要素も追加（ブラウザ標準のツールチップ）
+			.append('title')
+			.text(d => {
+				// 階層パス全体を取得
+				const path = [];
+				let current = d;
+				while (current) {
+					if (current.data.name !== 'root') {
+						path.unshift(current.data.name);
+					}
+					current = current.parent;
+				}
+				const fullLabel = path.join(' > ');
+				
+				// 値と割合
+				const value = d.value;
+				const percentage = root.value > 0 ? ((value / root.value) * 100).toFixed(1) : 0;
+				
+				return `${fullLabel}: ${chart.formatNumber(value, '#,###')} (${percentage}%)`;
+			});
 
 		// ラベル
 		node.append('text')
@@ -180,7 +217,22 @@
 			tooltip: {
 				supported: true,
 				autoContent: function(target, s, g, d) {
-					return d.labels + ': ' + d.value;
+					// 階層パス全体を取得
+					const path = [];
+					let current = d;
+					while (current) {
+						if (current.data.name !== 'root') {
+							path.unshift(current.data.name);
+						}
+						current = current.parent;
+					}
+					const fullLabel = path.join(' > ');
+					
+					// 値と割合
+					const value = d.value;
+					const percentage = d.parent && d.parent.value > 0 ? ((value / d.parent.value) * 100).toFixed(1) : 0;
+					
+					return `${fullLabel}: ${chart.formatNumber(value, '#,###')} (${percentage}%)`;
 				}
 			}
 		}
