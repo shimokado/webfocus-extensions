@@ -4,7 +4,6 @@
   "com.shimokado.chartjs_sample": { "enabled": true },
   "com.shimokado.params": { "enabled": true },
   "com.shimokado.radial_gradiate": { "enabled": true },
-  "com.shimokado.simple_bar": { "enabled": true },
   "com.shimokado.table_simple": { "enabled": true },
   "com.shimokado.table_ver1": { "enabled": true },
   "com.shimokado.table_ver2": { "enabled": true },
