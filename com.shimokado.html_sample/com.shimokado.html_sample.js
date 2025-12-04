@@ -106,6 +106,7 @@
 		const dataContainer = document.createElement('div');
 
 		// デバッグログ
+		console.log('renderConfig:', renderConfig);
 		console.log('props:', props);
 		console.log('buckets:', buckets);
 		console.log('data:', data);

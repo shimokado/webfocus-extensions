@@ -36,12 +36,14 @@ applyTo: '**'
 
 | ファイル | 内容 |
 |---------|------|
-| [00_Overview.md](development_guide/00_Overview.md) | プロジェクト概要、ワークフロー、アーキテクチャ |
-| [01_Specification.md](development_guide/01_Specification.md) | ファイル構成、命名規則、必須要件 |
-| [02_API_Reference.md](development_guide/02_API_Reference.md) | tdgchart API、拡張登録メカニズム |
-| [03_Development_Guide.md](development_guide/03_Development_Guide.md) | 実装パターン、ベストプラクティス |
-| [04_Tutorials.md](development_guide/04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
-| [05_Official_Manuals_JP.md](development_guide/05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
+| [00_Overview.md](../../development_guide/00_Overview.md) | プロジェクト概要、ワークフロー、アーキテクチャ |
+| [01_Specification.md](../../development_guide/01_Specification.md) | ファイル構成、命名規則、必須要件 |
+| [02_API_Reference.md](../../development_guide/02_API_Reference.md) | tdgchart API、拡張登録メカニズム |
+| [03_Development_Guide.md](../../development_guide/03_Development_Guide.md) | 実装パターン、ベストプラクティス |
+| [04_Tutorials.md](../../development_guide/04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
+| [05_Official_Manuals_JP.md](../../development_guide/05_Official_Manuals_JP.md) | 公式マニュアル詳細 (日本語) |
+| [06_Troubleshooting_DataDepth.md](../../development_guide/06_Troubleshooting_DataDepth.md) | **配列の深さ問題の詳細解説と解決方法** ⚠️ |
+| [07_RenderConfig_Samples.md](../../development_guide/07_RenderConfig_Samples.md) | WebFOCUS出力の実際のデータ構造サンプル |
 
 ---
 
@@ -144,9 +146,16 @@ tdgchart.extensionManager.register({
 }
 ```
 
-### 4.4 ⚠️ 重要：データ正規化について
+### 4.4 🚨 **CRITICAL**: データ正規化について（新規開発時は必ず実装）
 
-**WebFOCUSから渡されるデータ構造は可変的です。renderCallback の最初に必ずデータを正規化してください。**
+**⚠️ WARNING: このセクションを無視すると、データ構造の違いによりランタイムエラーが発生します**
+
+#### 【新規開発時の強制ルール】
+
+1. **🚨 renderCallbackの先頭で必ず normalizeRenderData() を呼び出す**
+2. **🚨 depth=1 と depth>1 の両方をテストする**
+3. **🚨 labels/value を常に配列として扱う**
+4. **🚨 buckets のメタデータも配列化する**
 
 #### 正規化が必要な理由
 
@@ -157,74 +166,79 @@ tdgchart.extensionManager.register({
 | 単一ラベル × 単一値 | 配列 | 文字列 | 数値 | 文字列 |
 | 複数ラベル × 複数値 | 配列 | 配列 | 配列 | 配列 |
 
-#### よくある誤り
+#### 🚨 **コード生成時の強制ルール**
 
-```javascript
-// ❌ 間違い: depth=1 なら data を配列にラップ
-if (renderConfig.dataBuckets.depth === 1) {
-    data = [data];  // これは誤り！depth=1 の data は既にアイテム配列
-}
+**拡張グラフのコードを生成する際は、以下の処理を必ず実装してください：**
 
-// ❌ 間違い: 正規化なしで labels/value にアクセス
-data.forEach(item => {
-  item.labels.forEach(label => {  // labels が文字列なら Error!
-    // ...
-  });
-});
-```
+1. **🚨 データ正規化関数の実装**: renderCallbackの最初にデータを統一形式に変換
+2. **🚨 depthパラメータの確認**: `renderConfig.dataBuckets.depth` を必ずチェック  
+3. **🚨 labels/valueの配列統一**: 常に配列として扱えるように変換
+4. **🚨 bucketsメタデータの統一**: title/fieldNameも配列に統一
+5. **🚨 test.htmlのdepth設定**: テスト用HTMLに `"depth": 1` を必ず含める
 
-#### ベストプラクティス
+#### 【テンプレート強制適用】
 
+renderCallbackのテンプレート：
 ```javascript
 function renderCallback(renderConfig) {
-  var buckets = renderConfig.dataBuckets.buckets;
-  var data = renderConfig.data;
+  // 🚨 必須: データの正規化
+  var normalized = normalizeRenderData(renderConfig);
   
-  // ===== ステップ1: バケットメタデータを常に配列に統一 =====
-  var labelsTitles = Array.isArray(buckets.labels.title) 
-    ? buckets.labels.title 
-    : [buckets.labels.title];
-  var valueTitles = Array.isArray(buckets.value.title) 
-    ? buckets.value.title 
-    : [buckets.value.title];
-  
-  // ===== ステップ2: データアイテムを常に配列に統一 =====
-  var normalizedData = [];
-  
-  if (renderConfig.dataBuckets.depth === 1) {
-    // depth=1: data はそのままアイテム配列
-    normalizedData = data.map(function(item) {
-      return {
-        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
-        value: Array.isArray(item.value) ? item.value : [item.value]
-      };
-    });
-  } else {
-    // depth>1: data は配列の配列（シリーズごとにグループ化）
-    data.forEach(function(series) {
-      if (Array.isArray(series)) {
-        series.forEach(function(item) {
-          normalizedData.push({
-            labels: Array.isArray(item.labels) ? item.labels : [item.labels],
-            value: Array.isArray(item.value) ? item.value : [item.value]
+  // 🚨 必須: 正規化関数
+  function normalizeRenderData(renderConfig) {
+    var dataBuckets = renderConfig.dataBuckets;
+    var buckets = dataBuckets.buckets;
+    var data = renderConfig.data;
+    
+    // buckets を常に配列に統一（countベースの判定）
+    var labelsTitles = buckets.labels 
+      ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
+      : [];
+    var valueTitles = buckets.value 
+      ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
+      : [];
+    
+    // data を統一形式に変換
+    var normalizedData = [];
+    if (dataBuckets.depth === 1) {
+      normalizedData = data.map(function(item) {
+        return {
+          labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+          value: Array.isArray(item.value) ? item.value : [item.value]
+        };
+      });
+    } else {
+      data.forEach(function(series) {
+        if (Array.isArray(series)) {
+          series.forEach(function(item) {
+            normalizedData.push({
+              labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+              value: Array.isArray(item.value) ? item.value : [item.value]
+            });
           });
-        });
-      }
-    });
+        }
+      });
+    }
+    
+    return {
+      labelsTitles: labelsTitles,
+      valueTitles: valueTitles,
+      data: normalizedData
+    };
   }
   
-  // ===== ステップ3: 正規化後は常に配列として安全にアクセス可能 =====
-  normalizedData.forEach(function(item) {
-    var firstLabel = item.labels[0];  // 常に文字列
-    var firstValue = item.value[0];   // 常に数値
+  // 以降は常に統一形式で使用
+  normalized.data.forEach(function(item) {
+    var firstLabel = item.labels[0];  // 常に安全
+    var firstValue = item.value[0];   // 常に安全
   });
 }
 ```
 
-#### 参考資料
+#### 参考実装
 
-- **詳細な実装例**: `com.shimokado.params` - コンソール出力で正規化前後を視覚的に示す
-- **詳細な解説**: [02_API_Reference.md](../../development_guide/02_API_Reference.md) の Section 3.5 を参照
+- **ベストプラクティス例**: `com.shimokado.params` - データ正規化を視覚的に示す参考実装
+- **詳細説明**: [02_API_Reference.md](../../development_guide/02_API_Reference.md) の Section 3.5 を参照
 - **実装パターン**: [03_Development_Guide.md](../../development_guide/03_Development_Guide.md) の Section 1 を参照
 
 ---
@@ -406,6 +420,6 @@ var color = chart.getSeriesAndGroupProperty(seriesID, groupID, 'color');
 3. **段階的な支援**: 大きなタスクは小さなステップに分解
 4. **エラーの根本原因**: 表面的な修正でなく、原因を説明して対処
 5. **プロジェクト構造の理解**: ファイル配置、命名規則を遵守したコードを生成
-6. **計画立案の重視**: Plannのエージェントと同様、複雑なタスクではまず全体の計画を提示してから実行を開始する
+6. **計画立案の重視**: Planのエージェントと同様、複雑なタスクではまず全体の計画を提示してから実行を開始する
 
 **あなたの目標は、ユーザーが効率的に高品質なWebFOCUS拡張グラフを開発できるよう支援することです。**
