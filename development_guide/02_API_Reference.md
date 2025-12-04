@@ -9,11 +9,13 @@
 拡張グラフの登録と管理を行うモジュールです。
 
 #### register(config)
+
 拡張グラフをシステムに登録します。
 
 - **引数**: `config` (Object) - 拡張グラフの設定オブジェクト。
 - **戻り値**: なし
 - **使用例**:
+
   ```javascript
   var config = {
     id: 'com.mycompany.mychart',
@@ -29,6 +31,7 @@
 `renderConfig.moonbeamInstance` として渡される、現在描画中のチャートインスタンスです。
 
 #### formatNumber(number, format)
+
 数値を指定された形式でフォーマットします。
 
 - **引数**:
@@ -37,9 +40,11 @@
 - **戻り値**: フォーマットされた文字列。
 
 #### getSeries(index)
+
 指定されたインデックスのシリーズオブジェクトを取得します。色や表示設定などにアクセスできます。
 
 #### buildClassName(prefix, series, group, suffix)
+
 WebFOCUSの標準的なクラス名を生成します。これにより、ツールチップやデータ選択機能が正しく動作するようになります。
 
 - **引数**:
@@ -54,6 +59,7 @@ WebFOCUSの標準的なクラス名を生成します。これにより、ツー
 WebFOCUSのチャートエンジンは、内部的に Protovis ライブラリ（D3.jsの前身のようなライブラリ）のユーティリティを使用しています。これらは `pv` オブジェクトを通じて利用可能です。
 
 ### 2.1 pv.color(colorString)
+
 色を操作するためのオブジェクトを生成します。
 
 - **メソッド**:
@@ -62,9 +68,11 @@ WebFOCUSのチャートエンジンは、内部的に Protovis ライブラリ�
   - `.color`: 色コード（文字列）を取得します。
 
 ### 2.2 pv.blend(arrays)
+
 複数の配列を結合してフラットな配列にします。
 
 ### 2.3 pv.range(start, stop, step)
+
 Pythonの `range` のような数値配列を生成します。
 
 ## 3. renderConfig のデータ構造

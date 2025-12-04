@@ -16,7 +16,7 @@
 
 ## value:0, label:1（ラベル1つ、値なし）
 
-### renderConfig.dataBuckets.buckets
+### dataBuckets.buckets (value:0, label:1)
 
 ```json
 {
@@ -28,7 +28,7 @@
 }
 ```
 
-### renderConfig.data
+### renderConfig.data (value:0, label:1)
 
 ```json
 [
@@ -54,7 +54,7 @@
 
 ## value:1, label:0（ラベルなし、値1つ）
 
-### renderConfig.dataBuckets.buckets
+### dataBuckets.buckets (value:1, label:0)
 
 ```json
 {
@@ -67,7 +67,7 @@
 }
 ```
 
-### renderConfig.data
+### renderConfig.data (value:1, label:0)
 
 ```json
 [
@@ -83,7 +83,7 @@
 
 ## value:1, label:1（ラベル1つ、値1つ）
 
-### renderConfig.dataBuckets.buckets
+### dataBuckets.buckets (value:1, label:1)
 
 ```json
 {
@@ -101,7 +101,7 @@
 }
 ```
 
-### renderConfig.data
+### renderConfig.data (value:1, label:1)
 
 ```json
 [
@@ -130,7 +130,7 @@
 
 ## value:0, label:2（ラベル2つ、値なし）
 
-### renderConfig.dataBuckets.buckets
+### dataBuckets.buckets (value:0, label:2)
 
 ```json
 {
@@ -148,7 +148,7 @@
 }
 ```
 
-### renderConfig.data
+### renderConfig.data (value:0, label:2)
 
 ```json
 [
@@ -191,7 +191,7 @@
 
 ## value:2, label:0（ラベルなし、値2つ）
 
-### renderConfig.dataBuckets.buckets
+### dataBuckets.buckets (value:2, label:0)
 
 ```json
 {
@@ -213,7 +213,7 @@
 }
 ```
 
-### renderConfig.data
+### renderConfig.data (value:2, label:0)
 
 ```json
 [
@@ -232,7 +232,7 @@
 
 ## value:3, label:3（ラベル3つ、値3つ）
 
-### renderConfig.dataBuckets.buckets
+### dataBuckets.buckets (value:3, label:3)
 
 ```json
 {
@@ -270,7 +270,7 @@
 }
 ```
 
-### renderConfig.data
+### renderConfig.data (value:3, label:3)
 
 ```json
 [

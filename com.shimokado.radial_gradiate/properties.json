@@ -41,8 +41,8 @@
     },
     "translations": {
         "en": {
-            "name": "Bar Chart with Gradiation by Chart.js",
-            "description": "Bar Chart with Gradiation by Chart.js",
+            "name": "Bar Chart with Graduation by Chart.js",
+            "description": "Bar Chart with Graduation by Chart.js",
             "icon_tooltip": "com.shimokado.radial_gradiate",
             "value_name": "Value",
             "value_tooltip": "Drop measure here",
@@ -52,7 +52,7 @@
         "ja": {
             "name": "Chart.jsで書いたグラデーションの効いた棒グラフ",
             "description": "Chart.jsで書いたグラデーションの効いた棒グラフ",
-            "icon_tooltip": "com.shimokado.radial_gradiate",
+            "icon_tooltip": "com.shimokado.radial_graduate",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",
