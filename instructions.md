@@ -163,12 +163,49 @@ var formattedValue = chart.formatNumber(value, '#,###');
 
 ### 5.2 ツールチップの実装
 
+**重要**: `tdgtitle`属性はWebFOCUSの標準チャートエンジン（moonbeam）で描画された要素でのみ有効です。D3.js、Chart.js、ApexChartsなどのサードパーティライブラリを使用する場合は、それぞれのライブラリ固有のツールチップ実装方法を使用してください。
+
+#### moonbeamを使用する場合（標準チャート）
 ```javascript
 // ツールチップコンテンツの設定
 element.setAttribute('tdgtitle', tooltipContent);
 
 // またはモジュールを使用
 renderConfig.modules.tooltip.updateToolTips();
+```
+
+#### D3.jsを使用する場合
+```javascript
+// SVG title要素を使用（ブラウザ標準ツールチップ）
+element.append('title')
+  .text(tooltipContent);
+
+// またはtooltipモジュールのautoContentを使用
+modules: {
+  tooltip: {
+    supported: true,
+    autoContent: function(target, s, g, d) {
+      return d.labels + ': ' + d.value;
+    }
+  }
+}
+```
+
+#### Chart.js/ApexChartsを使用する場合
+各ライブラリのオプションでツールチップを設定：
+```javascript
+// Chart.jsの場合
+options: {
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: function(context) {
+          return context.label + ': ' + context.parsed.y;
+        }
+      }
+    }
+  }
+}
 ```
 
 ### 5.3 データ選択の有効化
@@ -199,7 +236,7 @@ var color = chart.getSeriesAndGroupProperty(seriesID, groupID, 'color');
 | `extensionManager is not defined` | tdgchart.jsが読み込まれていない | test.htmlでのスクリプト読み込み順序を確認 |
 | `Cannot read property 'data'` | renderConfigが不正 | renderCallbackの引数を確認 |
 | 描画されない | コンテナへの要素追加漏れ | renderConfig.containerへの追加を確認 |
-| ツールチップが表示されない | tdgtitle属性の設定漏れ | 要素に`tdgtitle`属性を設定 |
+| ツールチップが表示されない | tdgtitle属性の設定漏れ（moonbeam使用時）またはライブラリ固有のツールチップ設定漏れ | moonbeam使用時は要素に`tdgtitle`属性を設定、D3.js使用時はSVG `title`要素、Chart.js使用時はoptions.tooltipを設定 |
 
 ### 6.2 デバッグ手順
 

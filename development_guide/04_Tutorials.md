@@ -200,17 +200,16 @@ D3.js は強力なSVGベースのデータ可視化ライブラリです。ツ�
       .append('g')
       .attr('transform', d => `translate(${d.x0},${d.y0})`);
 
-    // 長方形
-    node.append('rect')
-      .attr('width', d => d.x1 - d.x0)
-      .attr('height', d => d.y1 - d.y0)
-      .attr('fill', d => color(d.parent.data.name))
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 1)
-      // ツールチップ設定
-      .attr('tdgtitle', d => `${d.data.name}: ${chart.formatNumber(d.value, '#,###')}`);
-
-    // ラベル
+		// 長方形
+		node.append('rect')
+			.attr('width', d => d.x1 - d.x0)
+			.attr('height', d => d.y1 - d.y0)
+			.attr('fill', d => color(d.parent.data.name))
+			.attr('stroke', '#fff')
+			.attr('stroke-width', 1)
+			// D3.js固有のツールチップ設定（SVG title要素）
+			.append('title')
+			.text(d => `${d.data.name}: ${chart.formatNumber(d.value, '#,###')}`);    // ラベル
     node.append('text')
       .attr('x', 4)
       .attr('y', 14)
@@ -277,7 +276,7 @@ D3.js は強力なSVGベースのデータ可視化ライブラリです。ツ�
 - **階層構築**: `buildHierarchy` 関数でlabelsの階層をツリー構造に変換。
 - **D3.js API**: `d3.treemap()`, `d3.hierarchy()`, `d3.scaleOrdinal()` を使用。
 - **レスポンシブ**: テキストサイズを動的に調整して長方形に収まるように。
-- **WebFOCUS統合**: `tdgtitle` でツールチップ、`buildClassName` でデータ選択対応。
+- **WebFOCUS統合**: SVG `title`要素でツールチップ、`buildClassName` でデータ選択対応。
 
 ## 3. ApexCharts.js を使用した拡張グラフ
 
