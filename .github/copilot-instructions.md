@@ -140,9 +140,16 @@ tdgchart.extensionManager.register({
 }
 ```
 
-### 4.4 ⚠️ 重要：データ正規化について
+### 4.4 🚨 **CRITICAL**: データ正規化について（新規開発時は必ず実装）
 
-**WebFOCUSから渡されるデータ構造は可変的です。renderCallback の最初に必ずデータを正規化してください。**
+**⚠️ WARNING: このセクションを無視すると、データ構造の違いによりランタイムエラーが発生します**
+
+#### 【新規開発時の強制ルール】
+
+1. **🚨 renderCallbackの先頭で必ず normalizeRenderData() を呼び出す**
+2. **🚨 depth=1 と depth>1 の両方をテストする**
+3. **🚨 labels/value を常に配列として扱う**
+4. **🚨 buckets のメタデータも配列化する**
 
 #### 正規化が必要な理由
 
@@ -153,71 +160,72 @@ tdgchart.extensionManager.register({
 | 単一ラベル × 単一値 | 配列 | 文字列 | 数値 | 文字列 |
 | 複数ラベル × 複数値 | 配列 | 配列 | 配列 | 配列 |
 
-#### コード生成時の強制ルール
+#### 🚨 **コード生成時の強制ルール**
 
 **拡張グラフのコードを生成する際は、以下の処理を必ず実装してください：**
 
-1. **データ正規化関数の実装**: renderCallbackの最初にデータを統一形式に変換
-2. **depthパラメータの確認**: `renderConfig.dataBuckets.depth` を必ずチェック
-3. **labels/valueの配列統一**: 常に配列として扱えるように変換
-4. **bucketsメタデータの統一**: title/fieldNameも配列に統一
-5. **test.htmlのdepth設定**: テスト用HTMLに `"depth": 1` を必ず含める
+1. **🚨 データ正規化関数の実装**: renderCallbackの最初にデータを統一形式に変換
+2. **🚨 depthパラメータの確認**: `renderConfig.dataBuckets.depth` を必ずチェック  
+3. **🚨 labels/valueの配列統一**: 常に配列として扱えるように変換
+4. **🚨 bucketsメタデータの統一**: title/fieldNameも配列に統一
+5. **🚨 test.htmlのdepth設定**: テスト用HTMLに `"depth": 1` を必ず含める
 
-#### ベストプラクティス
+#### 【テンプレート強制適用】
 
+renderCallbackのテンプレート：
 ```javascript
 function renderCallback(renderConfig) {
-  // ===== ステップ1: データの正規化（必須）=====
+  // 🚨 必須: データの正規化
   var normalized = normalizeRenderData(renderConfig);
   
-  // ===== ステップ2: 正規化後は常に統一形式で使用 =====
-  normalized.data.forEach(function(item) {
-    var firstLabel = item.labels[0];  // 常に文字列
-    var firstValue = item.value[0];   // 常に数値
-  });
-}
-
-// データ正規化関数（renderCallbackの外に定義）
-function normalizeRenderData(renderConfig) {
-  var dataBuckets = renderConfig.dataBuckets;
-  var buckets = dataBuckets.buckets;
-  var data = renderConfig.data;
-  
-  // buckets を常に配列に統一（countベースの判定）
-  var labelsTitles = buckets.labels 
-    ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
-    : [buckets.labels.title];
-  var valueTitles = buckets.value 
-    ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
-    : [buckets.value.title];
-  
-  // data を統一形式に変換
-  var normalizedData = [];
-  if (dataBuckets.depth === 1) {
-    normalizedData = data.map(function(item) {
-      return {
-        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
-        value: Array.isArray(item.value) ? item.value : [item.value]
-      };
-    });
-  } else {
-    data.forEach(function(series) {
-      if (Array.isArray(series)) {
-        series.forEach(function(item) {
-          normalizedData.push({
-            labels: Array.isArray(item.labels) ? item.labels : [item.labels],
-            value: Array.isArray(item.value) ? item.value : [item.value]
+  // 🚨 必須: 正規化関数
+  function normalizeRenderData(renderConfig) {
+    var dataBuckets = renderConfig.dataBuckets;
+    var buckets = dataBuckets.buckets;
+    var data = renderConfig.data;
+    
+    // buckets を常に配列に統一（countベースの判定）
+    var labelsTitles = buckets.labels 
+      ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
+      : [];
+    var valueTitles = buckets.value 
+      ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
+      : [];
+    
+    // data を統一形式に変換
+    var normalizedData = [];
+    if (dataBuckets.depth === 1) {
+      normalizedData = data.map(function(item) {
+        return {
+          labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+          value: Array.isArray(item.value) ? item.value : [item.value]
+        };
+      });
+    } else {
+      data.forEach(function(series) {
+        if (Array.isArray(series)) {
+          series.forEach(function(item) {
+            normalizedData.push({
+              labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+              value: Array.isArray(item.value) ? item.value : [item.value]
+            });
           });
-        });
-      }
-    });
+        }
+      });
+    }
+    
+    return {
+      labelsTitles: labelsTitles,
+      valueTitles: valueTitles,
+      data: normalizedData
+    };
   }
   
-  return {
-    labelsTitles: labelsTitles,
-    valueTitles: valueTitles,
-    data: normalizedData
-  };
+  // 以降は常に統一形式で使用
+  normalized.data.forEach(function(item) {
+    var firstLabel = item.labels[0];  // 常に安全
+    var firstValue = item.value[0];   // 常に安全
+  });
 }
 ```
 

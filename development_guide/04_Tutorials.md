@@ -1,5 +1,11 @@
 # WebFOCUS拡張グラフ開発ガイド - チュートリアル
 
+## 🚨 **重要なお知らせ**
+
+**新規拡張グラフ開発時は、必ず [06_Troubleshooting_DataDepth.md](06_Troubleshooting_DataDepth.md) を先に読んでください。**
+
+このドキュメントにはデータ正規化の実装例が記載されています。チュートリアルを実装する前に必ず確認してください。
+
 ## 1. Chart.js を使用した拡張グラフ
 
 ```javascript
