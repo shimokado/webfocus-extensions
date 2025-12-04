@@ -89,10 +89,6 @@
 	// ここで拡張機能をレンダリングします
 	// 引数:
 	//  - renderConfig: width、heightなどの追加プロパティを含む標準コールバック引数オブジェクト
-	// このシンプルな棒グラフ拡張機能は以下をサポートします:
-	//  - 汎用的な'value'バケットの複数の測定エントリ。各値は独自のsplit-y軸に描画されます。
-	//  - 汎用的な'labels'バケットの1次元エントリ。このバケットは順序軸のラベルセットを定義します。
-	//  - 組み込みの'series_break'バケットの1次元エントリ。これにより各値エントリが類似した複数の色に分割されます。
 	function renderCallback(renderConfig) {
 
 		var chart = renderConfig.moonbeamInstance;
@@ -100,8 +96,7 @@
 		var w = renderConfig.width;
 		var h = renderConfig.height;
 
-		var container = d3.select(renderConfig.container)
-			.attr('class', 'com_ibi_chart');
+		var container = renderConfig.container;
 
 		// series_breakに何もない場合、dataBuckets.depthは1になり、dataは単純な配列オブジェクトになります。
 		// series_breakの有無に関わらず、内部データが常に2次元配列になるように正規化します。
@@ -165,101 +160,80 @@
 			});
 		});
 
-		var xLabelHeight = 25;
-		var yHeight = (h - xLabelHeight) / splitYCount;
-		var x = d3.scale.ordinal().domain(axisLabels).rangeRoundBands([xLabelHeight, w - 25], 0.2);
-		var yScaleList = splitYData.map(function (el) {
-			var ymax = d3.max(el.map(function (a) { return d3.sum(a, function (d) { return d.value; }); }));
-			return d3.scale.linear().domain([0, ymax]).range([yHeight, 20]);
+		// テーブル要素を作成
+		var table = document.createElement('table');
+		table.style.width = '100%';
+		table.style.borderCollapse = 'collapse';
+		table.style.fontFamily = 'Arial, sans-serif';
+
+		// ヘッダーを作成
+		var thead = document.createElement('thead');
+		var headerRow = document.createElement('tr');
+
+		// ラベルヘッダー
+		var labelTh = document.createElement('th');
+		labelTh.textContent = 'ラベル';
+		labelTh.style.padding = '8px';
+		labelTh.style.borderBottom = '2px solid #ddd';
+		labelTh.style.backgroundColor = '#f0f0f0';
+		labelTh.style.textAlign = 'left';
+		headerRow.appendChild(labelTh);
+
+		// 値ヘッダー
+		var valueTitle = tdgchart.util.get('dataBuckets.buckets.value.title[0]', renderConfig, '値');
+		var valueTh = document.createElement('th');
+		valueTh.textContent = valueTitle;
+		valueTh.style.padding = '8px';
+		valueTh.style.borderBottom = '2px solid #ddd';
+		valueTh.style.backgroundColor = '#f0f0f0';
+		valueTh.style.textAlign = 'right';
+		headerRow.appendChild(valueTh);
+
+		thead.appendChild(headerRow);
+		table.appendChild(thead);
+
+		// ボディを作成
+		var tbody = document.createElement('tbody');
+
+		// データをフラット化してテーブル行を作成
+		var flatData = [];
+		splitYData.forEach(function(series, seriesIndex) {
+			series.forEach(function(stack, stackIndex) {
+				stack.forEach(function(d) {
+					flatData.push({
+						label: d.labels,
+						value: d.value,
+						series: seriesIndex,
+						group: stackIndex
+					});
+				});
+			});
 		});
 
-		var splitYGroups = container.selectAll('g')
-			.data(splitYData)
-			.enter().append('g')
-			.attr('transform', function (d, i) {
-				return 'translate(' + xLabelHeight + ', ' + (h - xLabelHeight - (yHeight * (i + 1))) + ')';
-			});
+		// 行を作成
+		flatData.forEach(function(item) {
+			var row = document.createElement('tr');
 
-		// 軸の区切り線を追加
-		splitYGroups.append('path')
-			.attr('d', function (d, i) {
-				return 'M0,' + yScaleList[i](0) + 'l' + (w - 25) + ',0';
-			})
-			.attr('stroke', 'grey')
-			.attr('stroke-width', 1)
-			.attr('shape-rendering', 'crispEdges');
+			// ラベルセル
+			var labelCell = document.createElement('td');
+			labelCell.textContent = item.label;
+			labelCell.style.padding = '8px';
+			labelCell.style.borderBottom = '1px solid #ddd';
+			row.appendChild(labelCell);
 
-		// 回転したY軸のラベルを追加
-		splitYGroups.append('text')
-			.attr('transform', function () {
-				return 'translate(-10,' + (yHeight / 2) + ') rotate(-90)';
-			})
-			.attr('fill', 'black')
-			.attr('font-size', '12px')
-			.attr('font-family', 'helvetica')
-			.attr('text-anchor', 'middle')
-			.text(function (d, i) { return tdgchart.util.get('dataBuckets.buckets.value.title[' + i + ']', renderConfig, ''); });
+			// 値セル
+			var valueCell = document.createElement('td');
+			valueCell.textContent = chart.formatNumber(item.value, '#,###');
+			valueCell.style.padding = '8px';
+			valueCell.style.borderBottom = '1px solid #ddd';
+			valueCell.style.textAlign = 'right';
+			row.appendChild(valueCell);
 
-		// スタックでグループ化されたライザーを追加
-		var riserGroups = splitYGroups.selectAll('g')
-			.data(function (d) {
-				return d;  // d: ライザーデータの単純な配列
-			})
-			.enter().append('g');
+			tbody.appendChild(row);
+		});
 
-		// 実際のライザーを描画
-		riserGroups.selectAll('rect')
-			.data(function (d) {
-				return d;  // d: 単一の{y0, y1, label}データ（ついに！）
-			})
-			.enter().append('rect')
-			.attr('shape-rendering', 'crispEdges')
-			.attr('x', function (d) {
-				return x(d.labels);
-			})
-			.attr('y', function (d) {
-				return yScaleList[d.yaxis](d.y1);
-			})
-			.attr('width', x.rangeBand())
-			.attr('height', function (d) {
-				return Math.abs(yScaleList[d.yaxis](d.y1) - yScaleList[d.yaxis](d.y0));
-			})
-			.attr('class', function (d, s, g) {
-
-				// データ選択、イベント、ツールチップをサポートするために、各ライザーには適切なseriesIDとgroupIDを含むクラス名が必要です
-				// クラス名を作成するにはchart.buildClassNameを使用します
-				// 第1引数は'riser'、第2引数はseriesID、第3引数はgroupID、第4引数は拡張機能でライザーを識別するための任意の文字列です
-				return chart.buildClassName('riser', s, g, 'bar');
-			})
-			.attr('fill', function (d, s) {
-
-				// getSeriesAndGroupPropertyは、シリーズに依存するプロパティを簡単に検索できる便利な関数です
-				// プロパティはドット記法で指定できます（例：'marker.border.width'）
-				return chart.getSeriesAndGroupProperty(s, null, 'color');
-			})
-			.each(function (d, s, g) {
-
-				// addDefaultToolTipContentは、組み込みのチャートタイプと同じツールチップをこのライザーに追加します
-				// このノードには完全修飾されたシリーズ＆グループのクラス文字列が含まれていることを前提としています
-				// addDefaultToolTipContentはオプションの引数を受け付けることもできます：
-				// addDefaultToolTipContent(target, s, g, d, data)は、このノードにクラスがない場合や
-				// デフォルトのシリーズ/グループ/データの検索ロジックをオーバーライドする場合に便利です
-				renderConfig.modules.tooltip.addDefaultToolTipContent(this, s, g, d);
-			});
-
-		// 下部の順序X軸ラベルを追加
-		container.append('g')
-			.selectAll('text')
-			.data(axisLabels)
-			.enter().append('text')
-			.attr('transform', function (d) {
-				return 'translate(' + (x(d) + xLabelHeight + (x.rangeBand() / 2)) + ',' + (h - 5) + ')';
-			})
-			.attr('fill', 'black')
-			.attr('font-size', '12px')
-			.attr('font-family', 'helvetica')
-			.attr('text-anchor', 'middle')
-			.text(function (d, i) { return axisLabels[i]; });
+		table.appendChild(tbody);
+		container.appendChild(table);
 
 		renderConfig.renderComplete();
 	}
@@ -267,7 +241,7 @@
 	// 拡張機能の設定
 	var config = {
 		id: 'com.shimokado.simple_bar',     // この拡張機能を一意に識別する文字列
-		containerType: 'svg',  // 'html'または'svg'（デフォルト）
+		containerType: 'html',  // 'html'または'svg'（デフォルト）
 		initCallback: initCallback,
 		preRenderCallback: preRenderCallback,  // 拡張機能のレンダリング直前に呼び出される関数への参照。以下で定義される'preRenderConfig'オブジェクトが渡されます。Monbeamインスタンスの設定に使用
 		renderCallback: renderCallback,  // 実際のチャートを描画する関数への参照。'renderConfig'オブジェクトが渡されます

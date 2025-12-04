@@ -4,7 +4,7 @@
         "implements_api_version": 1.0,
         "author": "Shimokado Masataka",
         "copyright": "Shimokado Masataka",
-        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.chartjs_sample",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.radial_gradiate",
         "icons": {
             "medium": "icons/icon.png"
         }
@@ -43,7 +43,7 @@
         "en": {
             "name": "Bar Chart with Gradiation by Chart.js",
             "description": "Bar Chart with Gradiation by Chart.js",
-            "icon_tooltip": "Bar Chart with Gradiation by Chart.js",
+            "icon_tooltip": "com.shimokado.radial_gradiate",
             "value_name": "Value",
             "value_tooltip": "Drop measure here",
             "labels_name": "Labels",
@@ -52,7 +52,7 @@
         "ja": {
             "name": "Chart.jsで書いたグラデーションの効いた棒グラフ",
             "description": "Chart.jsで書いたグラデーションの効いた棒グラフ",
-            "icon_tooltip": "Chart.jsで書いたグラデーションの効いた棒グラフ",
+            "icon_tooltip": "com.shimokado.radial_gradiate",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",

@@ -4,7 +4,7 @@
         "implements_api_version": 1.0,
         "author": "Shimokado Masataka",
         "copyright": "Shimokado Masataka",
-        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.chartjs_sample",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.apexchart_bar",
         "icons": {
             "medium": "icons/icon.png"
         }
@@ -71,7 +71,7 @@
         "en": {
             "name": "Simple Bar Chart with ApexCharts",
             "description": "A simple bar chart written with ApexCharts",
-            "icon_tooltip": "Simple Bar Chart with ApexCharts",
+            "icon_tooltip": "com.shimokado.apexchart_bar",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -80,7 +80,7 @@
         "ja": {
             "name": "ApexChartsで書いた簡単な棒グラフ",
             "description": "ApexChartsで書いてみただけのグラフ",
-            "icon_tooltip": "ApexChartsで書いた簡単な棒グラフ",
+            "icon_tooltip": "com.shimokado.apexchart_bar",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",

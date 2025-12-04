@@ -48,11 +48,55 @@
 		var props = renderConfig.properties; // プロパティ
 		var container = renderConfig.container; // コンテナ
 		var data = renderConfig.data; // データ
-		var dataBuckets = renderConfig.dataBuckets.buckets; // データバケット
+		var dataBuckets = renderConfig.dataBuckets; // データバケット全体
+		var buckets = dataBuckets.buckets; // データバケット
 
 		// テーブルのスタイル設定
 		var fontSize = props.tableStyle ? props.tableStyle.fontSize : "12px";
 		var color = props.tableStyle ? props.tableStyle.color : "#000000";
+
+		// ===== ステップ1: データの正規化 =====
+		// depth に基づいて、フラットなデータ構造に統一
+		let flatData = [];
+		
+		if (dataBuckets.depth === 1) {
+			// depth=1: data はオブジェクトの配列 [{labels, value}, ...]
+			flatData = data.map(item => ({
+				labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+				value: Array.isArray(item.value) ? item.value : [item.value]
+			}));
+		} else {
+			// depth>1: data は配列の配列 [ [{labels, value}, ...], [...] ]
+			data.forEach(series => {
+				if (Array.isArray(series)) {
+					series.forEach(item => {
+						flatData.push({
+							labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+							value: Array.isArray(item.value) ? item.value : [item.value]
+						});
+					});
+				}
+			});
+		}
+		
+		// 以降の処理では flatData を使用
+		data = flatData;
+
+		// ラベル数と値数の取得
+		const labelCount = buckets.labels && buckets.labels.count ? buckets.labels.count : 0;
+		const valueCount = buckets.value && buckets.value.count ? buckets.value.count : 0;
+
+		// ===== ステップ2: バケットメタデータの正規化 =====
+		// count=1なら文字列、count>1なら配列として扱う
+		const labelTitles = buckets.labels 
+			? (labelCount === 1 ? [buckets.labels.title] : buckets.labels.title) 
+			: [];
+		const valueTitles = buckets.value 
+			? (valueCount === 1 ? [buckets.value.title] : buckets.value.title) 
+			: [];
+		const valueNumberFormats = buckets.value 
+			? (valueCount === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) 
+			: [];
 
 		// テーブルコンテナの作成
 		var tableContainer = document.createElement('div');
@@ -60,25 +104,78 @@
 		container.appendChild(tableContainer);
 
 		// テーブル要素の作成
-		var tableHTML = '<table style="font-size:' + fontSize + '; color:' + color + ';">';
-		
+		var table = document.createElement('table');
+		table.style.fontSize = fontSize;
+		table.style.color = color;
+		table.style.width = '100%';
+		table.style.borderCollapse = 'collapse';
+
 		// ヘッダーの作成
-		tableHTML += '<thead><tr>';
-		tableHTML += '<th>' + dataBuckets.labels.title + '</th>';
-		tableHTML += '<th>' + dataBuckets.value.title + '</th>';
-		tableHTML += '</tr></thead>';
+		var thead = document.createElement('thead');
+		var headerRow = document.createElement('tr');
+		
+		// ラベルの列ヘッダーを作成（各ラベル項目ごとにth）
+		labelTitles.forEach(title => {
+			var th = document.createElement('th');
+			th.textContent = title;
+			th.style.padding = '8px';
+			th.style.borderBottom = '2px solid #ddd';
+			th.style.backgroundColor = '#f0f0f0';
+			th.style.textAlign = 'left';
+			headerRow.appendChild(th);
+		});
+		
+		// 値の列ヘッダーを作成（各値項目ごとにth）
+		valueTitles.forEach(title => {
+			var th = document.createElement('th');
+			th.textContent = title;
+			th.style.padding = '8px';
+			th.style.borderBottom = '2px solid #ddd';
+			th.style.backgroundColor = '#f0f0f0';
+			th.style.textAlign = 'right';
+			headerRow.appendChild(th);
+		});
+		
+		thead.appendChild(headerRow);
+		table.appendChild(thead);
 
 		// データ行の作成
-		tableHTML += '<tbody>';
-		data.forEach(function(row) {
-			tableHTML += '<tr>';
-			tableHTML += '<td>' + row.labels + '</td>';
-			tableHTML += '<td>' + chart.formatNumber(row.value, dataBuckets.value.numberFormat || '###') + '</td>';
-			tableHTML += '</tr>';
+		var tbody = document.createElement('tbody');
+		
+		data.forEach(function(item) {
+			var row = document.createElement('tr');
+			
+			// ラベルセルを作成（各ラベル項目ごとにtd）
+			item.labels.forEach(label => {
+				var td = document.createElement('td');
+				td.textContent = label;
+				td.style.padding = '8px';
+				td.style.borderBottom = '1px solid #ddd';
+				row.appendChild(td);
+			});
+			
+			// 値のセルを作成（各値項目ごとにtd）
+			item.value.forEach((val, idx) => {
+				var td = document.createElement('td');
+				td.style.padding = '8px';
+				td.style.borderBottom = '1px solid #ddd';
+				td.style.textAlign = 'right';
+				
+				// 数値フォーマットが指定されている場合は適用
+				if (valueNumberFormats[idx]) {
+					td.textContent = chart.formatNumber(val, valueNumberFormats[idx]);
+				} else {
+					td.textContent = val !== null ? val.toString() : '';
+				}
+				
+				row.appendChild(td);
+			});
+			
+			tbody.appendChild(row);
 		});
-		tableHTML += '</tbody></table>';
-
-		tableContainer.innerHTML = tableHTML;
+		
+		table.appendChild(tbody);
+		tableContainer.appendChild(table);
 
 		renderConfig.renderComplete();
 	}
@@ -110,7 +207,7 @@
 				// 指定されたターゲット、ID、データに対して適切なデフォルトツールチップを定義
 				// 戻り値は文字列（HTMLを含む）、HTMLノード、またはMoonbeamツールチップAPIオブジェクト
 				autoContent: function(target, s, g, d) {
-					return d.labels + ': ' + d.value; // 単純な文字列を返す
+					return (Array.isArray(d.labels) ? d.labels.join(' - ') : d.labels) + ': ' + (Array.isArray(d.value) ? d.value.join(', ') : d.value); // 配列の場合は結合して表示
 				}
 			}
 		}

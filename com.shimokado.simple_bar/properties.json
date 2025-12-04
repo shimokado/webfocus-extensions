@@ -49,9 +49,9 @@
 
 	"translations": {
 		"en": {
-			"name": "Simple Bar Chart",
-			"description": "This chart is a simple bar chart which demonstrates many chart extension features",
-			"icon_tooltip": "This extension does ...",
+			"name": "Simple Table",
+			"description": "This chart displays data in a simple table format",
+			"icon_tooltip": "com.shimokado.simple_bar",
 			"value_name": "Value Bucket",
 			"value_tooltip": "Drop a measure here",
 			"labels_name": "Label Bucket",
@@ -59,9 +59,9 @@
 		},
 
 		"ja": {
-			"name": "単純棒グラフ",
-			"description": "さまざまなグラフ拡張機能を例示する単純な棒グラフです。",
-			"icon_tooltip": "この拡張グラフは...", 
+			"name": "シンプルテーブル",
+			"description": "データをテーブル形式で表示するシンプルな拡張グラフです。",
+			"icon_tooltip": "com.shimokado.simple_bar", 
 			"value_name": "値バケット", 
 			"value_tooltip": "ここにメジャーをドロップ", 
 			"labels_name": "ラベルバケット", 

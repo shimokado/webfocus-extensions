@@ -35,16 +35,16 @@
                 "id": "value",
                 "type": "measure",
                 "count": {
-                    "min": 1,
-                    "max": 1
+                    "min": 0,
+                    "max": 9
                 }
             },
             {
                 "id": "labels",
                 "type": "dimension",
                 "count": {
-                    "min": 1,
-                    "max": 1
+                    "min": 0,
+                    "max": 9
                 }
             }
         ]
@@ -54,7 +54,7 @@
         "en": {
             "name": "Simple Table",
             "description": "Display data in a simple HTML table",
-            "icon_tooltip": "Simple Table",
+            "icon_tooltip": "com.shimokado.table_simple",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -63,7 +63,7 @@
         "ja": {
             "name": "シンプルテーブル",
             "description": "データをシンプルな表で表示します",
-            "icon_tooltip": "シンプルテーブル",
+            "icon_tooltip": "com.shimokado.table_simple",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",

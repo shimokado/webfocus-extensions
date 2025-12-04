@@ -4,9 +4,9 @@
         "implements_api_version": 1.0,
         "author": "Shimokado Masataka",
         "copyright": "Shimokado Masataka",
-        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.params",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.table_ver1",
         "icons": {
-            "medium": "icons/params.png"
+            "medium": "icons/icon.png"
         }
     },
     "properties": {
@@ -114,7 +114,7 @@
         "en": {
             "name": "Table with Vertical Merge",
             "description": "Table with Vertical Merge",
-            "icon_tooltip": "Table with Vertical Merge",
+            "icon_tooltip": "com.shimokado.table_ver1",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -125,7 +125,7 @@
         "ja": {
             "name": "縦結合を実装した表",
             "description": "縦結合を実装した表",
-            "icon_tooltip": "縦結合を実装した表",
+            "icon_tooltip": "com.shimokado.table_ver1",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",

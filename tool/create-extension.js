@@ -54,6 +54,40 @@ function updateJsFile(filePath, newId, oldTemplateId) {
 }
 
 /**
+ * 指定されたtest.htmlファイルの<title>を更新します。
+ *
+ * @param {string} filePath - 更新するファイルのパス。
+ * @param {string} newTitle - 新しいタイトル。
+ * @throws {Error} ファイルの読み込みまたは書き込みに失敗した場合にスローされます。
+ */
+function updateTestHtmlTitle(filePath, newTitle) {
+    let content = fs.readFileSync(filePath, 'utf8');
+    // Replace <title> tag
+    content = content.replace(/<title>.*?<\/title>/, `<title>${newTitle} Test</title>`);
+    fs.writeFileSync(filePath, content);
+}
+
+/**
+ * 指定されたproperties.jsonファイルのtranslationsのicon_tooltipを更新します。
+ *
+ * @param {string} filePath - 更新するファイルのパス。
+ * @param {string} newId - 新しいID。
+ * @param {string} oldId - 置き換える古いID。
+ * @throws {Error} ファイルの読み込みまたは書き込みに失敗した場合にスローされます。
+ */
+function updatePropertiesJson(filePath, newId, oldId) {
+    let content = fs.readFileSync(filePath, 'utf8');
+    let json = JSON.parse(content);
+    if (json.translations && json.translations.en && json.translations.en.icon_tooltip) {
+        json.translations.en.icon_tooltip = json.translations.en.icon_tooltip.replace(oldId, newId);
+    }
+    if (json.translations && json.translations.ja && json.translations.ja.icon_tooltip) {
+        json.translations.ja.icon_tooltip = json.translations.ja.icon_tooltip.replace(oldId, newId);
+    }
+    fs.writeFileSync(filePath, JSON.stringify(json, null, 4));
+}
+
+/**
  * 拡張機能を作成する非同期関数。
  * ユーザーに拡張機能IDとコンテナタイプを尋ね、それに基づいてテンプレートフォルダをコピーし、
  * 必要なファイルのリネームと更新を行います。
@@ -145,6 +179,12 @@ async function createExtension() {
         const testHtmlFile = path.join(targetDir, 'test.html');
         if (fs.existsSync(testHtmlFile)) {
             updateJsFile(testHtmlFile, newFolderName, templateFolder);
+            updateTestHtmlTitle(testHtmlFile, newFolderName);
+        }
+
+        const propertiesJsonFile = path.join(targetDir, 'properties.json');
+        if (fs.existsSync(propertiesJsonFile)) {
+            updatePropertiesJson(propertiesJsonFile, newFolderName, templateFolder);
         }
 
         console.log(`Successfully created extension: ${newFolderName}`);

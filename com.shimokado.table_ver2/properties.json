@@ -4,9 +4,9 @@
         "implements_api_version": 1.0,
         "author": "Shimokado Masataka",
         "copyright": "Shimokado Masataka",
-        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.params",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.table_ver2",
         "icons": {
-            "medium": "icons/params.png"
+            "medium": "icons/icon.png"
         }
     },
     "properties": {
@@ -118,7 +118,7 @@
         "en": {
             "name": "Compressed Table with Totals",
             "description": "Compressed Table with Totals",
-            "icon_tooltip": "Compressed Table with Totals",
+            "icon_tooltip": "com.shimokado.table_ver2",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Label",
@@ -129,7 +129,7 @@
         "ja": {
             "name": "横幅を圧縮した表形式（合計行付き）",
             "description": "横幅を圧縮した表形式（合計行付き）",
-            "icon_tooltip": "横幅を圧縮した表形式（合計行付き）",
+            "icon_tooltip": "com.shimokado.table_ver2",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",

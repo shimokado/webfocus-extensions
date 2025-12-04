@@ -82,7 +82,7 @@
         "en": {
             "name": "Card View (Descending)",
             "description": "Display data in a responsive card UI.",
-            "icon_tooltip": "Card View (Ascending)",
+            "icon_tooltip": "com.shimokado.card_simple",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -91,7 +91,7 @@
         "ja": {
             "name": "カード型表示（値の降順）",
             "description": "データをレスポンシブルなカード型UIで表示します。",
-            "icon_tooltip": "カード型表示（値の昇順）",
+            "icon_tooltip": "com.shimokado.card_simple",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",

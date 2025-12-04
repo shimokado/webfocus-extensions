@@ -4,7 +4,7 @@
         "implements_api_version": 1.0,
         "author": "Shimokado Masataka",
         "copyright": "Shimokado Masataka",
-        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.zoomable_sunburst",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.d3_sample",
         "icons": {
             "medium": "icons/icon.png"
         }
@@ -58,7 +58,7 @@
         "en": {
             "name": "D3 Sample",
             "description": "This is a sample that displays a tree map using D3.js.",
-            "icon_tooltip": "D3.js Sample",
+            "icon_tooltip": "com.shimokado.d3_sample",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -67,7 +67,7 @@
         "ja": {
             "name": "d3_sample",
             "description": "D3.jsを使用してツリーマップを表示するサンプルです。",
-            "icon_tooltip": "D3.jsサンプル",
+            "icon_tooltip": "com.shimokado.d3_sample",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル（１～５個）",

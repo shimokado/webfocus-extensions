@@ -58,7 +58,7 @@
         "en": {
             "name": "Drilldown Sunburst",
             "description": "Display a zoomable sunburst chart.",
-            "icon_tooltip": "Zoomable Sunburst",
+            "icon_tooltip": "com.shimokado.zoomable_sunburst",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -67,7 +67,7 @@
         "ja": {
             "name": "ドリルダウン可能なサンバースト",
             "description": "ドリルダウン可能なサンバーストチャートを表示します。",
-            "icon_tooltip": "ドリルダウン可能なサンバースト",
+            "icon_tooltip": "com.shimokado.zoomable_sunburst",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル（２～５個）",

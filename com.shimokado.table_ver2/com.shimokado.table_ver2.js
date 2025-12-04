@@ -320,7 +320,7 @@
 		let processedData;
 		
 		// ラベル数が2つ以上かつ値数が2つ以上の場合、グループ変更時に集計行を挿入する処理
-		if (labelCount >= 2 && valueCount >= 2) {
+		if (labelCount >= 2) {
 			const resultData = [];
 			
 			// データを最初の (labelCount - 1) 個のラベルレベルでソート

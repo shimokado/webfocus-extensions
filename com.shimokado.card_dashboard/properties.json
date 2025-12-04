@@ -6,7 +6,7 @@
         "copyright": "Shimokado Masataka",
         "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.card_dashboard",
         "icons": {
-            "medium": "icons/card-simple.png"
+            "medium": "icons/icon.png"
         }
     },
 
@@ -58,7 +58,7 @@
         "en": {
             "name": "Card Dashboard",
             "description": "Display a responsive card dashboard.",
-            "icon_tooltip": "Card Dashboard",
+            "icon_tooltip": "com.shimokado.card_dashboard",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
             "labels_name": "Labels",
@@ -67,7 +67,7 @@
         "ja": {
             "name": "カード型ダッシュボード",
             "description": "レスポンシブルなカード型ダッシュボードを表示します。",
-            "icon_tooltip": "カード型ダッシュボード",
+            "icon_tooltip": "com.shimokado.card_dashboard",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",
             "labels_name": "ラベル",
