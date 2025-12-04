@@ -36,8 +36,9 @@
 | [02_API_Reference.md](../development_guide/02_API_Reference.md) | tdgchart API、拡張登録メカニズム |
 | [03_Development_Guide.md](../development_guide/03_Development_Guide.md) | 実装パターン、ベストプラクティス |
 | [04_Tutorials.md](../development_guide/04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
-| [05_Official_Manuals_JP.md](../development_guide/05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
+| [05_Official_Manuals_JP.md](../development_guide/05_Official_Manuals_JP.md) | 公式マニュアル詳細 (日本語) |
 | [06_Troubleshooting_DataDepth.md](../development_guide/06_Troubleshooting_DataDepth.md) | **配列の深さ問題の詳細解説と解決方法** ⚠️ |
+| [07_RenderConfig_Samples.md](../development_guide/07_RenderConfig_Samples.md) | WebFOCUS出力の実際のデータ構造サンプル |
 
 ---
 
