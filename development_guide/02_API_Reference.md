@@ -1,5 +1,11 @@
 # WebFOCUS拡張グラフ開発ガイド - APIリファレンス
 
+## 🚨 **重要なお知らせ**
+
+**新規拡張グラフ開発時は、必ず [06_Troubleshooting_DataDepth.md](06_Troubleshooting_DataDepth.md) を先に読んでください。**
+
+このドキュメントには `renderConfig.data` のデータ構造が `depth` パラメータによってどのように変化するかが詳述されています。データ正規化の実装を忘れると、ランタイムエラーが発生します。
+
 ## 1. tdgchart オブジェクト
 
 `tdgchart` はWebFOCUSのチャートエンジンの中核となるオブジェクトです。拡張グラフ開発においては、主に `tdgchart.extensionManager` や `moonbeamInstance`（`tdgchart` のインスタンス）を通じて機能を利用します。

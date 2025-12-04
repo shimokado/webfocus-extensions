@@ -16,7 +16,7 @@ WebFOCUS拡張グラフ（Extension Chart）は、WebFOCUSの標準グラフ機�
 | [03_Development_Guide.md](03_Development_Guide.md) | 実装パターン、ベストプラクティス |
 | [04_Tutorials.md](04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
 | [05_Official_Manuals_JP.md](05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
-| [06_Troubleshooting_DataDepth.md](06_Troubleshooting_DataDepth.md) | データ構造の問題解決ガイド |
+| [06_Troubleshooting_DataDepth.md](06_Troubleshooting_DataDepth.md) | **🚨 データ構造の問題解決ガイド（新規開発時は必須読書）** |
 | [07_RenderConfig_Samples.md](07_RenderConfig_Samples.md) | WebFOCUS出力の実際のデータ構造サンプル |
 
 ## 3. プロジェクト構成

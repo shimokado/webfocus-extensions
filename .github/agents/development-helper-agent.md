@@ -314,6 +314,7 @@ var color = chart.getSeriesAndGroupProperty(seriesID, groupID, 'color');
 - test.htmlで様々なデータパターンを検証
 - エラーデータ（null、undefined）の処理を確認
 - レスポンシブデザインの確認（width/height変更）
+**テストには、chrome-devtoolsを活用**
 
 ---
 

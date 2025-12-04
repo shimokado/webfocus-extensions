@@ -1,5 +1,11 @@
 # WebFOCUS拡張グラフ開発ガイド - 実践編
 
+## 🚨 **重要なお知らせ**
+
+**新規拡張グラフ開発時は、必ず [06_Troubleshooting_DataDepth.md](06_Troubleshooting_DataDepth.md) を先に読んでください。**
+
+このドキュメントにはデータ正規化パターンの詳細な実装例が記載されています。renderCallbackの実装前に必ず確認してください。
+
 ## 1. データの正規化 (Data Normalization)
 
 WebFOCUSから渡されるデータ (`renderConfig.data`) は、バケットの設定やデータの個数によって構造（配列の深さなど）が変わる場合があります。これを吸収し、常に扱いやすい形式に変換する「正規化処理」を実装することが重要です。

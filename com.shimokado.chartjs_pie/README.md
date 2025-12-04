@@ -1,4 +1,4 @@
-# WebFOCUS Chart.js シンプル棒グラフ拡張機能
+# WebFOCUS Chart.js 棒グラフ拡張機能
 
 Chart.js を使用してシンプルな棒グラフを表示する拡張機能です。
 
@@ -18,7 +18,7 @@ Chart.js を使用してシンプルな棒グラフを表示する拡張機能�
   - 最大: 1
 - **ラベル** (ディメンション): X軸のカテゴリー
   - 最小: 1
-  - 最大: 1
+  - 最大: 5
 
 ## スタイル設定
 
@@ -35,7 +35,7 @@ Chart.js を使用してシンプルな棒グラフを表示する拡張機能�
 
 ## ファイルの説明
 
-### com.shimokado.chartjs_sample.js
+### com.shimokado.chartjs_pie.js
 グラフモジュールの本体
 
 ### properties.json
