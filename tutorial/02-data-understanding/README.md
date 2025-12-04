@@ -15,6 +15,8 @@
 - プロパティの値
 - レンダリングに必要な各種パラメータ
 
+**⚠️ 重要：この章ではデータ構造の理解に加え、データ正規化の重要性を学びます。**
+
 ## 🔍 実際のデータ分析
 
 ### WebFOCUSでの実行手順
@@ -137,6 +139,115 @@ const datas = data.map(d => ({
     (Array.isArray(d.value) ? d.value : [d.value]) : []
 }));
 ```
+
+### ⚠️ 重要：データ正規化の実装パターン
+
+WebFOCUS拡張グラフ開発で最も重要なのは、**renderCallbackの最初でデータを統一形式に正規化すること**です。development_guideのトラブルシューティングガイドを参考に、以下のベストプラクティスを実装してください：
+
+```javascript
+/**
+ * renderConfig のデータを統一形式に正規化する関数
+ * @param {Object} renderConfig - 標準のコールバック引数オブジェクト
+ * @returns {Object} 正規化されたデータ情報
+ */
+function normalizeRenderData(renderConfig) {
+  var dataBuckets = renderConfig.dataBuckets;
+  var buckets = dataBuckets.buckets;
+  var data = renderConfig.data;
+  var depth = dataBuckets.depth;
+
+  // ===== Step 1: バケットメタデータを常に配列に統一 =====
+  // count=1なら文字列、count>1なら配列として扱う
+  var labelsTitles = buckets.labels 
+    ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
+    : [];
+  var labelsFieldNames = buckets.labels 
+    ? (buckets.labels.count === 1 ? [buckets.labels.fieldName] : buckets.labels.fieldName) 
+    : [];
+  var valueTitles = buckets.value 
+    ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
+    : [];
+  var valueFieldNames = buckets.value 
+    ? (buckets.value.count === 1 ? [buckets.value.fieldName] : buckets.value.fieldName) 
+    : [];
+
+  // ===== Step 2: データアイテムを統一形式に正規化 =====
+  var flatData = [];
+
+  if (depth === 1) {
+    // depth=1: data はそのままアイテム配列
+    flatData = data.map(function(item) {
+      return {
+        labels: item.labels !== undefined 
+          ? (Array.isArray(item.labels) ? item.labels : [item.labels]) 
+          : [],
+        value: item.value !== undefined 
+          ? (Array.isArray(item.value) ? item.value : [item.value]) 
+          : [],
+        _s: item._s,
+        _g: item._g
+      };
+    });
+  } else if (depth > 1) {
+    // depth>1: data は配列の配列（シリーズごとにグループ化）
+    data.forEach(function(series) {
+      if (Array.isArray(series)) {
+        series.forEach(function(item) {
+          flatData.push({
+            labels: item.labels !== undefined 
+              ? (Array.isArray(item.labels) ? item.labels : [item.labels]) 
+              : [],
+            value: item.value !== undefined 
+              ? (Array.isArray(item.value) ? item.value : [item.value]) 
+              : [],
+            _s: item._s,
+            _g: item._g
+          });
+        });
+      }
+    });
+  }
+
+  // ===== Step 3: 正規化されたデータを返す =====
+  return {
+    labelsTitles: labelsTitles,
+    labelsFieldNames: labelsFieldNames,
+    valueTitles: valueTitles,
+    valueFieldNames: valueFieldNames,
+    data: flatData  // 統一形式のデータ
+  };
+}
+
+// ===== 使用例 =====
+function renderCallback(renderConfig) {
+  try {
+    // Step 1: 正規化処理を最初に実行
+    var normalized = normalizeRenderData(renderConfig);
+    
+    // Step 2: 正規化後は常に統一形式で使用可能
+    var chart = renderConfig.moonbeamInstance;
+    var container = d3.select(renderConfig.container);
+    
+    // Step 3: 安全にデータにアクセス
+    normalized.data.forEach(function(item) {
+      var firstLabel = item.labels[0];  // 常に文字列
+      var firstValue = item.value[0];   // 常に数値
+      console.log(firstLabel, firstValue);
+    });
+    
+    // Step 4: レンダリング処理
+    // ... 描画コード ...
+    
+    renderConfig.renderComplete();
+    
+  } catch (e) {
+    console.error('レンダリングエラー:', e);
+    renderConfig.renderComplete();
+  }
+}
+```
+
+**この正規化パターンは、すべての拡張グラフ開発で必須です。** 実装を忘れると、ランタイムエラーが発生します。
 
 ## 📈 数値フォーマットの活用
 

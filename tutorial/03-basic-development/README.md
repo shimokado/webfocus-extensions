@@ -164,6 +164,47 @@ function normalizeToArray(value) {
 }
 ```
 
+#### ⚠️ 重要：データ正規化の実装
+
+development_guideの実践編を参考に、renderCallbackの最初で必ずデータ正規化を実装してください。以下のベストプラクティスを採用：
+
+```javascript
+function renderCallback(renderConfig) {
+    // ===== ステップ1: データの正規化（必須）=====
+    // depth=1 でも labels/value が文字列になる場合がある
+    var normalizedData = [];
+    if (renderConfig.dataBuckets.depth === 1) {
+        // depth=1: data はそのままアイテム配列
+        normalizedData = renderConfig.data.map(function(item) {
+            return {
+                labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+                value: Array.isArray(item.value) ? item.value : [item.value]
+            };
+        });
+    } else {
+        // depth>1: data は配列の配列（シリーズごとにグループ化）
+        renderConfig.data.forEach(function(series) {
+            if (Array.isArray(series)) {
+                series.forEach(function(item) {
+                    normalizedData.push({
+                        labels: Array.isArray(item.labels) ? item.labels : [item.labels],
+                        value: Array.isArray(item.value) ? item.value : [item.value]
+                    });
+                });
+            }
+        });
+    }
+    
+    // ===== ステップ2: 正規化後は常に配列として安全にアクセス =====
+    normalizedData.forEach(function(item) {
+        var firstLabel = item.labels[0];  // 常に文字列
+        var firstValue = item.value[0];   // 常に数値
+    });
+    
+    // ... 以降の描画処理
+}
+```
+
 ### 4. DOM描画関数
 
 ```javascript

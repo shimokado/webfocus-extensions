@@ -21,28 +21,18 @@
 	function noDataRenderCallback(renderConfig) {
 		console.log('noDataRenderCallback:', renderConfig);
 		// サンプルデータとバケットを使用してrenderCallbackを呼び出す
-		renderConfig.data= [
-			[
-			  [
-				'ENGLAND'
-			   ,37853
-			  ]
-			 ,[
-				'FRANCE'
-			   ,4631
-			  ]
-			]
+		renderConfig.data = [
+			{ labels: 'ENGLAND', value: 37853 },
+			{ labels: 'FRANCE', value: 4631 }
 		];
 		renderConfig.dataBuckets = {
-			labels: {
-			  title: 'Country'
-			}
-			,value: {
-			  title: 'Sales'
+			depth: 1,
+			buckets: {
+				labels: { title: 'Country', count: 1 },
+				value: { title: 'Sales', count: 1 }
 			}
 		};
 		renderCallback(renderConfig);
-
 	}
 
 	/**
@@ -61,76 +51,81 @@
 	 * @param {Object} renderConfig - renderConfigオブジェクト
 	 * @returns {Object} 正規化されたデータ
 	 */
-	function normalizeData(renderConfig) {
-		const dataBuckets = renderConfig.dataBuckets;
-		const buckets = dataBuckets.buckets;
-		let data = renderConfig.data;
+	function normalizeRenderData(renderConfig) {
+		var dataBuckets = renderConfig.dataBuckets;
+		var buckets = dataBuckets.buckets;
+		var data = renderConfig.data;
 
-		// buckets を常に配列に統一
-		const labelsCount = buckets.labels ? buckets.labels.count : 0;
-		const labelsTitles = buckets.labels 
-			? (labelsCount === 1 ? [buckets.labels.title] : buckets.labels.title) 
+		// ===== Step 1: バケットメタデータを常に配列に統一 =====
+		// count=1なら文字列、count>1なら配列として扱う
+		var labelsTitles = buckets.labels 
+			? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
 			: [];
-		const valueTitles = buckets.value 
+		var labelsFieldNames = buckets.labels 
+			? (buckets.labels.count === 1 ? [buckets.labels.fieldName] : buckets.labels.fieldName) 
+			: [];
+		var valueTitles = buckets.value 
 			? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
 			: [];
+		var valueFieldNames = buckets.value 
+			? (buckets.value.count === 1 ? [buckets.value.fieldName] : buckets.value.fieldName) 
+			: [];
+		var valueNumberFormats = buckets.value 
+			? (buckets.value.count === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) 
+			: [];
 
-		// data を統一形式に変換
-		let flatData = [];
+		// ===== Step 2: データアイテムを統一形式に正規化 =====
+		var flatData = [];
+
 		if (dataBuckets.depth === 1) {
+			// depth=1: data はそのままアイテム配列
 			flatData = data.map(function(item) {
 				return {
-					labels: Array.isArray(item.labels) ? item.labels : [item.labels],
-					value: Array.isArray(item.value) ? item.value : [item.value]
+					labels: item.labels !== undefined 
+						? (Array.isArray(item.labels) ? item.labels : [item.labels]) 
+						: [],
+					value: item.value !== undefined 
+						? (Array.isArray(item.value) ? item.value : [item.value]) 
+						: [],
+					detail: item.detail !== undefined 
+						? (Array.isArray(item.detail) ? item.detail : [item.detail]) 
+						: [],
+					_s: item._s,
+					_g: item._g
 				};
 			});
-		} else {
+		} else if (dataBuckets.depth > 1) {
+			// depth>1: data は配列の配列（シリーズごとにグループ化）
 			data.forEach(function(series) {
 				if (Array.isArray(series)) {
 					series.forEach(function(item) {
 						flatData.push({
-							labels: Array.isArray(item.labels) ? item.labels : [item.labels],
-							value: Array.isArray(item.value) ? item.value : [item.value]
+							labels: item.labels !== undefined 
+								? (Array.isArray(item.labels) ? item.labels : [item.labels]) 
+								: [],
+							value: item.value !== undefined 
+								? (Array.isArray(item.value) ? item.value : [item.value]) 
+								: [],
+							detail: item.detail !== undefined 
+								? (Array.isArray(item.detail) ? item.detail : [item.detail]) 
+								: [],
+							_s: item._s,
+							_g: item._g
 						});
 					});
 				}
 			});
 		}
 
+		// ===== Step 3: 正規化されたデータを返す =====
 		return {
 			labelsTitles: labelsTitles,
+			labelsFieldNames: labelsFieldNames,
 			valueTitles: valueTitles,
-			data: flatData
+			valueFieldNames: valueFieldNames,
+			valueNumberFormats: valueNumberFormats,
+			data: flatData  // 統一形式のデータ
 		};
-	}
-
-	/**
-	 * 階層データを構築する関数
-	 * @param {Array} data - 正規化されたデータ
-	 * @param {Array} labelsTitles - ラベルタイトル
-	 * @returns {Object} 階層データ
-	 */
-	function buildHierarchy(data, labelsTitles) {
-		const root = { name: 'root', children: [] };
-
-		data.forEach(item => {
-			let current = root;
-			item.labels.forEach((label, index) => {
-				let child = current.children.find(c => c.name === label);
-				if (!child) {
-					child = { name: label, children: [] };
-					current.children.push(child);
-				}
-				current = child;
-			});
-			current.value = item.value[0] || 0;
-			// リーフノードなのでchildrenを削除
-			if (current.children.length === 0) {
-				delete current.children;
-			}
-		});
-
-		return root;
 	}
 
 	/**
@@ -163,140 +158,118 @@
 		container.innerHTML = ''; // コンテナをクリア
 
 		// データの正規化
-		const normalizedData = normalizeData(renderConfig);
-		console.log('normalizedData:', normalizedData);
+		const normalized = normalizeRenderData(renderConfig);
+		console.log('normalized:', normalized);
 
-		// 階層データを構築
-		const hierarchicalData = buildHierarchy(normalizedData.data, normalizedData.labelsTitles);
-		console.log('hierarchicalData:', hierarchicalData);
+		// labelsのcountを確認
+		const labelCount = normalized.labelsTitles.length;
 
-		// SVG要素を作成（凡例用のスペースを確保）
-		const svgWidth = width + 140; // チャート幅 + 凡例幅
-		const svgHeight = height;
-		const svg = d3.select(container)
-			.append('svg')
-			.attr('width', svgWidth)
-			.attr('height', svgHeight);
+		if (labelCount === 1) {
+			// 単一ラベルの場合：1つのpie chart
+			createPieChart(container, normalized.data, normalized.labelsTitles[0], normalized.valueTitles[0], width, height);
+		} else {
+			// 複数ラベルの場合：各レベルごとにpie chartを作成
+			for (let level = 0; level < labelCount; level++) {
+				const levelData = aggregateDataByLevel(normalized.data, level);
+				const chartTitle = normalized.labelsTitles[level];
+				const chartDiv = document.createElement('div');
+				chartDiv.style.marginBottom = '20px';
+				chartDiv.style.textAlign = 'center';
+				container.appendChild(chartDiv);
 
-		const radius = Math.min(width, height) / 2;
+				const title = document.createElement('h3');
+				title.textContent = chartTitle;
+				chartDiv.appendChild(title);
 
-		// パーティションレイアウト
-		const partition = d3.partition()
-			.size([2 * Math.PI, radius]);
-
-		// 階層データを作成
-		const root = d3.hierarchy(hierarchicalData)
-			.sum(d => d.value)
-			.sort((a, b) => b.value - a.value);
-
-		partition(root);
-
-		// 総計を計算
-		const totalValue = root.value;
-
-		// レベル1の色スケール（濃い色を使用）
-		const level1ColorScale = d3.scaleOrdinal(d3.schemeSet1);
-
-		// レベル1の項目を取得
-		const level1Items = root.children.map(d => d.data.name);
-
-		// レベル1の色を割り当て
-		const level1Colors = {};
-		level1Items.forEach((name, index) => {
-			level1Colors[name] = level1ColorScale(index % level1ColorScale.range().length);
-		});
-
-		// レベルごとの色生成関数
-		function getColor(d) {
-			const level1Ancestor = d.ancestors().find(a => a.depth === 1);
-			if (!level1Ancestor) return '#ccc'; // フォールバック
-
-			const level1Color = level1Colors[level1Ancestor.data.name];
-			const depth = d.depth;
-
-			if (depth === 1) {
-				return level1Color;
-			} else {
-				// レベル2以降はレベル1の色をベースにバリエーションを作成
-				const baseColor = d3.rgb(level1Color);
-				const variation = (depth - 1) * 0.3; // 深さによって変化量を増やす
-
-				// HSL色空間で調整
-				const hsl = d3.hsl(baseColor);
-				hsl.s = Math.max(0.1, hsl.s - variation * 0.2); // 彩度を下げる
-				hsl.l = Math.min(0.9, Math.max(0.1, hsl.l + variation * 0.1)); // 明度を調整
-
-				// 同じレベル内で少しずつ色をずらす
-				const siblings = level1Ancestor.children;
-				const siblingIndex = siblings.indexOf(d.parent || d);
-				const hueShift = (siblingIndex / siblings.length) * 30; // 最大30度の色相シフト
-				hsl.h = (hsl.h + hueShift) % 360;
-
-				return hsl.toString();
+				createPieChart(chartDiv, levelData, chartTitle, normalized.valueTitles[0], width, height / labelCount);
 			}
 		}
 
-		// アークジェネレーター
-		const arc = d3.arc()
-			.startAngle(d => d.x0)
-			.endAngle(d => d.x1)
-			.innerRadius(d => d.y0)
-			.outerRadius(d => d.y1);
+		renderConfig.renderComplete();
+	}
 
-		// パスを描画
-		const path = svg.append('g')
-			.attr('transform', `translate(${width / 2},${height / 2})`)
-			.selectAll('path')
-			.data(root.descendants().filter(d => d.depth > 0)) // root以外
-			.enter()
-			.append('path')
-			.attr('d', arc)
-			.style('fill', getColor)
-			.style('stroke', '#fff')
-			.style('stroke-width', 1)
-			// WebFOCUSツールチップ（tdgtitle属性）とSVG title要素の両方を使用
-			.attr('tdgtitle', d => {
-				const path = d.ancestors().map(a => a.data.name).slice(1).reverse().join(' > ');
-				const currentItem = d.data.name; // ホバーした現在の項目
-				const percentage = ((d.value / totalValue) * 100).toFixed(1);
-				return `項目: ${currentItem}\nパス: ${path}\n値: ${d.value}\n割合: ${percentage}%`;
-			})
-			.append('title')
-			.text(d => {
-				const path = d.ancestors().map(a => a.data.name).slice(1).reverse().join(' > ');
-				const currentItem = d.data.name; // ホバーした現在の項目
-				const percentage = ((d.value / totalValue) * 100).toFixed(1);
-				return `項目: ${currentItem}\nパス: ${path}\n値: ${d.value}\n割合: ${percentage}%`;
-			});
+	/**
+	 * 指定されたレベルでデータを集計する関数
+	 * @param {Array} data - 正規化されたデータ
+	 * @param {Number} level - 集計するラベルレベル
+	 * @returns {Array} 集計されたデータ
+	 */
+	function aggregateDataByLevel(data, level) {
+		const aggregated = {};
 
-		// 凡例を追加（レベル1の項目のみ）- チャートの右側に配置
-		const legendX = width / 2 + radius + 20; // チャートの中心 + 半径 + マージン
-		const legend = svg.append('g')
-			.attr('transform', `translate(${legendX}, 20)`);
+		data.forEach(item => {
+			const key = item.labels[level];
+			const value = item.value[0] || 0;
 
-		const legendItems = legend.selectAll('.legend-item')
-			.data(level1Items)
-			.enter()
-			.append('g')
-			.attr('class', 'legend-item')
-			.attr('transform', (d, i) => `translate(0, ${i * 20})`);
+			if (!aggregated[key]) {
+				aggregated[key] = 0;
+			}
+			aggregated[key] += value;
+		});
 
-		// 凡例の色付き四角
-		legendItems.append('rect')
-			.attr('width', 15)
-			.attr('height', 15)
-			.style('fill', d => level1Colors[d])
-			.style('stroke', '#fff')
-			.style('stroke-width', 1);
+		return Object.keys(aggregated).map(key => ({
+			label: key,
+			value: aggregated[key]
+		}));
+	}
 
-		// 凡例のテキスト
-		legendItems.append('text')
-			.attr('x', 20)
-			.attr('y', 12)
-			.style('font-size', '12px')
-			.style('font-family', 'sans-serif')
-			.style('fill', '#333')
-			.text(d => d);
+	/**
+	 * Pie chartを作成する関数
+	 * @param {HTMLElement} container - コンテナ要素
+	 * @param {Array} data - チャートデータ
+	 * @param {String} labelTitle - ラベルタイトル
+	 * @param {String} valueTitle - 値タイトル
+	 * @param {Number} width - 幅
+	 * @param {Number} height - 高さ
+	 */
+	function createPieChart(container, data, labelTitle, valueTitle, width, height) {
+		// Canvas要素を作成
+		const canvas = document.createElement('canvas');
+		canvas.width = width;
+		canvas.height = height;
+		container.appendChild(canvas);
+
+		const labels = data.map(d => d.label || d.labels[d.labels.length - 1]);
+		const values = data.map(d => d.value || d.value[0]);
+
+		// Chart.js インスタンス作成
+		const ctx = canvas.getContext('2d');
+		new Chart(ctx, {
+			type: 'pie',
+			data: {
+				labels: labels,
+				datasets: [{
+					data: values,
+					backgroundColor: [
+						'#FF6384',
+						'#36A2EB',
+						'#FFCE56',
+						'#4BC0C0',
+						'#9966FF',
+						'#FF9F40'
+					],
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: false,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						position: 'right'
+					},
+					tooltip: {
+						callbacks: {
+							label: function(context) {
+								const label = context.label || '';
+								const value = context.parsed;
+								return `${label}: ${value}`;
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 
 	var config = {
@@ -312,7 +285,7 @@
 			*/
 			// script: [],
 			// css: []
-			script: ['https://d3js.org/d3.v5.min.js'],
+			script: ['lib/chart.js'],
 			css: ['css/style.css']
 
 			// コールバック関数を使用して動的に読み込む外部ライブラリを定義する例
@@ -338,16 +311,10 @@
 				// 指定されたターゲット、ID、データに対して'nice'なデフォルトツールチップを定義するために使用します
 				// 戻り値は文字列（HTMLを含む）、HTMLノード、またはMoonbeamツールチップAPIオブジェクトのいずれかです
 				autoContent: function(target, s, g, d) {
-					if (d && d.ancestors) {
-						// サンバーストチャートの場合
-						const path = d.ancestors().map(a => a.data.name).slice(1).reverse().join(' > ');
-						const currentItem = d.data.name; // ホバーした現在の項目
-						const totalValue = d.ancestors()[0].value; // rootの値
-						const percentage = ((d.value / totalValue) * 100).toFixed(1);
-						return `項目: ${currentItem}<br>パス: ${path}<br>値: ${d.value}<br>割合: ${percentage}%`;
+					if (d) {
+						return `${d.labels[d.labels.length - 1]}: ${d.value[0]}`;
 					} else {
-						// フォールバック
-						return Array.isArray(d.labels) ? d.labels.join(' > ') : (d.labels || '') + ': ' + (d.value || '');
+						return 'No data';
 					}
 				}
 			}
