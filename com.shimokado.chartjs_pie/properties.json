@@ -69,8 +69,8 @@
     },
     "translations": {
         "en": {
-            "name": "Simple Bar Chart with Chart.js",
-            "description": "A simple bar chart written with Chart.js",
+            "name": "Simple Pie Chart with Chart.js",
+            "description": "A simple pie chart using Chart.js. Displays multiple charts for multi-level labels.",
             "icon_tooltip": "com.shimokado.chartjs_pie",
             "value_name": "Value",
             "value_tooltip": "Drop a measure here",
@@ -78,8 +78,8 @@
             "labels_tooltip": "Drop a dimension here"
         },
         "ja": {
-            "name": "Chart.jsで書いた簡単な棒グラフ",
-            "description": "Chart.jsで書いてみただけのグラフ",
+            "name": "Chart.jsで書いた簡単な円グラフ",
+            "description": "Chart.jsを使用したシンプルな円グラフ。複数レベルのラベルに対応し、各レベルごとにグラフを表示します。",
             "icon_tooltip": "com.shimokado.chartjs_pie",
             "value_name": "値",
             "value_tooltip": "ここにメジャーをドロップ",

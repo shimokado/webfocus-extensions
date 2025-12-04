@@ -287,22 +287,41 @@ mkdir css icons lib
         const labels = dataBuckets.labels;
         const values = dataBuckets.value;
         
-        // データの変換
+        // データの変換（depthに応じた処理）
         const processedData = [];
         
-        data.forEach(record => {
-            const labelArray = Array.isArray(record[0]) ? record[0] : [record[0]];
-            const valueArray = Array.isArray(record[1]) ? record[1] : [record[1]];
-            
-            processedData.push({
-                labels: labelArray,
-                values: valueArray,
-                // 複数ラベルの場合は結合
-                displayLabel: labelArray.join(' - '),
-                // 最初の値を表示用に使用
-                displayValue: valueArray[0] || 0
+        // ===== 重要：depthに応じたデータ処理 =====
+        if (renderConfig.dataBuckets.depth === 1) {
+            // depth=1: data はそのままアイテム配列
+            data.forEach(function(item) {
+                const labelArray = Array.isArray(item.labels) ? item.labels : [item.labels];
+                const valueArray = Array.isArray(item.value) ? item.value : [item.value];
+                
+                processedData.push({
+                    labels: labelArray,
+                    values: valueArray,
+                    displayLabel: labelArray.join(' - '),
+                    displayValue: valueArray[0] || 0
+                });
             });
-        });
+        } else {
+            // depth>1: data は配列の配列（シリーズごとにグループ化）
+            data.forEach(function(series) {
+                if (Array.isArray(series)) {
+                    series.forEach(function(item) {
+                        const labelArray = Array.isArray(item.labels) ? item.labels : [item.labels];
+                        const valueArray = Array.isArray(item.value) ? item.value : [item.value];
+                        
+                        processedData.push({
+                            labels: labelArray,
+                            values: valueArray,
+                            displayLabel: labelArray.join(' - '),
+                            displayValue: valueArray[0] || 0
+                        });
+                    });
+                }
+            });
+        }
         
         // 値の降順でソート
         processedData.sort((a, b) => b.displayValue - a.displayValue);
