@@ -114,9 +114,9 @@ async function createExtension() {
         const newFolderName = `com.${companyName}.${extensionId}`;
 
         const templateFolderTypeMap = {
-            '1': 'com.shimokado.zoomable.sunburst',
+            '1': 'com.shimokado.d3_sample',
             '2': 'com.shimokado.chartjs_sample',
-            '3': 'com.shimokado.params',
+            '3': 'com.shimokado.html_sample',
             '4': 'com.shimokado.apexchart_bar'
         };
     

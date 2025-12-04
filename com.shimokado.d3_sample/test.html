@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>apexcharts sample</title>
-    <script src="tdgchart-min-for-test.js"></script>
+    <title>Card Dashboard Test</title>
     <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <!-- <script defer src="lib/apexcharts.js"></script> -->
-    <!-- <!-- <script src="lib/d3.min.js"></script> --> -->
+    <script src="tdgchart-min-for-test.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <script src="com.shimokado.d3_sample.js"></script>
     <style>
         #pfjTableChart_left {
             background-color: #f0f0f0;
@@ -490,7 +490,6 @@ function render(dataFlg = true){
         // ページロード時にデータを読み込む
         window.addEventListener('load', loadTestData);
 </script>
-<script defer src="com.shimokado.apexchart_bar.js"></script>
 </head>
 
 <body>
@@ -521,175 +520,174 @@ function render(dataFlg = true){
             </div>
             <hr>
             <label for="chartWidth">renderConfig.width</label>
-            <input id="chartWidth" type="number" value="400" placeholder="幅を入力してください">
+            <input id="chartWidth" type="number" value="800" placeholder="幅を入力してください">
             <label for="chartHeight">renderConfig.height</label>
-            <input id="chartHeight" type="number" value="400" placeholder="高さを入力してください">
+            <input id="chartHeight" type="number" value="600" placeholder="高さを入力してください">
             <label for="renderConfig_properties">renderConfig.properties</label>
             <textarea id="renderConfig_properties">
 {
-    "chartHeadroom": 50,
-    "external_library": "lib/script.js",
-    "tableStyle": {
-        "fontSize": "20px",
-        "color": "#663300"
+  "chartHeadroom": 50,
+  "tableStyle": {
+    "fontSize": "20px",
+    "color": "#663300"
+  },
+  "valueLabel": {
+    "fontFamily": "sans-serif",
+    "fontSize": "auto",
+    "color": "#333333",
+    "fontWeight": "bold",
+    "format": "auto"
+  },
+  "label": {
+    "text": {
+      "color": "#333333",
+      "font": "Verdana",
+      "weight": "bold",
+      "size": "14px"
     },
-    "valueLabel": {
-        "fontFamily": "sans-serif",
-        "fontSize": "auto",
-        "color": "#333333",
-        "fontWeight": "bold",
-        "format": "auto"
-    },
-    "label": {
-        "text": {
-            "color": "#333333",
-            "font": "Verdana",
-            "weight": "bold",
-            "size": "14px"
-        },
-        "marker": {
-            "type": "circle"
-        }
-    },
-    "tooltip": {
-        "enabled": true
-    },
-    "showCenteredText": {
-        "enabled": true
+    "marker": {
+      "type": "circle"
     }
+  },
+  "tooltip": {
+    "enabled": true
+  },
+  "showCenteredText": {
+    "enabled": true
+  }
 }
             </textarea>
             <label for="renderConfig_dataBuckets">renderConfig.dataBuckets</label>
             <textarea id="renderConfig_dataBuckets">
 {
-    "internal_api_version": 1,
-    "buckets": {
-        "labels": {
-            "title": "MODEL",
-            "fieldName": "CAR.CARREC.MODEL",
-            "count": 1
-        },
-        "value": {
-            "title": "HEIGHT",
-            "fieldName": "CAR.SPECS.HEIGHT",
-            "numberFormat": "#,###",
-            "count": 1
-        }
+  "internal_api_version": 1,
+  "depth": 1,
+  "buckets": {
+    "labels": {
+      "title": ["COUNTRY", "CAR", "BODYTYPE", "MODEL"],
+      "fieldName": ["CAR.ORIGIN.COUNTRY", "CAR.COMP.CAR", "CAR.BODY.BODYTYPE", "CAR.CARREC.MODEL"],
+      "count": 4
     },
-    "depth": 1
+    "value": {
+      "title": "SEATS",
+      "fieldName": "CAR.BODY.SEATS",
+      "numberFormat": "#",
+      "count": 1
+    }
+  }
 }
             </textarea>
             <label for="renderConfig_data">renderConfig.data</label>
             <textarea id="renderConfig_data">
 [
-    {
-        "labels": "100 LS 2 DOOR AUTO",
-        "value": 54.6,
-        "_s": 0,
-        "_g": 0
-    },
-    {
-        "labels": "2000 4 DOOR BERLINA",
-        "value": 56.3,
-        "_s": 0,
-        "_g": 1
-    },
-    {
-        "labels": "2000 GT VELOCE",
-        "value": 51.8,
-        "_s": 0,
-        "_g": 2
-    },
-    {
-        "labels": "2000 SPIDER VELOCE",
-        "value": 50.8,
-        "_s": 0,
-        "_g": 3
-    },
-    {
-        "labels": "2002 2 DOOR",
-        "value": 55.5,
-        "_s": 0,
-        "_g": 4
-    },
-    {
-        "labels": "2002 2 DOOR AUTO",
-        "value": 55.5,
-        "_s": 0,
-        "_g": 5
-    },
-    {
-        "labels": "3.0 SI 4 DOOR",
-        "value": 57.1,
-        "_s": 0,
-        "_g": 6
-    },
-    {
-        "labels": "3.0 SI 4 DOOR AUTO",
-        "value": 57.1,
-        "_s": 0,
-        "_g": 7
-    },
-    {
-        "labels": "504 4 DOOR",
-        "value": 57,
-        "_s": 0,
-        "_g": 8
-    },
-    {
-        "labels": "530I 4 DOOR",
-        "value": 55.9,
-        "_s": 0,
-        "_g": 9
-    },
-    {
-        "labels": "530I 4 DOOR AUTO",
-        "value": 55.9,
-        "_s": 0,
-        "_g": 10
-    },
-    {
-        "labels": "B210 2 DOOR AUTO",
-        "value": 53.5,
-        "_s": 0,
-        "_g": 11
-    },
-    {
-        "labels": "COROLLA 4 DOOR DIX AUTO",
-        "value": 54.5,
-        "_s": 0,
-        "_g": 12
-    },
-    {
-        "labels": "DORA 2 DOOR",
-        "value": 44.6,
-        "_s": 0,
-        "_g": 13
-    },
-    {
-        "labels": "INTERCEPTOR III",
-        "value": 53,
-        "_s": 0,
-        "_g": 14
-    },
-    {
-        "labels": "TR7",
-        "value": 49.9,
-        "_s": 0,
-        "_g": 15
-    },
-    {
-        "labels": "V12XKE AUTO",
-        "value": 48,
-        "_s": 0,
-        "_g": 16
-    },
-    {
-        "labels": "XJ12L AUTO",
-        "value": 54.1,
-        "_s": 0,
-        "_g": 17
-    }
+  {
+    "labels": ["ENGLAND", "JAGUAR", "CONVERTIBLE", "V12XKE AUTO"],
+    "value": 2,
+    "_s": 0,
+    "_g": 0
+  },
+  {
+    "labels": ["ENGLAND", "JAGUAR", "SEDAN", "XJ12L AUTO"],
+    "value": 5,
+    "_s": 0,
+    "_g": 1
+  },
+  {
+    "labels": ["ENGLAND", "JENSEN", "SEDAN", "INTERCEPTOR III"],
+    "value": 4,
+    "_s": 0,
+    "_g": 2
+  },
+  {
+    "labels": ["ENGLAND", "TRIUMPH", "HARDTOP", "TR7"],
+    "value": 2,
+    "_s": 0,
+    "_g": 3
+  },
+  {
+    "labels": ["FRANCE", "PEUGEOT", "SEDAN", "504 4 DOOR"],
+    "value": 5,
+    "_s": 0,
+    "_g": 4
+  },
+  {
+    "labels": ["ITALY", "ALFA ROMEO", "COUPE", "2000 GT VELOCE"],
+    "value": 2,
+    "_s": 0,
+    "_g": 5
+  },
+  {
+    "labels": ["ITALY", "ALFA ROMEO", "ROADSTER", "2000 SPIDER VELOCE"],
+    "value": 2,
+    "_s": 0,
+    "_g": 6
+  },
+  {
+    "labels": ["ITALY", "ALFA ROMEO", "SEDAN", "2000 4 DOOR BERLINA"],
+    "value": 4,
+    "_s": 0,
+    "_g": 7
+  },
+  {
+    "labels": ["ITALY", "MASERATI", "COUPE", "DORA 2 DOOR"],
+    "value": 2,
+    "_s": 0,
+    "_g": 8
+  },
+  {
+    "labels": ["JAPAN", "DATSUN", "SEDAN", "B210 2 DOOR AUTO"],
+    "value": 4,
+    "_s": 0,
+    "_g": 9
+  },
+  {
+    "labels": ["JAPAN", "TOYOTA", "SEDAN", "COROLLA 4 DOOR DIX AUTO"],
+    "value": 4,
+    "_s": 0,
+    "_g": 10
+  },
+  {
+    "labels": ["W GERMANY", "AUDI", "SEDAN", "100 LS 2 DOOR AUTO"],
+    "value": 5,
+    "_s": 0,
+    "_g": 11
+  },
+  {
+    "labels": ["W GERMANY", "BMW", "SEDAN", "2002 2 DOOR"],
+    "value": 5,
+    "_s": 0,
+    "_g": 12
+  },
+  {
+    "labels": ["W GERMANY", "BMW", "SEDAN", "2002 2 DOOR AUTO"],
+    "value": 4,
+    "_s": 0,
+    "_g": 13
+  },
+  {
+    "labels": ["W GERMANY", "BMW", "SEDAN", "3.0 SI 4 DOOR"],
+    "value": 5,
+    "_s": 0,
+    "_g": 14
+  },
+  {
+    "labels": ["W GERMANY", "BMW", "SEDAN", "3.0 SI 4 DOOR AUTO"],
+    "value": 5,
+    "_s": 0,
+    "_g": 15
+  },
+  {
+    "labels": ["W GERMANY", "BMW", "SEDAN", "530I 4 DOOR"],
+    "value": 5,
+    "_s": 0,
+    "_g": 16
+  },
+  {
+    "labels": ["W GERMANY", "BMW", "SEDAN", "530I 4 DOOR AUTO"],
+    "value": 5,
+    "_s": 0,
+    "_g": 17
+  }
 ]
             </textarea>
         </div>

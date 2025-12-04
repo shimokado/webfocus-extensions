@@ -153,33 +153,55 @@ tdgchart.extensionManager.register({
 | 単一ラベル × 単一値 | 配列 | 文字列 | 数値 | 文字列 |
 | 複数ラベル × 複数値 | 配列 | 配列 | 配列 | 配列 |
 
+#### コード生成時の強制ルール
+
+**拡張グラフのコードを生成する際は、以下の処理を必ず実装してください：**
+
+1. **データ正規化関数の実装**: renderCallbackの最初にデータを統一形式に変換
+2. **depthパラメータの確認**: `renderConfig.dataBuckets.depth` を必ずチェック
+3. **labels/valueの配列統一**: 常に配列として扱えるように変換
+4. **bucketsメタデータの統一**: title/fieldNameも配列に統一
+5. **test.htmlのdepth設定**: テスト用HTMLに `"depth": 1` を必ず含める
+
 #### ベストプラクティス
 
-`renderCallback` の最初に必ず以下の正規化を実施してください：
-
 ```javascript
-function normalizeRenderData(renderConfig) {
-  var buckets = renderConfig.dataBuckets.buckets;
+function renderCallback(renderConfig) {
+  // ===== ステップ1: データの正規化（必須）=====
+  var normalized = normalizeRenderData(renderConfig);
   
-  // ===== バケットメタデータを常に配列に統一 =====
-  var labelsTitles = Array.isArray(buckets.labels.title) 
-    ? buckets.labels.title 
+  // ===== ステップ2: 正規化後は常に統一形式で使用 =====
+  normalized.data.forEach(function(item) {
+    var firstLabel = item.labels[0];  // 常に文字列
+    var firstValue = item.value[0];   // 常に数値
+  });
+}
+
+// データ正規化関数（renderCallbackの外に定義）
+function normalizeRenderData(renderConfig) {
+  var dataBuckets = renderConfig.dataBuckets;
+  var buckets = dataBuckets.buckets;
+  var data = renderConfig.data;
+  
+  // buckets を常に配列に統一（countベースの判定）
+  var labelsTitles = buckets.labels 
+    ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
     : [buckets.labels.title];
-  var valueTitles = Array.isArray(buckets.value.title) 
-    ? buckets.value.title 
+  var valueTitles = buckets.value 
+    ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
     : [buckets.value.title];
   
-  // ===== データアイテムを常に配列に統一 =====
+  // data を統一形式に変換
   var normalizedData = [];
-  if (renderConfig.dataBuckets.depth === 1) {
-    normalizedData = renderConfig.data.map(function(item) {
+  if (dataBuckets.depth === 1) {
+    normalizedData = data.map(function(item) {
       return {
         labels: Array.isArray(item.labels) ? item.labels : [item.labels],
         value: Array.isArray(item.value) ? item.value : [item.value]
       };
     });
   } else {
-    renderConfig.data.forEach(function(series) {
+    data.forEach(function(series) {
       if (Array.isArray(series)) {
         series.forEach(function(item) {
           normalizedData.push({

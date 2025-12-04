@@ -145,8 +145,8 @@ buckets.labels.title.forEach(...); // ❌
 **正規化後（安定したコード）:**
 ```javascript
 // 単一・複数どちらでも動作
-const normalizedTitles = Array.isArray(buckets.labels.title) ? 
-  buckets.labels.title : [buckets.labels.title];
+const normalizedTitles = buckets.labels.count === 1 ? 
+  [buckets.labels.title] : buckets.labels.title;
 
 normalizedTitles.forEach(function(title) {
   console.log(title.toUpperCase()); // ✅ 常に動作

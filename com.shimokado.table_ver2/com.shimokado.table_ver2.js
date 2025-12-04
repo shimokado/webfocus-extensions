@@ -283,7 +283,7 @@
 		
 		// ラベルの列ヘッダーを作成
 		const labelTitles = buckets.labels && buckets.labels.title ? 
-			(Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) : [];
+			(buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) : [];
 		// ラベルのヘッダーは結合して表示
 		const th = document.createElement('th');
 		th.textContent = labelTitles[0] || '';
@@ -296,7 +296,7 @@
 		
 		// 値の列ヘッダーを作成
 		const valueTitles = buckets.value && buckets.value.title ? 
-			(Array.isArray(buckets.value.title) ? buckets.value.title : [buckets.value.title]) : [];
+			(buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) : [];
 			
 		valueTitles.forEach(title => {
 			const th = document.createElement('th');
@@ -444,7 +444,7 @@
 			
 			// 値のセルを作成
 			const valueNumberFormats = buckets.value && buckets.value.numberFormat ? 
-				(Array.isArray(buckets.value.numberFormat) ? buckets.value.numberFormat : [buckets.value.numberFormat]) : [];
+				(buckets.value.count === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) : [];
 				
 			item.value.forEach((val, idx) => {
 				const td = document.createElement('td');

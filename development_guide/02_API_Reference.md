@@ -73,6 +73,8 @@ Pythonの `range` のような数値配列を生成します。
 
 `renderCallback(renderConfig)` に渡される `renderConfig` オブジェクトのデータ構造は、`dataBuckets.depth` の値によって異なります。**depth が異なると、data の形式が根本的に変わる**ため、慎重に処理が必要です。
 
+実際のWebFOCUS出力例については、[07_RenderConfig_Samples.md](07_RenderConfig_Samples.md) を参照してください。
+
 ### 3.2 重要なポイント：depth の意味
 
 | depth値 | 意味 | data の形式 |
@@ -258,7 +260,17 @@ WebFOCUSから渡されるデータの構造が可変的であるため、**最�
 
 - **labels と value を常に配列として統一**
 - **depth に応じた配列構造の差異を吸収**
+- **buckets のメタデータを count ベースで正確に判定**
 - **後続処理を簡潔に保つ**
+
+#### 重要：countベースの判定
+
+buckets.labels.title/fieldName と buckets.value.title/fieldName/numberFormat の型は、**count の値によって決まります**：
+
+- `count === 1` の場合：**文字列**
+- `count > 1` の場合：**配列**
+
+depth ではなく count を使用して判定することで、より信頼性の高い正規化が可能になります。
 
 #### ベストプラクティス実装例
 
@@ -273,21 +285,25 @@ function normalizeRenderData(renderConfig) {
   const buckets = dataBuckets.buckets;
   let data = renderConfig.data;
 
-  // ===== Step 1: バケットメタデータを常に配列に統一 =====
+  // ===== Step 1: バケットメタデータを count ベースで判定して常に配列に統一 =====
+  const labelsCount = buckets.labels ? buckets.labels.count : 0;
+  const valueCount = buckets.value ? buckets.value.count : 0;
+  
+  // count=1なら文字列、count>1なら配列として扱う
   const labelsTitles = buckets.labels 
-    ? (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) 
+    ? (labelsCount === 1 ? [buckets.labels.title] : buckets.labels.title) 
     : [];
   const labelsFieldNames = buckets.labels 
-    ? (Array.isArray(buckets.labels.fieldName) ? buckets.labels.fieldName : [buckets.labels.fieldName]) 
+    ? (labelsCount === 1 ? [buckets.labels.fieldName] : buckets.labels.fieldName) 
     : [];
   const valueTitles = buckets.value 
-    ? (Array.isArray(buckets.value.title) ? buckets.value.title : [buckets.value.title]) 
+    ? (valueCount === 1 ? [buckets.value.title] : buckets.value.title) 
     : [];
   const valueFieldNames = buckets.value 
-    ? (Array.isArray(buckets.value.fieldName) ? buckets.value.fieldName : [buckets.value.fieldName]) 
+    ? (valueCount === 1 ? [buckets.value.fieldName] : buckets.value.fieldName) 
     : [];
   const valueNumberFormats = buckets.value 
-    ? (Array.isArray(buckets.value.numberFormat) ? buckets.value.numberFormat : [buckets.value.numberFormat]) 
+    ? (valueCount === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) 
     : [];
 
   // ===== Step 2: データアイテムを統一形式に正規化 =====

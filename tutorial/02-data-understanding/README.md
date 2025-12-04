@@ -125,8 +125,9 @@ WebFOCUSからのデータは、以下のような不整合が発生する可能
 
 ```javascript
 // バケット配列の正規化
+// count=1なら文字列、count>1なら配列として扱う
 const labelsTitles = buckets.labels ? 
-  (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) : [];
+  (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) : [];
 
 // データ配列の正規化  
 const datas = data.map(d => ({

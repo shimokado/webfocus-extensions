@@ -6,6 +6,8 @@ WebFOCUSから渡されるデータ (`renderConfig.data`) は、バケットの�
 
 この処理は、メインのJavaScriptモジュール内（`renderCallback` 内、または同じクロージャ内のヘルパー関数）に記述します。
 
+実際のWebFOCUS出力例については、[07_RenderConfig_Samples.md](07_RenderConfig_Samples.md) を参照してください。
+
 ### depth = 1 の実データ構造
 
 **depth = 1 の場合、labels と value は配列か単一値のいずれかになります。**
@@ -104,15 +106,16 @@ renderConfig.data = [
     }
 
     // ===== buckets も常に配列に正規化 =====
-    var labelTitles = Array.isArray(buckets.labels.title) 
-      ? buckets.labels.title 
-      : [buckets.labels.title];
-    var valueTitles = Array.isArray(buckets.value.title) 
-      ? buckets.value.title 
-      : [buckets.value.title];
-    var valueNumberFormats = Array.isArray(buckets.value.numberFormat) 
-      ? buckets.value.numberFormat 
-      : [buckets.value.numberFormat];
+    // count=1なら文字列、count>1なら配列として扱う
+    var labelTitles = buckets.labels 
+      ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
+      : [];
+    var valueTitles = buckets.value 
+      ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
+      : [];
+    var valueNumberFormats = buckets.value 
+      ? (buckets.value.count === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) 
+      : [];
 
     return {
       flatData: flatData,

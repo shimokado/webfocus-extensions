@@ -8,6 +8,8 @@
 
 `renderConfig.data` の構造は `renderConfig.dataBuckets.depth` の値によって根本的に異なります。この違いを理解し、正しく処理することが堅牢な拡張グラフ開発の鍵です。
 
+実際のWebFOCUS出力例については、[07_RenderConfig_Samples.md](07_RenderConfig_Samples.md) を参照してください。
+
 ---
 
 ## 1. 問題の原因
@@ -228,17 +230,18 @@ function normalizeRenderData(renderConfig) {
   var depth = dataBuckets.depth;
 
   // ===== Step 1: バケットメタデータを常に配列に統一 =====
+  // count=1なら文字列、count>1なら配列として扱う
   var labelsTitles = buckets.labels 
-    ? (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) 
+    ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) 
     : [];
   var labelsFieldNames = buckets.labels 
-    ? (Array.isArray(buckets.labels.fieldName) ? buckets.labels.fieldName : [buckets.labels.fieldName]) 
+    ? (buckets.labels.count === 1 ? [buckets.labels.fieldName] : buckets.labels.fieldName) 
     : [];
   var valueTitles = buckets.value 
-    ? (Array.isArray(buckets.value.title) ? buckets.value.title : [buckets.value.title]) 
+    ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) 
     : [];
   var valueFieldNames = buckets.value 
-    ? (Array.isArray(buckets.value.fieldName) ? buckets.value.fieldName : [buckets.value.fieldName]) 
+    ? (buckets.value.count === 1 ? [buckets.value.fieldName] : buckets.value.fieldName) 
     : [];
 
   // ===== Step 2: データアイテムを統一形式に正規化 =====
@@ -363,6 +366,30 @@ function renderCallback(renderConfig) {
 
 各拡張グラフフォルダの `test.html` を編集して、異なるデータパターンでテストします。
 
+#### ⚠️ 重要：dataBuckets.depth の設定
+
+`test.html` の `renderConfig.dataBuckets` には必ず `"depth": 1` を含めてください。depthがnull/undefinedだと、renderCallbackでデータ処理エラーが発生します。
+
+```html
+<!-- test.html の dataBuckets 設定例 -->
+<textarea id="dataBuckets">
+{
+  "internal_api_version": 1,
+  "depth": 1,  <!-- ← これを必ず追加 -->
+  "buckets": {
+    "labels": {
+      "title": ["COUNTRY", "CAR"],
+      "count": 2
+    },
+    "value": {
+      "title": "SEATS",
+      "count": 1
+    }
+  }
+}
+</textarea>
+```
+
 ```html
 <!-- test.html -->
 <script>
@@ -373,7 +400,7 @@ function renderCallback(renderConfig) {
       { labels: "USA", value: 200, _s: 0, _g: 1 }
     ],
     dataBuckets: {
-      depth: 1,
+      depth: 1,  <!-- ← 必須 -->
       buckets: {
         labels: { title: "COUNTRY", count: 1 },
         value: { title: "SALES", count: 1 }
@@ -388,7 +415,7 @@ function renderCallback(renderConfig) {
       { labels: ["USA", "FORD"], value: [200, 25000], _s: 0, _g: 1 }
     ],
     dataBuckets: {
-      depth: 1,
+      depth: 1,  <!-- ← 必須 -->
       buckets: {
         labels: { title: ["COUNTRY", "MODEL"], count: 2 },
         value: { title: ["SALES", "PRICE"], count: 2 }
@@ -409,7 +436,7 @@ function renderCallback(renderConfig) {
       ]
     ],
     dataBuckets: {
-      depth: 2,
+      depth: 2,  // ← 複数シリーズの場合
       buckets: {
         labels: { title: ["COUNTRY", "MODEL"], count: 2 },
         value: { title: ["SALES", "PRICE"], count: 2 }

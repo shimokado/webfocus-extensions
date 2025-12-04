@@ -9,5 +9,7 @@
   "com.shimokado.table_ver1": { "enabled": true },
   "com.shimokado.table_ver2": { "enabled": true },
   "com.shimokado.apexchart_bar": { "enabled": true },
-  "com.shimokado.zoomable_sunburst": { "enabled": true }
+  "com.shimokado.zoomable_sunburst": { "enabled": true },
+  "com.shimokado.d3_sample": { "enabled": true },
+  "com.shimokado.html_sample": { "enabled": true }
 }

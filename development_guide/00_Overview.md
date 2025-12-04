@@ -4,7 +4,22 @@
 
 WebFOCUS拡張グラフ（Extension Chart）は、WebFOCUSの標準グラフ機能では実現できない独自の可視化表現を追加するための仕組みです。JavaScript、CSS、HTML5の技術を使用して、D3.js、Chart.js、ApexChartsなどのサードパーティ製ライブラリを利用したカスタムチャートを作成し、WebFOCUSのレポートやダッシュボードに統合することができます。
 
-## 2. プロジェクト構成
+## 2. 開発ガイド構成
+
+本開発ガイドは、WebFOCUS拡張グラフの開発を支援するための体系的なドキュメントセットです。
+
+| ファイル | 内容 |
+|---------|------|
+| [00_Overview.md](00_Overview.md) | プロジェクト概要、ワークフロー、アーキテクチャ |
+| [01_Specification.md](01_Specification.md) | ファイル構成、命名規則、必須要件 |
+| [02_API_Reference.md](02_API_Reference.md) | tdgchart API、拡張登録メカニズム |
+| [03_Development_Guide.md](03_Development_Guide.md) | 実装パターン、ベストプラクティス |
+| [04_Tutorials.md](04_Tutorials.md) | 具体的な実装例、ステップバイステップ |
+| [05_Official_Manuals_JP.md](05_Official_Manuals_JP.md) | 公式ドキュメントへのリンク |
+| [06_Troubleshooting_DataDepth.md](06_Troubleshooting_DataDepth.md) | データ構造の問題解決ガイド |
+| [07_RenderConfig_Samples.md](07_RenderConfig_Samples.md) | WebFOCUS出力の実際のデータ構造サンプル |
+
+## 3. プロジェクト構成
 
 本プロジェクトは、WebFOCUS拡張グラフを開発・管理するための環境です。
 

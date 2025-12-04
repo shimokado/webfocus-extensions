@@ -5,11 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>apexcharts sample</title>
-    <script src="tdgchart-min-for-test.js"></script>
+    <title>HTML Sample Test</title>
+    <!-- CSS is now loaded dynamically by tdgchart-min-for-test.js -->
     <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <!-- <script defer src="lib/apexcharts.js"></script> -->
-    <!-- <!-- <script src="lib/d3.min.js"></script> --> -->
+    <script src="tdgchart-min-for-test.js"></script>
+    <script defer src="com.shimokado.html_sample.js"></script>
+    <!-- JS libraries are now loaded dynamically by tdgchart-min-for-test.js -->
+    <!-- <script defer src="lib/script.js"></script> -->
+    <!-- <script src="lib/d3.min.js"></script> -->
     <style>
         #pfjTableChart_left {
             background-color: #f0f0f0;
@@ -17,27 +20,32 @@
             border-radius: 5px;
             padding: 10px;
         }
+
         #pfjTableChart_right {
             background-color: #666;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
         }
+
         #chartContainer {
             background-color: #fff;
             border: 1px solid #f00;
             border-radius: 5px;
             padding: 10px;
         }
+
         label {
             display: block;
             font-weight: bold;
             margin-top: 10px;
         }
+
         input {
             width: 100%;
             margin-bottom: 10px;
         }
+
         textarea {
             width: 100%;
             height: 200px;
@@ -57,56 +65,61 @@
         }
     </style>
     <script>
-var script = '';
+        var script = '';
 
-var chart = new tdgchart({backend:'js', allowBackendFallback:true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b'});
-if (tdgchart.WF_charts == undefined)
-  tdgchart.WF_charts = {};
-tdgchart.WF_charts['jschart_HOLD_0'] = chart;
+        var chart = new tdgchart({ backend: 'js', allowBackendFallback: true, webappContext: '/ibi_apps', htmlKey: 'S3_17207238601F', extensionKey: 'C82bae173204a3232313db87ee47cd58b' });
+        if (tdgchart.WF_charts == undefined)
+            tdgchart.WF_charts = {};
+        tdgchart.WF_charts['jschart_HOLD_0'] = chart;
 
-// テスト用のextensionManagerのregister関数は tdgchart-min-for-test.js に移動しました
+        // テスト用のextensionManagerのregister関数は tdgchart-min-for-test.js に移動しました
+        // window.chartConfig は tdgchart-min-for-test.js の extensionManager.register() で設定されます
 
 
-chart.data = [];
-chart.title.text = '';
-chart.parsePFJString(script);
-chart.set({
-	"injectedRevision" : "$Revision: 1.2 $",
-	"dataSetLimits": {"enabled": true},
-	"catchErrors" : true
-});
-function render(dataFlg = true){
-    const renderConfig = {
-        container: document.getElementById("chartContainer"),
-        properties: JSON.parse(document.getElementById("renderConfig_properties").value),
-        dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
-        data: JSON.parse(document.getElementById("renderConfig_data").value),
-        moonbeamInstance: chart,
-        renderComplete: function(){
-            console.log("renderComplete is called");
+        chart.data = [];
+        chart.title.text = '';
+        chart.parsePFJString(script);
+        chart.set({
+            "injectedRevision": "$Revision: 1.2 $",
+            "dataSetLimits": { "enabled": true },
+            "catchErrors": true
+        });
+
+        function render(dataFlg = true) {
+            if (!window.chartConfig) {
+                console.error("chartConfig is not defined. Make sure com.shimokado.html_sample.js has been loaded and registered.");
+                return;
+            }
+
+            const renderConfig = {
+                container: document.getElementById("chartContainer"),
+                properties: JSON.parse(document.getElementById("renderConfig_properties").value),
+                dataBuckets: JSON.parse(document.getElementById("renderConfig_dataBuckets").value),
+                data: JSON.parse(document.getElementById("renderConfig_data").value),
+                moonbeamInstance: chart,
+                renderComplete: function () {
+                    console.log("renderComplete is called");
+                }
+            };
+            // chartWidth, chartHeightが入力されている場合は設定する
+            const chartWidth = document.getElementById("chartWidth").value;
+            if (chartWidth) {
+                renderConfig.properties.width = chartWidth;
+            }
+            const chartHeight = document.getElementById("chartHeight").value;
+            if (chartHeight) {
+                renderConfig.properties.height = chartHeight;
+            }
+
+            if (dataFlg) {
+                window.chartConfig.preRenderCallback(renderConfig);
+                window.chartConfig.renderCallback(renderConfig);
+            } else {
+                window.chartConfig.noDataPreRenderCallback(renderConfig);
+                window.chartConfig.noDataRenderCallback(renderConfig);
+            }
         }
-    };
-    // chartWidth, chartHeightが入力されている場合は設定する
-    const chartWidth = document.getElementById("chartWidth").value;
-    if(chartWidth){
-        renderConfig.properties.width = chartWidth;
-    }
-    const chartHeight = document.getElementById("chartHeight").value;
-    if(chartHeight){
-        renderConfig.properties.height = chartHeight;
-    }
-    // containerの高さと幅を設定する
-    renderConfig.container.style.width = renderConfig.properties.width + "px";
-    renderConfig.container.style.height = renderConfig.properties.height + "px";
-    
-    if(dataFlg){
-        chartConfig.preRenderCallback(renderConfig);
-        chartConfig.renderCallback(renderConfig);
-    }else{
-        chartConfig.noDataPreRenderCallback(renderConfig);
-        chartConfig.noDataRenderCallback(renderConfig);
-    }
-}
+
         // データ挿入機能
         let testData = null;
 
@@ -489,8 +502,7 @@ function render(dataFlg = true){
 
         // ページロード時にデータを読み込む
         window.addEventListener('load', loadTestData);
-</script>
-<script defer src="com.shimokado.apexchart_bar.js"></script>
+    </script>
 </head>
 
 <body>
@@ -498,7 +510,8 @@ function render(dataFlg = true){
     <div style="display: grid; grid-template-columns: 400px auto;">
         <div id="pfjTableChart_left" style="padding: 10px;">
             <button id="pfjTableChart_button" onClick="render()">描画</button>
-            <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button><p></p>
+            <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button>
+            <p></p>
             <hr>
             <h4>データパターン挿入 (Value x Label)</h4>
             <div class="data-buttons">
@@ -565,14 +578,20 @@ function render(dataFlg = true){
     "internal_api_version": 1,
     "buckets": {
         "labels": {
-            "title": "MODEL",
-            "fieldName": "CAR.CARREC.MODEL",
-            "count": 1
+            "title": [
+                "COUNTRY",
+                "CAR"
+            ],
+            "fieldName": [
+                "CAR.ORIGIN.COUNTRY",
+                "CAR.COMP.CAR"
+            ],
+            "count": 2
         },
         "value": {
-            "title": "HEIGHT",
-            "fieldName": "CAR.SPECS.HEIGHT",
-            "numberFormat": "#,###",
+            "title": "SALES",
+            "fieldName": "CAR.BODY.SALES",
+            "numberFormat": "#",
             "count": 1
         }
     },
@@ -583,112 +602,94 @@ function render(dataFlg = true){
             <textarea id="renderConfig_data">
 [
     {
-        "labels": "100 LS 2 DOOR AUTO",
-        "value": 54.6,
+        "labels": [
+            "ENGLAND",
+            "JAGUAR"
+        ],
+        "value": 12000,
         "_s": 0,
         "_g": 0
     },
     {
-        "labels": "2000 4 DOOR BERLINA",
-        "value": 56.3,
+        "labels": [
+            "ENGLAND",
+            "JENSEN"
+        ],
+        "value": 0,
         "_s": 0,
         "_g": 1
     },
     {
-        "labels": "2000 GT VELOCE",
-        "value": 51.8,
+        "labels": [
+            "ENGLAND",
+            "TRIUMPH"
+        ],
+        "value": 0,
         "_s": 0,
         "_g": 2
     },
     {
-        "labels": "2000 SPIDER VELOCE",
-        "value": 50.8,
+        "labels": [
+            "FRANCE",
+            "PEUGEOT"
+        ],
+        "value": 0,
         "_s": 0,
         "_g": 3
     },
     {
-        "labels": "2002 2 DOOR",
-        "value": 55.5,
+        "labels": [
+            "ITALY",
+            "ALFA ROMEO"
+        ],
+        "value": 30200,
         "_s": 0,
         "_g": 4
     },
     {
-        "labels": "2002 2 DOOR AUTO",
-        "value": 55.5,
+        "labels": [
+            "ITALY",
+            "MASERATI"
+        ],
+        "value": 0,
         "_s": 0,
         "_g": 5
     },
     {
-        "labels": "3.0 SI 4 DOOR",
-        "value": 57.1,
+        "labels": [
+            "JAPAN",
+            "DATSUN"
+        ],
+        "value": 43000,
         "_s": 0,
         "_g": 6
     },
     {
-        "labels": "3.0 SI 4 DOOR AUTO",
-        "value": 57.1,
+        "labels": [
+            "JAPAN",
+            "TOYOTA"
+        ],
+        "value": 35030,
         "_s": 0,
         "_g": 7
     },
     {
-        "labels": "504 4 DOOR",
-        "value": 57,
+        "labels": [
+            "W GERMANY",
+            "AUDI"
+        ],
+        "value": 7800,
         "_s": 0,
         "_g": 8
     },
     {
-        "labels": "530I 4 DOOR",
-        "value": 55.9,
+        "labels": [
+            "W GERMANY",
+            "BMW"
+        ],
+        "value": 80390,
         "_s": 0,
         "_g": 9
-    },
-    {
-        "labels": "530I 4 DOOR AUTO",
-        "value": 55.9,
-        "_s": 0,
-        "_g": 10
-    },
-    {
-        "labels": "B210 2 DOOR AUTO",
-        "value": 53.5,
-        "_s": 0,
-        "_g": 11
-    },
-    {
-        "labels": "COROLLA 4 DOOR DIX AUTO",
-        "value": 54.5,
-        "_s": 0,
-        "_g": 12
-    },
-    {
-        "labels": "DORA 2 DOOR",
-        "value": 44.6,
-        "_s": 0,
-        "_g": 13
-    },
-    {
-        "labels": "INTERCEPTOR III",
-        "value": 53,
-        "_s": 0,
-        "_g": 14
-    },
-    {
-        "labels": "TR7",
-        "value": 49.9,
-        "_s": 0,
-        "_g": 15
-    },
-    {
-        "labels": "V12XKE AUTO",
-        "value": 48,
-        "_s": 0,
-        "_g": 16
-    },
-    {
-        "labels": "XJ12L AUTO",
-        "value": 54.1,
-        "_s": 0,
-        "_g": 17
     }
 ]
             </textarea>
@@ -697,7 +698,7 @@ function render(dataFlg = true){
             <div id="chartContainer">ここに結果が出力される。</div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

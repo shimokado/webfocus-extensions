@@ -105,6 +105,11 @@
 		const width = renderConfig.width; // 領域の幅
 		const dataContainer = document.createElement('div');
 
+		// デバッグログ
+		console.log('props:', props);
+		console.log('buckets:', buckets);
+		console.log('data:', data);
+
 		container.innerHTML = ''; // コンテナをクリア
 
 		// データコンテナの高さと幅を設定
@@ -118,159 +123,117 @@
 		dataContainer.className = 'data-container';
 
 		// データコンテナのタイトルを設定
-		dataContainer.innerHTML = '<h1>com.shimokado.params</h1>';
-		dataContainer.innerHTML += '<h2>renderConfigオブジェクトをコンソールに表示しています</h2>';
+		var titleH1 = document.createElement('h1');
+		titleH1.textContent = 'com.shimokado.html_sample';
+		dataContainer.appendChild(titleH1);
 
-		// データをコンソールに表示していることを示すメッセージを表示
-		dataContainer.innerHTML = '<h2>ConsoleにrenderConfigオブジェクトを表示しています</h2>';
+		var titleH2 = document.createElement('h2');
+		titleH2.textContent = 'renderConfigオブジェクトをコンソールに表示しています';
+		dataContainer.appendChild(titleH2);
 
 		// データを表示		
 		// データコンテナにプロパティ、データバケット、データを表示
-		dataContainer.innerHTML += '<h3>renderConfig.properties:</h3>';
-		var propsTextArea = document.createElement('pre');
-		propsTextArea.textContent = JSON.stringify(props, null, 2);
-		dataContainer.appendChild(propsTextArea);
+		var propsH3 = document.createElement('h3');
+		propsH3.textContent = 'renderConfig.properties:';
+		dataContainer.appendChild(propsH3);
+
+		var propsContainer = document.createElement('div');
+		propsContainer.style.display = 'flex';
+		propsContainer.style.alignItems = 'flex-start';
+		propsContainer.style.marginBottom = '20px';
 		
-		dataContainer.innerHTML += '<h3>renderConfig.dataBuckets.buckets:</h3>';
-		var dataBucketsTextArea = document.createElement('pre');
-		dataBucketsTextArea.textContent = JSON.stringify(dataBuckets, null, 2);
-		dataContainer.appendChild(dataBucketsTextArea);
+		var propsTextArea = document.createElement('textarea');
+		propsTextArea.value = JSON.stringify(props, null, 2);
+		propsTextArea.style.width = '80%';
+		propsTextArea.style.height = '200px';
+		propsTextArea.style.marginRight = '10px';
+		propsTextArea.style.fontFamily = 'monospace';
+		propsTextArea.style.fontSize = '12px';
+		propsTextArea.readOnly = true;
 		
-		dataContainer.innerHTML += '<h3>renderConfig.data:</h3>';
-		var dataTextArea = document.createElement('pre');
-		dataTextArea.textContent = JSON.stringify(data, null, 2);
-		dataContainer.appendChild(dataTextArea);
-
-		// bucketsは、データの有無や個数によって扱いにくいため配列に統一する
-
-		dataContainer.innerHTML += '<h2>bucketsのオブジェクトは常に配列にした方が使いやすい</h2>';
-
-		// バケットが存在しない場合は空の配列を返し、存在する場合は常に配列を返す
-		const labelsTitles = buckets.labels ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) : [];
-		const labelsFieldNames = buckets.labels ? (buckets.labels.count === 1 ? [buckets.labels.fieldName] : buckets.labels.fieldName) : [];
-		const valueTitles = buckets.value ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) : [];
-		const valueFieldNames = buckets.value ? (buckets.value.count === 1 ? [buckets.value.fieldName] : buckets.value.fieldName) : [];
-		const valueNumberFormats = buckets.value ? (buckets.value.count === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) : [];
-		const detailTitles = buckets.detail ? (buckets.detail.count === 1 ? [buckets.detail.title] : buckets.detail.title) : [];
-
-		// dataの配列内でもlabels, value, detailが存在しない場合と配列でない場合があるため、それを配列に変換する
-		const datas = data.map(function(d) {
-			return {
-				labels: d.labels !== undefined ? (Array.isArray(d.labels) ? d.labels : [d.labels]) : [],
-				value: d.value !== undefined ? (Array.isArray(d.value) ? d.value : [d.value]) : [],
-				detail: d.detail !== undefined ? (Array.isArray(d.detail) ? d.detail : [d.detail]) : []
-			};
-		});
-
-		// labelsTitlesを表示
-		dataContainer.innerHTML += '<h3>labelsTitles:</h3>';
-		var labelsTitlesTextArea = document.createElement('pre');
-		labelsTitlesTextArea.textContent = JSON.stringify(labelsTitles, null, 2);
-		dataContainer.appendChild(labelsTitlesTextArea);
-
-		// labelsFieldNamesを表示
-		dataContainer.innerHTML += '<h3>labelsFieldNames:</h3>';
-		var labelsFieldNamesTextArea = document.createElement('pre');
-		labelsFieldNamesTextArea.textContent = JSON.stringify(labelsFieldNames, null, 2);
-		dataContainer.appendChild(labelsFieldNamesTextArea);
-
-		// valueTitlesを表示
-		dataContainer.innerHTML += '<h3>valueTitles:</h3>';
-		var valueTitlesTextArea = document.createElement('pre');
-		valueTitlesTextArea.textContent = JSON.stringify(valueTitles, null, 2);
-		dataContainer.appendChild(valueTitlesTextArea);
-
-		// valueeFieldNamesを表示
-		dataContainer.innerHTML += '<h3>valueFieldNames:</h3>';
-		var valueFieldNamesTextArea = document.createElement('pre');
-		valueFieldNamesTextArea.textContent = JSON.stringify(valueFieldNames, null, 2);
-		dataContainer.appendChild(valueFieldNamesTextArea);
-
-		// valueNumberFormatsを表示
-		dataContainer.innerHTML += '<h3>valueNumberFormats:</h3>';
-		var valueNumberFormatsTextArea = document.createElement('pre');
-		valueNumberFormatsTextArea.textContent = JSON.stringify(valueNumberFormats, null, 2);
-		dataContainer.appendChild(valueNumberFormatsTextArea);
-
-		// detailTitlesを表示
-		dataContainer.innerHTML += '<h3>detailTitles:</h3>';
-		var detailTitlesTextArea = document.createElement('pre');
-		detailTitlesTextArea.textContent = JSON.stringify(detailTitles, null, 2);
-		dataContainer.appendChild(detailTitlesTextArea);
-
-		// datasを表示
-		dataContainer.innerHTML += '<h3>datas(配列化したdata):</h3>';
-		var datasTextArea = document.createElement('pre');
-		datasTextArea.textContent = JSON.stringify(datas, null, 2);
-		dataContainer.appendChild(datasTextArea);
-
-
-		// table要素を作成
-		const table = document.createElement('table');
-		table.className = 'data-table';
-		
-		// テーブル全体にプロパティベースのスタイルを適用
-		applyTableStyles(table, props);
-		
-		// プロパティからテーブル全体のスタイルを適用
-		applyTableStyles(table, props);
-		
-		// thead要素を作成
-		const thead = document.createElement('thead');
-		// tr要素を作成
-		const tr = document.createElement('tr');
-		// th要素を作成(labesTitles, valueTitles, detailTitlesの数だけ作成)
-		labelsTitles.forEach(function(title) {
-			const th = document.createElement('th');
-			th.textContent = title;
-			tr.appendChild(th);
-		});
-		valueTitles.forEach(function(title) {
-			const th = document.createElement('th');
-			th.textContent = title;
-			tr.appendChild(th);
-		});
-		detailTitles.forEach(function(title) {
-			const th = document.createElement('th');
-			th.textContent = title;
-			tr.appendChild(th);
-		});
-		thead.appendChild(tr);
-		table.appendChild(thead);
-
-		// tbody要素を作成
-		const tbody = document.createElement('tbody');
-		// datasを元にtr要素を作成（labels, value, detailの数だけ作成）
-		datas.forEach(function(d) {
-			const tr = document.createElement('tr');
-			// labelsを元にtd要素を作成
-			d.labels.forEach(function(label) {
-				const td = document.createElement('td');
-				td.textContent = label;
-				tr.appendChild(td);
+		var propsCopyButton = document.createElement('button');
+		propsCopyButton.textContent = 'コピー';
+		propsCopyButton.style.padding = '5px 10px';
+		propsCopyButton.onclick = function() {
+			navigator.clipboard.writeText(propsTextArea.value).then(function() {
+				propsCopyButton.textContent = 'コピー済み';
+				setTimeout(function() {
+					propsCopyButton.textContent = 'コピー';
+				}, 2000);
 			});
-			// valueを元にtd要素を作成
-			d.value.forEach(function(value, i) {
-				const td = document.createElement('td');
-				td.textContent = value ?? ' ';
-				if (valueNumberFormats[i]) {
-					td.style.textAlign = 'right';
-					td.style.paddingRight = '10px';
-					// 数値フォーマットを適用(moonbeamInstanceには、このように便利な関数が用意されている)
-					td.textContent = renderConfig.moonbeamInstance.formatNumber(value, valueNumberFormats[i]);
-				}
-				tr.appendChild(td);
+		};
+		
+		propsContainer.appendChild(propsTextArea);
+		propsContainer.appendChild(propsCopyButton);
+		dataContainer.appendChild(propsContainer);
+		
+		var dataBucketsH3 = document.createElement('h3');
+		dataBucketsH3.textContent = 'renderConfig.dataBuckets.buckets:';
+		dataContainer.appendChild(dataBucketsH3);
+
+		var dataBucketsContainer = document.createElement('div');
+		dataBucketsContainer.style.display = 'flex';
+		dataBucketsContainer.style.alignItems = 'flex-start';
+		dataBucketsContainer.style.marginBottom = '20px';
+		
+		var dataBucketsTextArea = document.createElement('textarea');
+		dataBucketsTextArea.value = JSON.stringify(buckets, null, 2);
+		dataBucketsTextArea.style.width = '80%';
+		dataBucketsTextArea.style.height = '200px';
+		dataBucketsTextArea.style.marginRight = '10px';
+		dataBucketsTextArea.style.fontFamily = 'monospace';
+		dataBucketsTextArea.style.fontSize = '12px';
+		dataBucketsTextArea.readOnly = true;
+		
+		var dataBucketsCopyButton = document.createElement('button');
+		dataBucketsCopyButton.textContent = 'コピー';
+		dataBucketsCopyButton.style.padding = '5px 10px';
+		dataBucketsCopyButton.onclick = function() {
+			navigator.clipboard.writeText(dataBucketsTextArea.value).then(function() {
+				dataBucketsCopyButton.textContent = 'コピー済み';
+				setTimeout(function() {
+					dataBucketsCopyButton.textContent = 'コピー';
+				}, 2000);
 			});
-			// detailを元にtd要素を作成
-			d.detail.forEach(function(detail) {
-				const td = document.createElement('td');
-				td.textContent = detail;
-				tr.appendChild(td);
+		};
+		
+		dataBucketsContainer.appendChild(dataBucketsTextArea);
+		dataBucketsContainer.appendChild(dataBucketsCopyButton);
+		dataContainer.appendChild(dataBucketsContainer);
+		
+		var dataH3 = document.createElement('h3');
+		dataH3.textContent = 'renderConfig.data:';
+		dataContainer.appendChild(dataH3);
+
+		var dataContainerDiv = document.createElement('div');
+		dataContainerDiv.style.display = 'flex';
+		dataContainerDiv.style.alignItems = 'flex-start';
+		dataContainerDiv.style.marginBottom = '20px';
+		
+		var dataTextArea = document.createElement('textarea');
+		dataTextArea.value = JSON.stringify(data, null, 2);
+		dataTextArea.style.width = '80%';
+		dataTextArea.style.height = '200px';
+		dataTextArea.style.marginRight = '10px';
+		dataTextArea.style.fontFamily = 'monospace';
+		dataTextArea.style.fontSize = '12px';
+		dataTextArea.readOnly = true;
+		
+		var dataCopyButton = document.createElement('button');
+		dataCopyButton.textContent = 'コピー';
+		dataCopyButton.style.padding = '5px 10px';
+		dataCopyButton.onclick = function() {
+			navigator.clipboard.writeText(dataTextArea.value).then(function() {
+				dataCopyButton.textContent = 'コピー済み';
+				setTimeout(function() {
+					dataCopyButton.textContent = 'コピー';
+				}, 2000);
 			});
-			tbody.appendChild(tr);
-		});
-		table.appendChild(tbody);
-		dataContainer.appendChild(table);
+		};
+		
+		dataContainerDiv.appendChild(dataTextArea);
+		dataContainerDiv.appendChild(dataCopyButton);
+		dataContainer.appendChild(dataContainerDiv);
 
 		// データを表示
 		container.appendChild(dataContainer);
@@ -278,30 +241,8 @@
 		renderConfig.renderComplete(); // 必須: レンダリングが完了したことをチャートエンジンに通知します
 	}
 
-	/**
-	 * テーブル全体にプロパティベースのスタイルを適用
-	 * @param {HTMLElement} table - テーブル要素
-	 * @param {Object} props - プロパティオブジェクト
-	 */
-	function applyTableStyles(table, props) {
-		if (props.tableStyle) {
-			if (props.tableStyle.fontSize) {
-				table.style.fontSize = props.tableStyle.fontSize;
-			}
-			if (props.tableStyle.color) {
-				table.style.color = props.tableStyle.color;
-			}
-			if (props.tableStyle.fontFamily) {
-				table.style.fontFamily = props.tableStyle.fontFamily;
-			}
-			if (props.tableStyle.fontWeight) {
-				table.style.fontWeight = props.tableStyle.fontWeight;
-			}
-		}
-	}
-
 	var config = {
-		id: 'com.shimokado.params',	// エクステンションID
+		id: 'com.shimokado.html_sample',	// エクステンションID
 		containerType: 'html',	// // 'html'または'svg'（デフォルト）
 		initCallback: initCallback,	// 拡張機能の初期化直前に呼び出される関数への参照。必要に応じてMonbeamインスタンスを設定するために使用
 		preRenderCallback: preRenderCallback,  // 拡張機能のレンダリング直前に呼び出される関数への参照。preRenderConfigオブジェクトが渡されます
@@ -313,8 +254,8 @@
 			*/
 			// script: [],
 			// css: []
-			script: ['lib/script.js'],
-			css: ['css/style.css']
+			script: ['lib/script.js']
+			// css: ['css/style.css']
 
 			// コールバック関数を使用して動的に読み込む外部ライブラリを定義する例
 			// callbackArgは'properties'を含む標準のコールバック引数オブジェクトです

@@ -144,12 +144,12 @@
 
 
 		// バケットが存在しない場合は空の配列を返し、存在する場合は常に配列を返す
-		const labelsTitles = buckets.labels ? (Array.isArray(buckets.labels.title) ? buckets.labels.title : [buckets.labels.title]) : [];
-		const labelsFieldNames = buckets.labels ? (Array.isArray(buckets.labels.fieldName) ? buckets.labels.fieldName : [buckets.labels.fieldName]) : [];
-		const valueTitles = buckets.value ? (Array.isArray(buckets.value.title) ? buckets.value.title : [buckets.value.title]) : [];
-		const valueFieldNames = buckets.value ? (Array.isArray(buckets.value.fieldName) ? buckets.value.fieldName : [buckets.value.fieldName]) : [];
-		const valueNumberFormats = buckets.value ? (Array.isArray(buckets.value.numberFormat) ? buckets.value.numberFormat : [buckets.value.numberFormat]) : [];
-		const detailTitles = buckets.detail ? (Array.isArray(buckets.detail.title) ? buckets.detail.title : [buckets.detail.title]) : [];
+		const labelsTitles = buckets.labels ? (buckets.labels.count === 1 ? [buckets.labels.title] : buckets.labels.title) : [];
+		const labelsFieldNames = buckets.labels ? (buckets.labels.count === 1 ? [buckets.labels.fieldName] : buckets.labels.fieldName) : [];
+		const valueTitles = buckets.value ? (buckets.value.count === 1 ? [buckets.value.title] : buckets.value.title) : [];
+		const valueFieldNames = buckets.value ? (buckets.value.count === 1 ? [buckets.value.fieldName] : buckets.value.fieldName) : [];
+		const valueNumberFormats = buckets.value ? (buckets.value.count === 1 ? [buckets.value.numberFormat] : buckets.value.numberFormat) : [];
+		const detailTitles = buckets.detail ? (buckets.detail.count === 1 ? [buckets.detail.title] : buckets.detail.title) : [];
 
 		// dataの配列内でもlabels, value, detailが存在しない場合と配列でない場合があるため、それを配列に変換する
 		const datas = data.map(function(d) {

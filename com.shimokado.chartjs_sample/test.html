@@ -43,6 +43,18 @@
             height: 200px;
             margin-bottom: 10px;
         }
+
+        .data-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .data-buttons button {
+            padding: 5px;
+            font-size: 12px;
+        }
     </style>
     <script>
 var script = '';
@@ -95,6 +107,388 @@ function render(dataFlg = true){
         chartConfig.noDataRenderCallback(renderConfig);
     }
 }
+        // データ挿入機能
+        let testData = null;
+
+        // 埋め込まれたテストデータ（ローカル起動用）
+        var embeddedTestData = {
+  "baseData": {
+    "labels": [
+      ["USA", "Ford", "Mustang"],
+      ["USA", "Chevrolet", "Camaro"],
+      ["Japan", "Toyota", "Corolla"],
+      ["Japan", "Honda", "Civic"],
+      ["Germany", "BMW", "3 Series"],
+      ["Germany", "Mercedes", "C-Class"]
+    ],
+    "values": [
+      [25000, 4.5, 2],
+      [28000, 4.2, 2],
+      [20000, 4.8, 4],
+      [22000, 5.0, 4],
+      [35000, 4.0, 4],
+      [38000, 4.1, 4]
+    ]
+  },
+  "patterns": {
+    "value0_label1": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": "Country",
+            "fieldName": "country",
+            "count": 1
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": "USA", "_s": 0, "_g": 0},
+        {"labels": "Japan", "_s": 0, "_g": 1},
+        {"labels": "Germany", "_s": 0, "_g": 2}
+      ]
+    },
+    "value1_label0": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "value": {
+            "title": "Sales",
+            "fieldName": "sales",
+            "numberFormat": "#",
+            "count": 1
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"value": 25000, "_s": 0, "_g": 0}
+      ]
+    },
+    "value1_label1": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": "Country",
+            "fieldName": "country",
+            "count": 1
+          },
+          "value": {
+            "title": "Sales",
+            "fieldName": "sales",
+            "numberFormat": "#",
+            "count": 1
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": "USA", "value": 25000, "_s": 0, "_g": 0},
+        {"labels": "Japan", "value": 20000, "_s": 0, "_g": 1},
+        {"labels": "Germany", "value": 35000, "_s": 0, "_g": 2}
+      ]
+    },
+    "value0_label2": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand"],
+            "fieldName": ["country", "brand"],
+            "count": 2
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford"], "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet"], "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota"], "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda"], "_s": 0, "_g": 3}
+      ]
+    },
+    "value2_label0": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "value": {
+            "title": ["Sales", "Rating"],
+            "fieldName": ["sales", "rating"],
+            "numberFormat": ["#", "#.#"],
+            "count": 2
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"value": [25000, 4.5], "_s": 0, "_g": 0}
+      ]
+    },
+    "value1_label2": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand"],
+            "fieldName": ["country", "brand"],
+            "count": 2
+          },
+          "value": {
+            "title": "Sales",
+            "fieldName": "sales",
+            "numberFormat": "#",
+            "count": 1
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford"], "value": 25000, "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet"], "value": 28000, "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota"], "value": 20000, "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda"], "value": 22000, "_s": 0, "_g": 3}
+      ]
+    },
+    "value2_label1": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": "Country",
+            "fieldName": "country",
+            "count": 1
+          },
+          "value": {
+            "title": ["Sales", "Rating"],
+            "fieldName": ["sales", "rating"],
+            "numberFormat": ["#", "#.#"],
+            "count": 2
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": "USA", "value": [25000, 4.5], "_s": 0, "_g": 0},
+        {"labels": "Japan", "value": [20000, 4.8], "_s": 0, "_g": 1},
+        {"labels": "Germany", "value": [35000, 4.0], "_s": 0, "_g": 2}
+      ]
+    },
+    "value2_label2": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand"],
+            "fieldName": ["country", "brand"],
+            "count": 2
+          },
+          "value": {
+            "title": ["Sales", "Rating"],
+            "fieldName": ["sales", "rating"],
+            "numberFormat": ["#", "#.#"],
+            "count": 2
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford"], "value": [25000, 4.5], "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet"], "value": [28000, 4.2], "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota"], "value": [20000, 4.8], "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda"], "value": [22000, 5.0], "_s": 0, "_g": 3}
+      ]
+    },
+    "value0_label3": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand", "Model"],
+            "fieldName": ["country", "brand", "model"],
+            "count": 3
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford", "Mustang"], "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet", "Camaro"], "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota", "Corolla"], "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda", "Civic"], "_s": 0, "_g": 3},
+        {"labels": ["Germany", "BMW", "3 Series"], "_s": 0, "_g": 4},
+        {"labels": ["Germany", "Mercedes", "C-Class"], "_s": 0, "_g": 5}
+      ]
+    },
+    "value3_label0": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "value": {
+            "title": ["Sales", "Rating", "Doors"],
+            "fieldName": ["sales", "rating", "doors"],
+            "numberFormat": ["#", "#.#", "#"],
+            "count": 3
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"value": [25000, 4.5, 2], "_s": 0, "_g": 0}
+      ]
+    },
+    "value1_label3": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand", "Model"],
+            "fieldName": ["country", "brand", "model"],
+            "count": 3
+          },
+          "value": {
+            "title": "Sales",
+            "fieldName": "sales",
+            "numberFormat": "#",
+            "count": 1
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford", "Mustang"], "value": 25000, "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet", "Camaro"], "value": 28000, "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota", "Corolla"], "value": 20000, "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda", "Civic"], "value": 22000, "_s": 0, "_g": 3},
+        {"labels": ["Germany", "BMW", "3 Series"], "value": 35000, "_s": 0, "_g": 4},
+        {"labels": ["Germany", "Mercedes", "C-Class"], "value": 38000, "_s": 0, "_g": 5}
+      ]
+    },
+    "value3_label1": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": "Country",
+            "fieldName": "country",
+            "count": 1
+          },
+          "value": {
+            "title": ["Sales", "Rating", "Doors"],
+            "fieldName": ["sales", "rating", "doors"],
+            "numberFormat": ["#", "#.#", "#"],
+            "count": 3
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": "USA", "value": [25000, 4.5, 2], "_s": 0, "_g": 0},
+        {"labels": "Japan", "value": [20000, 4.8, 4], "_s": 0, "_g": 1},
+        {"labels": "Germany", "value": [35000, 4.0, 4], "_s": 0, "_g": 2}
+      ]
+    },
+    "value3_label2": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand"],
+            "fieldName": ["country", "brand"],
+            "count": 2
+          },
+          "value": {
+            "title": ["Sales", "Rating", "Doors"],
+            "fieldName": ["sales", "rating", "doors"],
+            "numberFormat": ["#", "#.#", "#"],
+            "count": 3
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford"], "value": [25000, 4.5, 2], "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet"], "value": [28000, 4.2, 2], "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota"], "value": [20000, 4.8, 4], "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda"], "value": [22000, 5.0, 4], "_s": 0, "_g": 3}
+      ]
+    },
+    "value3_label3": {
+      "dataBuckets": {
+        "internal_api_version": 1,
+        "buckets": {
+          "labels": {
+            "title": ["Country", "Brand", "Model"],
+            "fieldName": ["country", "brand", "model"],
+            "count": 3
+          },
+          "value": {
+            "title": ["Sales", "Rating", "Doors"],
+            "fieldName": ["sales", "rating", "doors"],
+            "numberFormat": ["#", "#.#", "#"],
+            "count": 3
+          }
+        },
+        "depth": 1
+      },
+      "data": [
+        {"labels": ["USA", "Ford", "Mustang"], "value": [25000, 4.5, 2], "_s": 0, "_g": 0},
+        {"labels": ["USA", "Chevrolet", "Camaro"], "value": [28000, 4.2, 2], "_s": 0, "_g": 1},
+        {"labels": ["Japan", "Toyota", "Corolla"], "value": [20000, 4.8, 4], "_s": 0, "_g": 2},
+        {"labels": ["Japan", "Honda", "Civic"], "value": [22000, 5.0, 4], "_s": 0, "_g": 3},
+        {"labels": ["Germany", "BMW", "3 Series"], "value": [35000, 4.0, 4], "_s": 0, "_g": 4},
+        {"labels": ["Germany", "Mercedes", "C-Class"], "value": [38000, 4.1, 4], "_s": 0, "_g": 5}
+      ]
+    }
+  }
+};
+
+        function loadTestData() {
+            if (window.location.protocol === 'file:') {
+                // ローカル起動の場合、埋め込まれたデータを使用
+                testData = embeddedTestData;
+                console.log('Test data loaded from embedded data (local)');
+                return Promise.resolve(testData);
+            } else {
+                // Webサーバー起動の場合、fetchで外部ファイルを読み込み
+                return fetch('test-data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        testData = data;
+                        console.log('Test data loaded from file (server)');
+                        return data;
+                    })
+                    .catch(error => {
+                        console.error('Error loading test data from file, using embedded data:', error);
+                        // フォールバックとして埋め込まれたデータを使用
+                        testData = embeddedTestData;
+                        console.log('Fallback to embedded test data');
+                        return testData;
+                    });
+            }
+        }
+
+        function insertData(valueCount, labelCount) {
+            if (!testData) {
+                alert('Test data not loaded yet. Please wait.');
+                return;
+            }
+
+            const key = `value${valueCount}_label${labelCount}`;
+            const pattern = testData.patterns[key];
+
+            if (!pattern) {
+                alert(`Data pattern ${key} not found.`);
+                return;
+            }
+
+            document.getElementById('renderConfig_dataBuckets').value = JSON.stringify(pattern.dataBuckets, null, 2);
+            document.getElementById('renderConfig_data').value = JSON.stringify(pattern.data, null, 2);
+        }
+
+        // ページロード時にデータを読み込む
+        window.addEventListener('load', loadTestData);
 </script>
 <script defer src="com.shimokado.chartjs_sample.js"></script>
 </head>
@@ -105,6 +499,26 @@ function render(dataFlg = true){
         <div id="pfjTableChart_left" style="padding: 10px;">
             <button id="pfjTableChart_button" onClick="render()">描画</button>
             <button id="pfjTableChart_button" onClick="render(false)">描画(noData)</button><p></p>
+            <hr>
+            <h4>データパターン挿入 (Value x Label)</h4>
+            <div class="data-buttons">
+                <button onclick="insertData(0, 0)">0x0</button>
+                <button onclick="insertData(0, 1)">0x1</button>
+                <button onclick="insertData(0, 2)">0x2</button>
+                <button onclick="insertData(0, 3)">0x3</button>
+                <button onclick="insertData(1, 0)">1x0</button>
+                <button onclick="insertData(1, 1)">1x1</button>
+                <button onclick="insertData(1, 2)">1x2</button>
+                <button onclick="insertData(1, 3)">1x3</button>
+                <button onclick="insertData(2, 0)">2x0</button>
+                <button onclick="insertData(2, 1)">2x1</button>
+                <button onclick="insertData(2, 2)">2x2</button>
+                <button onclick="insertData(2, 3)">2x3</button>
+                <button onclick="insertData(3, 0)">3x0</button>
+                <button onclick="insertData(3, 1)">3x1</button>
+                <button onclick="insertData(3, 2)">3x2</button>
+                <button onclick="insertData(3, 3)">3x3</button>
+            </div>
             <hr>
             <label for="chartWidth">renderConfig.width</label>
             <input id="chartWidth" type="number" value="400" placeholder="幅を入力してください">
