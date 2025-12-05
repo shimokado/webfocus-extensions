@@ -10,7 +10,47 @@
 
 `tdgchart` はWebFOCUSのチャートエンジンの中核となるオブジェクトです。拡張グラフ開発においては、主に `tdgchart.extensionManager` や `moonbeamInstance`（`tdgchart` のインスタンス）を通じて機能を利用します。
 
-### 1.1 tdgchart.extensionManager
+### 1.1 tdgchart.util
+
+`tdgchart.util` は、便利なユーティリティメソッドを提供します。
+
+#### get(path, obj, defaultValue)
+
+指定されたパスに従ってオブジェクトからプロパティを取得します。深い階層のプロパティに安全にアクセスするために使用します。
+
+- **引数**:
+  - `path` (String): ドット表記またはブラケット表記のプロパティパス
+  - `obj` (Object): 検索対象のオブジェクト
+  - `defaultValue` (Any): プロパティが存在しない場合の既定値
+- **使用例**:
+
+```javascript
+// dataBucketsからvalue.titleを取得（存在しない場合は空文字列）
+var title = tdgchart.util.get('dataBuckets.buckets.value.title[0]', renderConfig, '');
+```
+
+#### ajax(url, options)
+
+AJAXリクエストを送信し、リソースを非同期に取得します。
+
+- **引数**:
+  - `url` (String): リクエスト先のURL
+  - `options` (Object): オプション（`asJSON: true` など）
+- **戻り値**: Promiseオブジェクト
+- **使用例**:
+
+```javascript
+var info = tdgchart.util.ajax('lib/extra_properties.json', {asJSON: true});
+```
+
+#### color(colorString)
+
+色を表す文字列から色オブジェクトを作成します。
+
+- **引数**: `colorString` (String) - 色を表す文字列（例: "red", "#FF0000"）
+- **戻り値**: 色操作オブジェクト（`.lighter(k)`, `.darker(k)` メソッドなどを持つ）
+
+### 1.2 tdgchart.extensionManager
 
 拡張グラフの登録と管理を行うモジュールです。
 
@@ -32,7 +72,7 @@
   tdgchart.extensionManager.register(config);
   ```
 
-### 1.2 moonbeamInstance
+### 1.3 moonbeamInstance
 
 `renderConfig.moonbeamInstance` として渡される、現在描画中のチャートインスタンスです。
 
@@ -66,7 +106,7 @@ WebFOCUSのチャートエンジンは、内部的に Protovis ライブラリ�
 
 ### 2.1 pv.color(colorString)
 
-色を操作するためのオブジェクトを生成します。
+色を操作するためのオブジェクトを生成します。`tdgchart.util.color` と同等です。
 
 - **メソッド**:
   - `.lighter(k)`: 色を明るくします。
@@ -75,11 +115,30 @@ WebFOCUSのチャートエンジンは、内部的に Protovis ライブラリ�
 
 ### 2.2 pv.blend(arrays)
 
-複数の配列を結合してフラットな配列にします。
+複数の配列を結合してフラットな配列にします。多次元配列を1次元配列に平坦化するのによく使用されます。
+
+- **引数**: `arrays` (Array[]) - 結合する配列の配列
+- **戻り値**: 結合された単一の配列
 
 ### 2.3 pv.range(start, stop, step)
 
 Pythonの `range` のような数値配列を生成します。
+
+- **引数**:
+  - `start` (Number, オプション): 開始値（デフォルト0）
+  - `stop` (Number): 終了値
+  - `step` (Number, オプション): ステップ幅（デフォルト1）
+- **使用例**:
+  ```javascript
+  pv.range(5); // [0, 1, 2, 3, 4]
+  ```
+
+### 2.4 その他のユーティリティ
+
+- **pv.search(array, value)**: ソート済み配列内で指定した値の位置を二分探索で検索します。
+- **pv.vector(x, y)**: 2Dベクトルを作成します。
+- **pv.log(x, b)**: 指定した底による対数を計算します。
+
 
 ## 3. renderConfig のデータ構造
 

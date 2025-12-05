@@ -79,6 +79,19 @@ WebFOCUS拡張機能の概念、アーキテクチャ、開発環境の理解
 - 動作する拡張機能の完成
 - 実践的な開発経験の獲得
 
+---
+
+### [第5章：ライブラリ活用例](05-library-examples/README.md)
+**参照用リファレンス**
+
+Chart.js, D3.js, ApexCharts などの主要ライブラリを使用した実装パターン集
+
+**収録内容：**
+- Chart.js (Bar Chart)
+- D3.js (Treemap)
+- ApexCharts
+- HTML Table
+
 ## 🚀 学習の進め方
 
 ### 推奨学習プラン

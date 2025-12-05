@@ -74,6 +74,98 @@
 - **dataBuckets**: データの受け渡し口（バケット）の定義。`measure`（数値）や `dimension`（項目）を指定します。
 - **translations**: 各種表示名の多言語対応。
 
+### 2.1 プロパティの詳細設定 (propertyAnnotations)
+
+`propertyAnnotations` セクションでは、WebFOCUS Designerのプロパティパネルにおける各プロパティの表示方法を詳細に制御できます。
+
+#### 基本的な型定義
+
+プロパティの型を指定することで、適切な入力コントロールが表示されます。
+
+- `"str"`: テキストボックス
+- `"bool"`: チェックボックス
+- `"color"`: カラーピッカー
+- `"number"`: 数値入力（スピナー）
+
+#### 高度なUIコントロール設定
+
+`typeAnnotation` プロパティを使用することで、より詳細なUI制御が可能です。
+
+**ドロップダウンリスト (文字列)**
+
+```json
+"myProperty": {
+  "typeAnnotation": "str",
+  "stringValues": ["Option A", "Option B", "Option C"]
+}
+```
+
+**数値範囲とスライダー**
+
+数値プロパティに対して、最小値・最大値・ステップを設定できます。範囲が設定されると、デフォルトでスライダーが表示されます。
+
+```json
+"opacity": {
+  "typeAnnotation": "number",
+  "numericRange": [0, 1],
+  "numericStep": 0.1
+}
+```
+
+スライダーではなくスピナーを強制したい場合は、`"uiType": "spinner"` を指定します。
+
+```json
+"padding": {
+  "typeAnnotation": "number",
+  "numericRange": [0, 100],
+  "numericStep": 1,
+  "uiType": "spinner"
+}
+```
+
+#### 表示制御と順序
+
+プロパティパネルでの表示順序や可視性を制御できます。
+
+- **`displayOrder`**: プロパティの表示順序を整数で指定します。数値が小さいほど上に表示されます。
+- **`private`**: `true` に設定すると、プロパティパネルから隠されます（ユーザーには見えなくなりますが、機能は保持されます）。
+
+```json
+"propertyAnnotations": {
+  "importantProp": {
+    "typeAnnotation": "str",
+    "displayOrder": 1
+  },
+  "lessImportantProp": {
+    "typeAnnotation": "number",
+    "displayOrder": 2
+  },
+  "hiddenProp": {
+    "typeAnnotation": "bool",
+    "private": true
+  }
+}
+```
+
+#### 配列型プロパティ (Advanced)
+
+`com.ibi.sunburst` などの高度な拡張機能では、色のリストなどを管理するために配列型のプロパティ定義が使用されています。
+
+```json
+"node": {
+  "colors": {
+    "typeAnnotation": "array",
+    "arrayTypes": "color"
+  }
+}
+```
+
+- **`typeAnnotation": "array"`**: プロパティが配列であることを示します。
+- **`arrayTypes`**: 配列内の各要素の型を指定します（例: `"color"`, `"str"`, `"number"`）。
+
+これにより、WebFOCUS Designerのプロパティパネルで、ユーザーが動的に要素を追加・削除・編集できるリストUIが生成されます。
+
+
 ## 3. renderConfig オブジェクトの仕様
 
 `renderCallback` 関数に渡される `renderConfig` オブジェクトには、描画に必要な全ての情報が含まれています。
