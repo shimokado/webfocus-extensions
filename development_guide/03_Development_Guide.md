@@ -373,3 +373,141 @@ if (labelCount >= 3) {
 - **複数フィールド対応**: `value` が配列の場合、各フィールドを個別に集計
 - **階層的な集計**: 複数レベルでの集計が必要な場合、ネストされたループでグループの変化を検出
 - **マーク処理**: 集計行に `isTotal` フラグを付与して、後の処理で識別可能にする
+## 5. 高度な実装パターン (Advanced Patterns)
+
+IBI公式の拡張機能（`com.ibi.sunburst` や `com.ibi.tutorial`）で使用されている、より高度で堅牢な実装パターンを紹介します。
+
+### 5.1 noDataRenderCallback によるプレビュー表示
+
+WebFOCUS Designerでデータが割り当てられていない状態でも、チャートのイメージを表示するために `noDataRenderCallback` を活用します。これにより、ユーザー体験が大幅に向上します。
+
+**実装例 (`com.ibi.sunburst` より):**
+
+```javascript
+function noDataRenderCallback(renderConfig) {
+  var chart = renderConfig.moonbeamInstance;
+  var props = renderConfig.properties;
+  
+  // 凡例を非表示にする
+  chart.legend.visible = false;
+
+  // ダミーデータを設定
+  props.data = [
+    {"levels":["Region A", "Product X"], "value": 100},
+    {"levels":["Region A", "Product Y"], "value": 150},
+    {"levels":["Region B", "Product X"], "value": 80},
+    {"levels":["Region B", "Product Y"], "value": 120}
+  ];
+
+  // インタラクションを無効化（プレビュー用）
+  props.isInteractionDisabled = true;
+
+  // 通常の描画処理を呼び出す（または簡略化した描画を行う）
+  var container = d3.select(renderConfig.container);
+  var myChart = my_chart_module(props);
+  myChart(container);
+  
+  // プレビューであることを示すテキストやオーバーレイを追加
+  container.append("rect")
+    .attr("width", renderConfig.width)
+    .attr("height", renderConfig.height)
+    .style("fill", "white")
+    .style("opacity", 0.3);
+    
+  container.append('text')
+    .text('Add measures or dimensions')
+    .attr('text-anchor', 'middle')
+    .attr('x', renderConfig.width / 2)
+    .attr('y', renderConfig.height / 2);
+    
+  renderConfig.renderComplete();
+}
+```
+
+### 5.2 sanitizeData による堅牢なデータ正規化
+
+`com.ibi.tutorial` では、`sanitizeData` 関数を使用して、特定のバケット設定（MatrixやSeries Break）がサポートされていない場合に、データを自動的に修正（フラット化）するパターンが採用されています。
+
+**実装例:**
+
+```javascript
+function sanitizeData(ext, renderConfig) {
+  // MatrixがサポートされていないのにデータがMatrix形式（4次元配列）の場合
+  if (renderConfig.dataBuckets.matrix && !ext.properties.dataBuckets.matrix) {
+    if (Array.isArray(renderConfig.data) && 
+        Array.isArray(renderConfig.data[0]) && 
+        Array.isArray(renderConfig.data[0][0])) {
+      
+      // 最深部のデータを取得してフラット化（簡易的な例）
+      renderConfig.data = renderConfig.data[0][0];
+      renderConfig.dataBuckets.depth -= 2; // depthを調整
+    }
+  }
+  return renderConfig.data;
+}
+```
+
+このパターンを使用することで、ユーザーが誤って非対応のバケット設定を行った場合でも、エラーで停止することなく、可能な範囲でチャートを表示させることができます。
+### 5.3 Moonbeam API 活用テクニック
+
+`renderConfig.moonbeamInstance` (chart) の機能を活用することで、WebFOCUSの標準機能とシームレスに統合された拡張機能を作成できます。
+
+#### 1. 配色の統一 (getSeriesAndGroupProperty)
+
+WebFOCUS側で設定された色パレットを拡張グラフにも適用するには、`getSeriesAndGroupProperty` を使用します。
+
+```javascript
+// D3.jsでの使用例
+rects.attr('fill', function(d, i) {
+  // シリーズインデックスiに対応する色を取得
+  return chart.getSeriesAndGroupProperty(i, null, 'color');
+});
+```
+
+#### 2. ラベルの自動省略 (truncateLabel)
+
+長いラベルが重ならないように、自動的に省略記号(...)を付与します。
+
+```javascript
+// 軸ラベルの描画時
+text.text(function(d) {
+  // 幅100pxに収まるようにカット
+  return chart.truncateLabel(d, '12px sans-serif', 100);
+});
+```
+
+#### 3. エラーハンドリング (errorMessage)
+
+データ不足や設定エラー時に、ユーザーに分かりやすいメッセージを表示します。
+
+```javascript
+if (!renderConfig.data || renderConfig.data.length === 0) {
+  chart.errorMessage = "データがありません。バケットの設定を確認してください。";
+  chart.redraw();
+  return;
+}
+```
+
+#### 4. ドリルダウンの実装 (parseTemplate)
+
+`eventHandler` モジュールと組み合わせて、クリック時のドリルダウン（詳細レポートへの遷移）を実装します。
+
+```javascript
+// イベントハンドラの取得（シリーズ0用）
+var dispatcher = chart.eventDispatcher.events.find(e => e.series === 0);
+
+if (dispatcher) {
+  element.on('click', function(d, i) {
+    // テンプレートURLを解析して実際のURLを生成
+    var url = chart.parseTemplate(
+      dispatcher.url, 
+      d, // データポイント
+      renderConfig.data, 
+      {series: 0, group: i} // ID情報
+    );
+    
+    // ターゲットウィンドウで開く
+    window.open(url, dispatcher.target);
+  });
+}
+```

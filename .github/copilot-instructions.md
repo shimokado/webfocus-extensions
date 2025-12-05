@@ -39,6 +39,8 @@
 | [05_Official_Manuals_JP.md](../development_guide/05_Official_Manuals_JP.md) | 公式マニュアル詳細 (日本語) |
 | [06_Troubleshooting_DataDepth.md](../development_guide/06_Troubleshooting_DataDepth.md) | **配列の深さ問題の詳細解説と解決方法** ⚠️ |
 | [07_RenderConfig_Samples.md](../development_guide/07_RenderConfig_Samples.md) | WebFOCUS出力の実際のデータ構造サンプル |
+| [08_License_And_Attribution.md](../development_guide/08_License_And_Attribution.md) | ライセンスと帰属表示に関するガイドライン |
+| [09_IBI_Repository_Findings_Report.md](../development_guide/09_IBI_Repository_Findings_Report.md) | IBI公式リポジトリからの知見レポート |
 
 ---
 
@@ -91,6 +93,7 @@ com.company.extension_name/
 ├── css/                           # スタイルシート（任意）
 ├── lib/                           # 外部ライブラリ（任意）
 ├── icons/                         # アイコン画像（任意）
+├── screenshots/                   # README用スクリーンショット（任意）
 └── test.html                      # ローカルテスト用HTML
 ```
 
@@ -141,7 +144,25 @@ tdgchart.extensionManager.register({
 }
 ```
 
-### 4.4 🚨 **CRITICAL**: データ正規化について（新規開発時は必ず実装）
+### 4.4 🚨 **CRITICAL**: Moonbeamプロパティの有効範囲
+
+**外部ライブラリ（Chart.js, ApexChartsなど）を使用する場合の絶対的なルールです。**
+
+`moonbeamInstance` のプロパティは、**Moonbeamエンジンが直接描画するもの** にしか自動的に効きません。
+
+- **自動的に効くもの**: 凡例 (`legend.visible`)、タイトル、フッター、エラーメッセージ
+- **効かないもの（手動マッピング必須）**: シリーズの色 (`getSeries(0).color`)、データラベル、マーカー
+
+**実装ルール**:
+外部ライブラリを使用する場合は、必ず `moonbeamInstance` から設定値を取得し、ライブラリの `config` オブジェクトに代入（マッピング）してください。
+
+```javascript
+// ⭕ 正しい実装例
+var color = chart.getSeries(0).color;
+chartJsConfig.data.datasets[0].backgroundColor = color;
+```
+
+### 4.5 🚨 **CRITICAL**: データ正規化について（新規開発時は必ず実装）
 
 **⚠️ WARNING: このセクションを無視すると、データ構造の違いによりランタイムエラーが発生します**
 

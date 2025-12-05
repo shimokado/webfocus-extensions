@@ -10,7 +10,47 @@
 
 `tdgchart` はWebFOCUSのチャートエンジンの中核となるオブジェクトです。拡張グラフ開発においては、主に `tdgchart.extensionManager` や `moonbeamInstance`（`tdgchart` のインスタンス）を通じて機能を利用します。
 
-### 1.1 tdgchart.extensionManager
+### 1.1 tdgchart.util
+
+`tdgchart.util` は、便利なユーティリティメソッドを提供します。
+
+#### get(path, obj, defaultValue)
+
+指定されたパスに従ってオブジェクトからプロパティを取得します。深い階層のプロパティに安全にアクセスするために使用します。
+
+- **引数**:
+  - `path` (String): ドット表記またはブラケット表記のプロパティパス
+  - `obj` (Object): 検索対象のオブジェクト
+  - `defaultValue` (Any): プロパティが存在しない場合の既定値
+- **使用例**:
+
+```javascript
+// dataBucketsからvalue.titleを取得（存在しない場合は空文字列）
+var title = tdgchart.util.get('dataBuckets.buckets.value.title[0]', renderConfig, '');
+```
+
+#### ajax(url, options)
+
+AJAXリクエストを送信し、リソースを非同期に取得します。
+
+- **引数**:
+  - `url` (String): リクエスト先のURL
+  - `options` (Object): オプション（`asJSON: true` など）
+- **戻り値**: Promiseオブジェクト
+- **使用例**:
+
+```javascript
+var info = tdgchart.util.ajax('lib/extra_properties.json', {asJSON: true});
+```
+
+#### color(colorString)
+
+色を表す文字列から色オブジェクトを作成します。
+
+- **引数**: `colorString` (String) - 色を表す文字列（例: "red", "#FF0000"）
+- **戻り値**: 色操作オブジェクト（`.lighter(k)`, `.darker(k)` メソッドなどを持つ）
+
+### 1.2 tdgchart.extensionManager
 
 拡張グラフの登録と管理を行うモジュールです。
 
@@ -32,11 +72,22 @@
   tdgchart.extensionManager.register(config);
   ```
 
-### 1.2 moonbeamInstance
+### 1.3 moonbeamInstance
 
-`renderConfig.moonbeamInstance` として渡される、現在描画中のチャートインスタンスです。
+`renderConfig.moonbeamInstance`（以下 `chart`）は、WebFOCUSのチャートエンジン（Moonbeam）のインスタンスそのものです。これを通じて、エンジンの内部機能にアクセスできます。
 
-#### formatNumber(number, format)
+#### 主要プロパティ
+
+| プロパティ | 説明 | 使用例 |
+| --- | --- | --- |
+| `chart.legend.visible` | 凡例の表示/非表示を制御します。 | `chart.legend.visible = false;` |
+| `chart.dataSelection.enabled` | データ選択機能の有効/無効を制御します。 | `chart.dataSelection.enabled = false;` |
+| `chart.errorMessage` | チャート領域に表示するエラーメッセージを設定します。 | `chart.errorMessage = "No Data";` |
+| `chart.dataLabels.visible` | データラベルの表示/非表示を制御します。 | `chart.dataLabels.visible = true;` |
+
+#### 主要メソッド
+
+**`chart.formatNumber(number, format)`**
 
 数値を指定された形式でフォーマットします。
 
@@ -45,11 +96,26 @@
   - `format`: フォーマット文字列（例: `#,###.00`）。
 - **戻り値**: フォーマットされた文字列。
 
-#### getSeries(index)
+**`chart.getSeries(index)`**
 
-指定されたインデックスのシリーズオブジェクトを取得します。色や表示設定などにアクセスできます。
+指定されたインデックスのシリーズオブジェクトを取得します。色やツールチップの設定にアクセスできます。
 
-#### buildClassName(prefix, series, group, suffix)
+```javascript
+// シリーズ0の色を取得・変更
+var series0 = chart.getSeries(0);
+series0.color = "red";
+```
+
+**`chart.getSeriesAndGroupProperty(seriesID, groupID, property)`**
+
+特定のシリーズおよびグループに対応するプロパティ（色など）を取得します。WebFOCUSの配色設定を尊重した描画を行う場合に非常に重要です。
+
+```javascript
+// シリーズsの塗りつぶし色を取得
+var color = chart.getSeriesAndGroupProperty(s, null, 'color');
+```
+
+**`chart.buildClassName(prefix, series, group, suffix)`**
 
 WebFOCUSの標準的なクラス名を生成します。これにより、ツールチップやデータ選択機能が正しく動作するようになります。
 
@@ -58,7 +124,70 @@ WebFOCUSの標準的なクラス名を生成します。これにより、ツー
   - `series`: シリーズインデックス。
   - `group`: グループインデックス。
   - `suffix`: 任意の識別子（例: `'bar'`）。
+
+**`chart.truncateLabel(text, font, maxWidth)`**
+
+指定された幅に収まるようにテキストを切り詰め（省略記号付与）、返します。
+
+```javascript
+var label = chart.truncateLabel("Very Long Label Text", "12px Arial", 100);
+// 結果: "Very Long..."
+```
+
+**`chart.parseTemplate(url, dataPoint, data, ids)`**
+
+ドリルダウンURLなどのテンプレート文字列を解析し、実際のデータ値を埋め込んだURLを生成します。
+
+```javascript
+var url = chart.parseTemplate(dispatcher.url, dataPoint, renderConfig.data, ids);
+```
+
+**`chart.redraw()`**
+
+チャートを再描画します。`errorMessage` を設定した後などに呼び出します。
+
+```javascript
+chart.errorMessage = "Error loading data";
+chart.redraw();
+```
+
+**`chart.addHTMLToolTips(container)`**
+
+指定されたコンテナ内の要素に対して、WebFOCUS標準のHTMLツールチップ機能を有効化します。
+
+```javascript
+chart.addHTMLToolTips(d3.select("#myContainer"));
+```
 - **戻り値**: クラス名文字列（例: `'riser!s0!g0!mbar!'`）。
+
+### 1.4 プロパティの有効範囲と外部ライブラリ利用時の注意
+
+`moonbeamInstance` のプロパティやメソッドが「自動的に効く」かどうかは、その機能が **「Moonbeamが描画するもの」** か **「拡張機能が描画するもの」** かによって異なります。
+
+#### A. Moonbeamが制御するもの（自動的に効く）
+
+以下の要素は、拡張機能の描画領域（コンテナ）の **外側** または **上位レイヤー** でMoonbeamエンジンによって描画・管理されます。したがって、Chart.jsやApexChartsを使用していても、`moonbeamInstance` のプロパティ設定は有効です。
+
+- **凡例 (Legend)**: `chart.legend.visible`
+- **タイトル/フッター**: `chart.title.visible`, `chart.footnote.text`
+- **エラーメッセージ**: `chart.errorMessage`
+- **ツールチップ（HTMLベース）**: `chart.addHTMLToolTips` を使用した場合
+
+#### B. 拡張機能が制御するもの（手動で適用が必要）
+
+以下の要素は、拡張機能の描画ロジック（D3.js, Chart.jsなど）によって描画されます。したがって、`moonbeamInstance` のプロパティを変更しただけでは **反映されません**。拡張機能のコード内で値を読み取り、ライブラリの設定に反映させる必要があります。
+
+- **シリーズの色**: `chart.getSeries(0).color`
+    - ❌ `chart.getSeries(0).color = 'red'` としても、Chart.jsのバーは赤くなりません。
+    - ⭕ `config.data.datasets[0].backgroundColor = chart.getSeries(0).color` のように代入する必要があります。
+- **データラベル**: `chart.dataLabels.visible`
+    - 拡張機能側でこのフラグをチェックし、ライブラリのデータラベル表示設定を切り替えるロジックが必要です。
+- **マーカーサイズ/形状**: `chart.getSeries(0).marker`
+
+#### まとめ
+
+外部ライブラリを使用する場合、`moonbeamInstance` は **「設定情報の取得元」** として扱い、その情報をライブラリの `config` オブジェクトに **「マッピング（転記）」** する実装が必要です。
+
 
 ## 2. pv (Protovis) オブジェクト
 
@@ -66,7 +195,7 @@ WebFOCUSのチャートエンジンは、内部的に Protovis ライブラリ�
 
 ### 2.1 pv.color(colorString)
 
-色を操作するためのオブジェクトを生成します。
+色を操作するためのオブジェクトを生成します。`tdgchart.util.color` と同等です。
 
 - **メソッド**:
   - `.lighter(k)`: 色を明るくします。
@@ -75,11 +204,30 @@ WebFOCUSのチャートエンジンは、内部的に Protovis ライブラリ�
 
 ### 2.2 pv.blend(arrays)
 
-複数の配列を結合してフラットな配列にします。
+複数の配列を結合してフラットな配列にします。多次元配列を1次元配列に平坦化するのによく使用されます。
+
+- **引数**: `arrays` (Array[]) - 結合する配列の配列
+- **戻り値**: 結合された単一の配列
 
 ### 2.3 pv.range(start, stop, step)
 
 Pythonの `range` のような数値配列を生成します。
+
+- **引数**:
+  - `start` (Number, オプション): 開始値（デフォルト0）
+  - `stop` (Number): 終了値
+  - `step` (Number, オプション): ステップ幅（デフォルト1）
+- **使用例**:
+  ```javascript
+  pv.range(5); // [0, 1, 2, 3, 4]
+  ```
+
+### 2.4 その他のユーティリティ
+
+- **pv.search(array, value)**: ソート済み配列内で指定した値の位置を二分探索で検索します。
+- **pv.vector(x, y)**: 2Dベクトルを作成します。
+- **pv.log(x, b)**: 指定した底による対数を計算します。
+
 
 ## 3. renderConfig のデータ構造
 
