@@ -74,9 +74,20 @@ var info = tdgchart.util.ajax('lib/extra_properties.json', {asJSON: true});
 
 ### 1.3 moonbeamInstance
 
-`renderConfig.moonbeamInstance` として渡される、現在描画中のチャートインスタンスです。
+`renderConfig.moonbeamInstance`（以下 `chart`）は、WebFOCUSのチャートエンジン（Moonbeam）のインスタンスそのものです。これを通じて、エンジンの内部機能にアクセスできます。
 
-#### formatNumber(number, format)
+#### 主要プロパティ
+
+| プロパティ | 説明 | 使用例 |
+| --- | --- | --- |
+| `chart.legend.visible` | 凡例の表示/非表示を制御します。 | `chart.legend.visible = false;` |
+| `chart.dataSelection.enabled` | データ選択機能の有効/無効を制御します。 | `chart.dataSelection.enabled = false;` |
+| `chart.errorMessage` | チャート領域に表示するエラーメッセージを設定します。 | `chart.errorMessage = "No Data";` |
+| `chart.dataLabels.visible` | データラベルの表示/非表示を制御します。 | `chart.dataLabels.visible = true;` |
+
+#### 主要メソッド
+
+**`chart.formatNumber(number, format)`**
 
 数値を指定された形式でフォーマットします。
 
@@ -85,11 +96,26 @@ var info = tdgchart.util.ajax('lib/extra_properties.json', {asJSON: true});
   - `format`: フォーマット文字列（例: `#,###.00`）。
 - **戻り値**: フォーマットされた文字列。
 
-#### getSeries(index)
+**`chart.getSeries(index)`**
 
-指定されたインデックスのシリーズオブジェクトを取得します。色や表示設定などにアクセスできます。
+指定されたインデックスのシリーズオブジェクトを取得します。色やツールチップの設定にアクセスできます。
 
-#### buildClassName(prefix, series, group, suffix)
+```javascript
+// シリーズ0の色を取得・変更
+var series0 = chart.getSeries(0);
+series0.color = "red";
+```
+
+**`chart.getSeriesAndGroupProperty(seriesID, groupID, property)`**
+
+特定のシリーズおよびグループに対応するプロパティ（色など）を取得します。WebFOCUSの配色設定を尊重した描画を行う場合に非常に重要です。
+
+```javascript
+// シリーズsの塗りつぶし色を取得
+var color = chart.getSeriesAndGroupProperty(s, null, 'color');
+```
+
+**`chart.buildClassName(prefix, series, group, suffix)`**
 
 WebFOCUSの標準的なクラス名を生成します。これにより、ツールチップやデータ選択機能が正しく動作するようになります。
 
@@ -98,7 +124,70 @@ WebFOCUSの標準的なクラス名を生成します。これにより、ツー
   - `series`: シリーズインデックス。
   - `group`: グループインデックス。
   - `suffix`: 任意の識別子（例: `'bar'`）。
+
+**`chart.truncateLabel(text, font, maxWidth)`**
+
+指定された幅に収まるようにテキストを切り詰め（省略記号付与）、返します。
+
+```javascript
+var label = chart.truncateLabel("Very Long Label Text", "12px Arial", 100);
+// 結果: "Very Long..."
+```
+
+**`chart.parseTemplate(url, dataPoint, data, ids)`**
+
+ドリルダウンURLなどのテンプレート文字列を解析し、実際のデータ値を埋め込んだURLを生成します。
+
+```javascript
+var url = chart.parseTemplate(dispatcher.url, dataPoint, renderConfig.data, ids);
+```
+
+**`chart.redraw()`**
+
+チャートを再描画します。`errorMessage` を設定した後などに呼び出します。
+
+```javascript
+chart.errorMessage = "Error loading data";
+chart.redraw();
+```
+
+**`chart.addHTMLToolTips(container)`**
+
+指定されたコンテナ内の要素に対して、WebFOCUS標準のHTMLツールチップ機能を有効化します。
+
+```javascript
+chart.addHTMLToolTips(d3.select("#myContainer"));
+```
 - **戻り値**: クラス名文字列（例: `'riser!s0!g0!mbar!'`）。
+
+### 1.4 プロパティの有効範囲と外部ライブラリ利用時の注意
+
+`moonbeamInstance` のプロパティやメソッドが「自動的に効く」かどうかは、その機能が **「Moonbeamが描画するもの」** か **「拡張機能が描画するもの」** かによって異なります。
+
+#### A. Moonbeamが制御するもの（自動的に効く）
+
+以下の要素は、拡張機能の描画領域（コンテナ）の **外側** または **上位レイヤー** でMoonbeamエンジンによって描画・管理されます。したがって、Chart.jsやApexChartsを使用していても、`moonbeamInstance` のプロパティ設定は有効です。
+
+- **凡例 (Legend)**: `chart.legend.visible`
+- **タイトル/フッター**: `chart.title.visible`, `chart.footnote.text`
+- **エラーメッセージ**: `chart.errorMessage`
+- **ツールチップ（HTMLベース）**: `chart.addHTMLToolTips` を使用した場合
+
+#### B. 拡張機能が制御するもの（手動で適用が必要）
+
+以下の要素は、拡張機能の描画ロジック（D3.js, Chart.jsなど）によって描画されます。したがって、`moonbeamInstance` のプロパティを変更しただけでは **反映されません**。拡張機能のコード内で値を読み取り、ライブラリの設定に反映させる必要があります。
+
+- **シリーズの色**: `chart.getSeries(0).color`
+    - ❌ `chart.getSeries(0).color = 'red'` としても、Chart.jsのバーは赤くなりません。
+    - ⭕ `config.data.datasets[0].backgroundColor = chart.getSeries(0).color` のように代入する必要があります。
+- **データラベル**: `chart.dataLabels.visible`
+    - 拡張機能側でこのフラグをチェックし、ライブラリのデータラベル表示設定を切り替えるロジックが必要です。
+- **マーカーサイズ/形状**: `chart.getSeries(0).marker`
+
+#### まとめ
+
+外部ライブラリを使用する場合、`moonbeamInstance` は **「設定情報の取得元」** として扱い、その情報をライブラリの `config` オブジェクトに **「マッピング（転記）」** する実装が必要です。
+
 
 ## 2. pv (Protovis) オブジェクト
 

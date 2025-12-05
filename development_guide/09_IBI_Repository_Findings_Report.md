@@ -33,6 +33,10 @@ WebFOCUS拡張グラフの公式リポジトリ (`ibi/wf-extensions-chart`) を�
 - **知見**: `com.ibi.tutorial` は、単一の拡張機能内に複数のサブ拡張機能を持ち、動的に切り替える構造を持っています。これは `extensionManager.register` をフックすることで実現されています。
 - **反映**: `tutorial/06-advanced-examples/02-meta-extension-pattern.md` を作成し、この特殊なアーキテクチャの詳細を解説しました。
 
+### 3.6 Moonbeam API の活用
+- **知見**: `moonbeamInstance` には、配色、ラベル省略、エラー表示、ドリルダウンURL生成など、WebFOCUSとの統合に不可欠なAPIが多数用意されています。
+- **反映**: `development_guide/02_API_Reference.md` に詳細なAPIリファレンスを追記し、`development_guide/03_Development_Guide.md` に具体的な活用テクニックを追加しました。
+
 ## 4. 今後の推奨事項
 
 - **D3.js v5の活用**: `com.ibi.sunburst` のように、D3.jsの最新機能（v5以降）を活用しつつ、WebFOCUS環境との競合を避けるロード方法（`window.d3` チェック）を標準化することを推奨します。

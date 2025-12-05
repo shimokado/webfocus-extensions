@@ -65,3 +65,13 @@ function renderCallback(renderConfig) {
 必要な場合は、**config.resource**でCSSやJSを読み込みます。
 
 その他、変更する場合はサンプルのコメントをよく読んで必要な修正を行います。
+
+## 開発ガイド
+
+詳細な開発ガイドは `development_guide` フォルダにあります。
+
+- **[00_Overview.md](development_guide/00_Overview.md)**: 開発の全体像
+- **[02_API_Reference.md](development_guide/02_API_Reference.md)**: APIリファレンス（Moonbeam APIの詳細含む）
+- **[03_Development_Guide.md](development_guide/03_Development_Guide.md)**: 実践的な実装ガイド（データ正規化、Moonbeam活用）
+- **[09_IBI_Repository_Findings_Report.md](development_guide/09_IBI_Repository_Findings_Report.md)**: IBI公式リポジトリからの知見レポート
+

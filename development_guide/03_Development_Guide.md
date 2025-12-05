@@ -448,3 +448,66 @@ function sanitizeData(ext, renderConfig) {
 ```
 
 このパターンを使用することで、ユーザーが誤って非対応のバケット設定を行った場合でも、エラーで停止することなく、可能な範囲でチャートを表示させることができます。
+### 5.3 Moonbeam API 活用テクニック
+
+`renderConfig.moonbeamInstance` (chart) の機能を活用することで、WebFOCUSの標準機能とシームレスに統合された拡張機能を作成できます。
+
+#### 1. 配色の統一 (getSeriesAndGroupProperty)
+
+WebFOCUS側で設定された色パレットを拡張グラフにも適用するには、`getSeriesAndGroupProperty` を使用します。
+
+```javascript
+// D3.jsでの使用例
+rects.attr('fill', function(d, i) {
+  // シリーズインデックスiに対応する色を取得
+  return chart.getSeriesAndGroupProperty(i, null, 'color');
+});
+```
+
+#### 2. ラベルの自動省略 (truncateLabel)
+
+長いラベルが重ならないように、自動的に省略記号(...)を付与します。
+
+```javascript
+// 軸ラベルの描画時
+text.text(function(d) {
+  // 幅100pxに収まるようにカット
+  return chart.truncateLabel(d, '12px sans-serif', 100);
+});
+```
+
+#### 3. エラーハンドリング (errorMessage)
+
+データ不足や設定エラー時に、ユーザーに分かりやすいメッセージを表示します。
+
+```javascript
+if (!renderConfig.data || renderConfig.data.length === 0) {
+  chart.errorMessage = "データがありません。バケットの設定を確認してください。";
+  chart.redraw();
+  return;
+}
+```
+
+#### 4. ドリルダウンの実装 (parseTemplate)
+
+`eventHandler` モジュールと組み合わせて、クリック時のドリルダウン（詳細レポートへの遷移）を実装します。
+
+```javascript
+// イベントハンドラの取得（シリーズ0用）
+var dispatcher = chart.eventDispatcher.events.find(e => e.series === 0);
+
+if (dispatcher) {
+  element.on('click', function(d, i) {
+    // テンプレートURLを解析して実際のURLを生成
+    var url = chart.parseTemplate(
+      dispatcher.url, 
+      d, // データポイント
+      renderConfig.data, 
+      {series: 0, group: i} // ID情報
+    );
+    
+    // ターゲットウィンドウで開く
+    window.open(url, dispatcher.target);
+  });
+}
+```
