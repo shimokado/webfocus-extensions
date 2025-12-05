@@ -1,16 +1,40 @@
 {
   "name": "webfocus-extensions",
   "version": "1.0.0",
-  "description": "WebFOCUS HTML5 Extension Graph",
+  "description": "WebFOCUS HTML5 Extension Graph - Collection of custom chart extensions for WebFOCUS Business Intelligence",
   "main": "index.js",
   "directories": {
-    "doc": "doc"
+    "doc": "docs"
   },
   "scripts": {
     "test": "tool\\test_extension_module.bat",
     "deploy": "tool\\deploy_extension_module.bat",
     "create-extension": "tool\\create_extension_module.bat"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimokado/webfocus-extensions.git"
+  },
+  "keywords": [
+    "webfocus",
+    "html5",
+    "chart",
+    "extension",
+    "visualization",
+    "business-intelligence",
+    "bi",
+    "d3",
+    "chartjs",
+    "apexcharts",
+    "data-visualization"
+  ],
   "author": "Shimokado Masataka",
-  "license": "ISC"
+  "license": "MIT",
+  "homepage": "https://github.com/shimokado/webfocus-extensions#readme",
+  "bugs": {
+    "url": "https://github.com/shimokado/webfocus-extensions/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }
