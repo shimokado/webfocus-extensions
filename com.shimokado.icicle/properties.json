@@ -1,0 +1,72 @@
+{
+    "info": {
+        "version": "1.0.0",
+        "implements_api_version": 1,
+        "author": "Shimokado Masataka",
+        "copyright": "Shimokado Masataka",
+        "url": "https://github.com/shimokado/webfocus-extensions/tree/main/com.shimokado.icicle",
+        "icons": {
+            "medium": "icons/icon.png"
+        }
+    },
+    "properties": {
+        "chartHeadroom": 50,
+        "external_library": "lib/d3.min.js",
+        "tableStyle": {
+            "fontSize": "20px",
+            "color": "#663300"
+        }
+    },
+    "propertyAnnotations": {
+        "chartHeadroom": "number",
+        "external_library": "str",
+        "tableStyle": {
+            "fontSize": "str",
+            "color": "str"
+        }
+    },
+    "dataBuckets": {
+        "tooltip": false,
+        "matrix": false,
+        "data_page": false,
+        "series_break": false,
+        "buckets": [
+            {
+                "id": "value",
+                "type": "measure",
+                "count": {
+                    "min": 1,
+                    "max": 1
+                }
+            },
+            {
+                "id": "labels",
+                "type": "both",
+                "count": {
+                    "min": 1,
+                    "max": 5
+                }
+            }
+        ]
+    },
+    "translations": {
+        "en": {
+            "name": "Icicle Chart",
+            "description": "This is a sample that displays an icicle chart using D3.js.",
+            "icon_tooltip": "com.shimokado.icicle",
+            "value_name": "Value",
+            "value_tooltip": "Drop a measure here",
+            "labels_name": "Labels",
+            "labels_tooltip": "Drop a dimension here"
+        },
+        "ja": {
+            "name": "つららチャート",
+            "description": "D3.jsを使用してつららチャートを表示するサンプルです。",
+            "icon_tooltip": "com.shimokado.icicle",
+            "value_name": "値",
+            "value_tooltip": "ここにメジャーをドロップ",
+            "labels_name": "ラベル（１～５個）",
+            "labels_tooltip": "ここにラベルをドロップ"
+        }
+    }
+}

@@ -2,6 +2,7 @@
   "com.shimokado.card_dashboard": { "enabled": true },
   "com.shimokado.card_simple": { "enabled": true },
   "com.shimokado.chartjs_sample": { "enabled": true },
+  "com.shimokado.icicle": { "enabled": true },
   "com.shimokado.params": { "enabled": true },
   "com.shimokado.radial_gradiate": { "enabled": true },
   "com.shimokado.table_simple": { "enabled": true },
