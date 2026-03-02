@@ -45,6 +45,16 @@ WebFOCUSを起動しているApatch Tomcatを再起動すると拡張機能を�
 1. `npm run create-extension`コマンドを実行します。
 1. 必要に応じてアイコン画像と`properties.json`を変更します。
 
+#### よく使う実行例
+
+```bash
+# テストHTMLを開く（test.htmlがある拡張）
+npm run test -- chartjs_sample
+
+# WebFOCUS拡張フォルダへデプロイ
+npm run deploy -- card_simple
+```
+
 
 ### レンダリングの変更
 
@@ -74,6 +84,13 @@ function renderCallback(renderConfig) {
 - **[02_API_Reference.md](development_guide/02_API_Reference.md)**: APIリファレンス（Moonbeam APIの詳細含む）
 - **[03_Development_Guide.md](development_guide/03_Development_Guide.md)**: 実践的な実装ガイド（データ正規化、Moonbeam活用）
 - **[09_IBI_Repository_Findings_Report.md](development_guide/09_IBI_Repository_Findings_Report.md)**: IBI公式リポジトリからの知見レポート
+
+## AI開発運用ガイド
+
+- **[.github/README.md](.github/README.md)**: Skills・Agents・Instructions の正本
+- **[docs/documentation-map.md](docs/documentation-map.md)**: ドキュメント全体の導線
+- **[docs/serena-knowledge-transfer.md](docs/serena-knowledge-transfer.md)**: Serena知見の移管内容
+- **[docs/pre-delete-checklist.md](docs/pre-delete-checklist.md)**: Serena/重複文書の削除前チェック
 
 ## コントリビューション（貢献）ガイドライン
 

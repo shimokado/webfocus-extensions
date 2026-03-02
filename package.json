@@ -7,9 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "tool\\test_extension_module.bat",
-    "deploy": "tool\\deploy_extension_module.bat",
-    "create-extension": "tool\\create_extension_module.bat"
+    "test": "node tool/test-extension.js",
+    "deploy": "node tool/deploy-extension.js",
+    "create-extension": "node tool/create-extension.js"
   },
   "repository": {
     "type": "git",

@@ -51,6 +51,16 @@ If errors occur, clear your browser cache.
 1. Run the `npm run create-extension` command.
 2. Modify the icon image and `properties.json` as needed.
 
+#### Common command examples
+
+```bash
+# Open test HTML (for extensions that include test.html)
+npm run test -- chartjs_sample
+
+# Deploy to the WebFOCUS extensions folder
+npm run deploy -- card_simple
+```
+
 ### Modifying Rendering
 
 Freely modify the `/* process */` section:
@@ -79,6 +89,13 @@ Detailed development guides are available in the `development_guide` folder:
 - **[02_API_Reference.md](development_guide/02_API_Reference.md)**: API reference (includes detailed Moonbeam API)
 - **[03_Development_Guide.md](development_guide/03_Development_Guide.md)**: Practical implementation guide (data normalization, Moonbeam utilization)
 - **[09_IBI_Repository_Findings_Report.md](development_guide/09_IBI_Repository_Findings_Report.md)**: Findings report from IBI official repository
+
+## AI Development Operations
+
+- **[.github/README.md](.github/README.md)**: Source of truth for Skills, Agents, and Instructions
+- **[docs/documentation-map.md](docs/documentation-map.md)**: Documentation navigation map
+- **[docs/serena-knowledge-transfer.md](docs/serena-knowledge-transfer.md)**: Serena knowledge migration mapping
+- **[docs/pre-delete-checklist.md](docs/pre-delete-checklist.md)**: Pre-delete checklist for Serena and duplicate documents
 
 ## Contribution Guidelines
 

@@ -315,7 +315,7 @@ properties: {
 *END
 ```
 
-詳細な設定方法は `doc/com.shimokado.params_property_guide.md` を参照してください。
+詳細な設定方法は `com.shimokado.params/PROPERTY_GUIDE.md` を参照してください。
 
 ## 📝 重要ポイントまとめ
 
