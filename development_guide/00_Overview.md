@@ -31,9 +31,11 @@ root/
 │   ├── css/                 # スタイルシート
 │   ├── lib/                 # 外部ライブラリ
 │   └── icons/               # アイコン画像
-├── doc/                     # 既存ドキュメント
+├── docs/                    # 補助ドキュメント（運用・移管情報）
+├── .github/                 # AI開発運用（instructions/skills/agents）
 ├── tool/                    # 開発用ツール（スクリプト）
 ├── development_guide/       # 本開発ガイド
+├── tutorial/                # 学習用チュートリアル
 └── package.json             # NPM設定
 ```
 

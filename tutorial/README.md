@@ -178,7 +178,10 @@ console.log('dataBuckets:', renderConfig.dataBuckets);
 npm run create-extension
 
 # 拡張機能のデプロイ
-npm run deploy
+npm run deploy -- card_simple
+
+# テストHTMLの起動
+npm run test -- chartjs_sample
 ```
 
 #### ブラウザ開発者ツール
@@ -216,9 +219,9 @@ npm run deploy
 ## 📖 参考資料
 
 ### プロジェクト内ドキュメント
-- `doc/拡張グラフ開発ガイド.md` - 開発ガイド
-- `doc/tdgchartオブジェクト仕様書.md` - API仕様
-- `doc/拡張機能JavaScript共通仕様.md` - JavaScript仕様
+- `development_guide/00_Overview.md` - 開発ガイドの入口
+- `development_guide/02_API_Reference.md` - API仕様
+- `development_guide/03_Development_Guide.md` - JavaScript実装ガイド
 
 ### 外部リソース
 - [WebFOCUS公式ドキュメント](https://infocenter.informationbuilders.com/)
